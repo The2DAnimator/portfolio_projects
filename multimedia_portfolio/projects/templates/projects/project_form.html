@@ -1,0 +1,121 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}{% if form_type == 'create' %}Create Project{% else %}Edit Project{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>{% if form_type == 'create' %}Create New Project{% else %}Edit Project{% endif %}</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label for="id_title" class="form-label">Project Title</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                        <div class="text-danger">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                        <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Project Type -->
+                    <div class="mb-3">
+                        <label for="id_project_type" class="form-label">Project Type</label>
+                        {{ form.project_type }}
+                        {% if form.project_type.errors %}
+                        <div class="text-danger">{{ form.project_type.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Categories -->
+                    <div class="mb-3">
+                        <label class="form-label">Categories</label>
+                        <div class="border p-3 rounded">
+                            {% for checkbox in form.categories %}
+                            <div class="form-check">
+                                {{ checkbox.tag }}
+                                <label class="form-check-label" for="{{ checkbox.id_for_label }}">
+                                    {{ checkbox.choice_label }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.categories.errors %}
+                        <div class="text-danger">{{ form.categories.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Cover Image -->
+                    <div class="mb-3">
+                        <label for="id_cover_image" class="form-label">Cover Image</label>
+                        {{ form.cover_image }}
+                        {% if form.cover_image.errors %}
+                        <div class="text-danger">{{ form.cover_image.errors }}</div>
+                        {% endif %}
+                        {% if form.cover_image.help_text %}
+                        <div class="form-text">{{ form.cover_image.help_text }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Video URL -->
+                    <div class="mb-3">
+                        <label for="id_video_url" class="form-label">Video URL</label>
+                        {{ form.video_url }}
+                        {% if form.video_url.errors %}
+                        <div class="text-danger">{{ form.video_url.errors }}</div>
+                        {% endif %}
+                        {% if form.video_url.help_text %}
+                        <div class="form-text">{{ form.video_url.help_text }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Audio File -->
+                    <div class="mb-3">
+                        <label for="id_audio_file" class="form-label">Audio File</label>
+                        {{ form.audio_file }}
+                        {% if form.audio_file.errors %}
+                        <div class="text-danger">{{ form.audio_file.errors }}</div>
+                        {% endif %}
+                        {% if form.audio_file.help_text %}
+                        <div class="form-text">{{ form.audio_file.help_text }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Published Status -->
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            {{ form.is_published }}
+                            <label class="form-check-label" for="id_is_published">
+                                Publish this project
+                            </label>
+                        </div>
+                        {% if form.is_published.errors %}
+                        <div class="text-danger">{{ form.is_published.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            {% if form_type == 'create' %}Create Project{% else %}Update Project{% endif %}
+                        </button>
+                        <a href="{% url 'projects:dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

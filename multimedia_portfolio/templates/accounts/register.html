@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+
+{% block title %}Join Multimedia Portfolio{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2 class="mb-0"><i class="fas fa-user-plus me-2"></i>Join Our Community</h2>
+                <p class="text-white-50 mb-0 mt-2">Create your creative portfolio</p>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Username Field -->
+                    <div class="mb-4">
+                        <label for="id_username" class="form-label fw-bold">
+                            <i class="fas fa-user me-2"></i>Username
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-user text-muted"></i>
+                            </span>
+                            <input type="text" 
+                                   name="username" 
+                                   class="form-control border-start-0 ps-2 {% if form.username.errors %}is-invalid{% endif %}" 
+                                   id="id_username" 
+                                   placeholder="Choose a username"
+                                   required
+                                   autofocus
+                                   minlength="3"
+                                   maxlength="150">
+                        </div>
+                        <div class="form-text">
+                            <small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small>
+                        </div>
+                        {% if form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.username.errors %}
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-4">
+                        <label for="id_password1" class="form-label fw-bold">
+                            <i class="fas fa-lock me-2"></i>Password
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-lock text-muted"></i>
+                            </span>
+                            <input type="password" 
+                                   name="password1" 
+                                   class="form-control border-start-0 ps-2 {% if form.password1.errors %}is-invalid{% endif %}" 
+                                   id="id_password1" 
+                                   placeholder="Create a strong password"
+                                   required
+                                   minlength="8">
+                            <button type="button" class="btn btn-outline-secondary border-start-0" onclick="togglePassword('id_password1')">
+                                <i class="fas fa-eye" id="password1ToggleIcon"></i>
+                            </button>
+                        </div>
+                        <div class="form-text">
+                            <small class="password-requirements">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Your password must contain at least 8 characters and can't be too common.
+                            </small>
+                        </div>
+                        {% if form.password1.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.password1.errors %}
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Password Confirmation -->
+                    <div class="mb-4">
+                        <label for="id_password2" class="form-label fw-bold">
+                            <i class="fas fa-lock me-2"></i>Confirm Password
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-lock text-muted"></i>
+                            </span>
+                            <input type="password" 
+                                   name="password2" 
+                                   class="form-control border-start-0 ps-2 {% if form.password2.errors %}is-invalid{% endif %}" 
+                                   id="id_password2" 
+                                   placeholder="Confirm your password"
+                                   required
+                                   minlength="8">
+                            <button type="button" class="btn btn-outline-secondary border-start-0" onclick="togglePassword('id_password2')">
+                                <i class="fas fa-eye" id="password2ToggleIcon"></i>
+                            </button>
+                        </div>
+                        <div class="form-text">
+                            <small>Enter the same password as before, for verification.</small>
+                        </div>
+                        {% if form.password2.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.password2.errors %}
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Password Strength Indicator -->
+                    <div class="mb-4">
+                        <div class="password-strength">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-shield-alt me-2"></i>Password Strength
+                            </label>
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar" id="passwordStrengthBar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted" id="passwordStrengthText">Enter a password to check strength</small>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input {% if form.terms.errors %}is-invalid{% endif %}" 
+                                   type="checkbox" 
+                                   id="terms" 
+                                   name="terms" 
+                                   required>
+                            <label class="form-check-label small" for="terms">
+                                I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> 
+                                and <a href="#" class="text-decoration-none">Privacy Policy</a>
+                            </label>
+                            {% if form.terms.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.terms.errors %}
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Form Errors -->
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <div>
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endif %}
+
+                    <!-- Submit Button -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg py-2">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Divider -->
+                <div class="position-relative text-center mb-4">
+                    <hr>
+                    <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">
+                        OR
+                    </span>
+                </div>
+
+                <!-- Login Link -->
+                <div class="text-center">
+                    <p class="mb-2">Already have an account?</p>
+                    <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features List -->
+        <div class="card mt-4 border-0 bg-light">
+            <div class="card-body">
+                <h6 class="card-title text-center mb-3">
+                    <i class="fas fa-star me-2"></i>Why Join Us?
+                </h6>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-cloud-upload-alt text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong>Upload Multimedia</strong>
+                                <p class="small mb-0 text-muted">Share images, videos, audio files</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-users text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong>Build Your Portfolio</strong>
+                                <p class="small mb-0 text-muted">Showcase your creative projects</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-alt text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong>Full Control</strong>
+                                <p class="small mb-0 text-muted">Manage your content securely</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 20px 20px 0 0 !important;
+        padding: 2.5rem 2rem;
+    }
+    
+    .form-control {
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+    }
+    
+    .input-group-text {
+        border-radius: 12px 0 0 12px;
+        border: 2px solid #e9ecef;
+        border-right: none;
+    }
+    
+    .btn-outline-secondary {
+        border-radius: 0 12px 12px 0;
+        border: 2px solid #e9ecef;
+        border-left: none;
+    }
+    
+    .password-requirements {
+        font-size: 0.875rem;
+    }
+    
+    .progress {
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
+    
+    .progress-bar {
+        border-radius: 10px;
+        transition: width 0.5s ease;
+    }
+    
+    .needs-validation .was-validated .form-control:invalid,
+    .needs-validation .form-control.is-invalid {
+        border-color: #dc3545;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6.4.4.4-.4'/%3e%3cpath d='M6 7v1'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+</style>
+
+<script>
+    // Password visibility toggle
+    function togglePassword(fieldId) {
+        const passwordInput = document.getElementById(fieldId);
+        const icon = document.getElementById(fieldId + 'ToggleIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+    
+    // Password strength checker
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        const bar = document.getElementById('passwordStrengthBar');
+        const text = document.getElementById('passwordStrengthText');
+        
+        if (password.length >= 8) strength += 25;
+        if (password.match(/[a-z]+/)) strength += 25;
+        if (password.match(/[A-Z]+/)) strength += 25;
+        if (password.match(/[0-9]+/)) strength += 15;
+        if (password.match(/[$@#&!]+/)) strength += 10;
+        
+        // Update progress bar
+        bar.style.width = strength + '%';
+        
+        // Update colors and text based on strength
+        if (strength < 40) {
+            bar.className = 'progress-bar bg-danger';
+            text.textContent = 'Weak password';
+            text.className = 'text-danger';
+        } else if (strength < 70) {
+            bar.className = 'progress-bar bg-warning';
+            text.textContent = 'Medium strength';
+            text.className = 'text-warning';
+        } else {
+            bar.className = 'progress-bar bg-success';
+            text.textContent = 'Strong password';
+            text.className = 'text-success';
+        }
+    }
+    
+    // Form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.needs-validation');
+        const password1Input = document.getElementById('id_password1');
+        const password2Input = document.getElementById('id_password2');
+        
+        // Password strength real-time checking
+        password1Input.addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+        
+        // Password confirmation matching
+        password2Input.addEventListener('input', function() {
+            if (password1Input.value !== password2Input.value) {
+                password2Input.classList.add('is-invalid');
+            } else {
+                password2Input.classList.remove('is-invalid');
+            }
+        });
+        
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        });
+        
+        // Auto-focus username field
+        document.getElementById('id_username').focus();
+    });
+</script>
+{% endblock %}

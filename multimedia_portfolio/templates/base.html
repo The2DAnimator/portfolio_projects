@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Share your creative multimedia projects with the world">
+    <title>{% block title %}Multimedia Portfolio{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --dark-color: #2b2d42;
+            --light-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: white !important;
+            transition: transform 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            background: rgba(255,255,255,0.3);
+            color: white !important;
+        }
+        
+        .main-content {
+            min-height: calc(100vh - 160px);
+            padding: 2rem 0;
+        }
+        
+        .alert {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+        }
+        
+        .alert-warning {
+            background: linear-gradient(135deg, #f8961e, #f3722c);
+            color: white;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, #f94144, #f72585);
+            color: white;
+        }
+        
+        .alert-info {
+            background: linear-gradient(135deg, #4895ef, #4361ee);
+            color: white;
+        }
+        
+        .btn-close {
+            filter: invert(1);
+        }
+        
+        /* Custom card styling */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+        
+        /* Footer styling */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+        
+        .footer a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: white;
+        }
+        
+        /* Custom buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .navbar-nav {
+                text-align: center;
+                margin-top: 1rem;
+            }
+            
+            .nav-link {
+                margin: 0.25rem 0;
+            }
+            
+            .main-content {
+                padding: 1rem 0;
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'core:home' %}">
+                <i class="fas fa-palette me-2"></i>Multimedia Portfolio
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+                           href="{% url 'projects:dashboard' %}">
+                            <i class="fas fa-project-diagram me-1"></i>My Projects
+                        </a>
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>{{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'projects:dashboard' %}">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" 
+                           href="{% url 'accounts:login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" 
+                           href="{% url 'accounts:register' %}">
+                            <i class="fas fa-user-plus me-1"></i>Register
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas 
+                            {% if message.tags == 'success' %}fa-check-circle
+                            {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                            {% elif message.tags == 'error' or message.tags == 'danger' %}fa-times-circle
+                            {% else %}fa-info-circle{% endif %}
+                            me-2"></i>
+                        <div class="flex-grow-1">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-palette me-2"></i>Multimedia Portfolio</h5>
+                    <p class="mb-0">Share your creativity with the world. Showcase your images, videos, audio, and more.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">
+                        &copy; 2024 Multimedia Portfolio. 
+                        <span class="d-block d-md-inline">Built with <i class="fas fa-heart text-danger"></i> and Django</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Add loading states to buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function() {
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.innerHTML = '<span class="loading"></span> Processing...';
+                        submitBtn.disabled = true;
+                    }
+                });
+            });
+            
+            // Auto-dismiss alerts after 5 seconds
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }, 5000);
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
