@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Mockup:" %} {{ mockup.title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">{{ mockup.title }}</h3>
+  <div>
+    <a href="{% url 'projects:mockup_list' %}" class="btn btn-ghost btn-sm">{% trans "Back to list" %}</a>
+    <form method="post" action="{% url 'projects:mockup_delete' mockup.pk %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-soft-danger btn-sm" data-confirm="{% trans 'Delete this mockup?' %}" onclick="return confirm(this.dataset.confirm)">{% trans "Delete" %}</button>
+    </form>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card mockup-card">
+      <div class="card-header"><strong>{% trans "Container" %}</strong></div>
+      <div class="card-body text-center">
+        <img src="{{ mockup.container_image.url }}" class="img-fluid rounded-3" alt="{% trans "Container" %}">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card mockup-card">
+      <div class="card-header"><strong>{% trans "Design" %}</strong></div>
+      <div class="card-body text-center">
+        <img src="{{ mockup.design_image.url }}" class="img-fluid rounded-3" alt="{% trans "Design" %}">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mt-1">
+  <div class="col-lg-7">
+    <div class="card preview-card h-100">
+      <div class="card-header"><strong>{% trans "Generated Mockup" %}</strong></div>
+      <div class="card-body text-center">
+        {% if mockup.generated_image %}
+          <img id="generatedPreview" src="{{ mockup.generated_image.url }}" class="img-fluid rounded-3 shadow-sm" alt="{% trans "Generated" %}">
+        {% else %}
+          <div class="text-muted py-5">{% trans "No generated image available." %}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card controls-card h-100">
+      <div class="card-header"><strong>{% trans "Controls" %}</strong></div>
+      <div class="card-body">
+        <form id="controlsForm" enctype="multipart/form-data">
+      <div class="row g-2">
+        <div class="col-6 col-md-3">
+          <label class="form-label small">{% trans "X (%)" %}</label>
+          <input type="number" step="0.1" min="0" max="100" class="form-control" name="design_pos_x" value="{{ mockup.design_pos_x }}">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label small">{% trans "Y (%)" %}</label>
+          <input type="number" step="0.1" min="0" max="100" class="form-control" name="design_pos_y" value="{{ mockup.design_pos_y }}">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label small">{% trans "Scale (% width)" %}</label>
+          <input type="number" step="0.1" min="0" max="200" class="form-control" name="design_scale" value="{{ mockup.design_scale }}">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label small">{% trans "Rotation (deg)" %}</label>
+          <input type="number" step="0.1" min="-180" max="180" class="form-control" name="design_rotation" value="{{ mockup.design_rotation }}">
+        </div>
+      </div>
+      <div class="row g-2 mt-2">
+        <div class="col-md-6">
+          <label class="form-label small">{% trans "Replace Design (optional)" %}</label>
+          <input type="file" class="form-control" name="design_image" accept="image/*">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label small">{% trans "Mask (white visible, black hidden) (optional)" %}</label>
+          <input type="file" class="form-control" name="mask_image" accept="image/*">
+        </div>
+      </div>
+      <div class="row g-2 mt-2">
+        <div class="col-6 col-md-3">
+          <label class="form-label small">{% trans "Mask Opacity (%)" %}</label>
+          <input type="number" step="1" min="0" max="100" class="form-control" name="mask_opacity" value="{{ mockup.mask_opacity }}">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label small">{% trans "Mask Feather (px)" %}</label>
+          <input type="number" step="1" min="0" max="200" class="form-control" name="mask_feather" value="{{ mockup.mask_feather }}">
+        </div>
+        <div class="col-6 col-md-3 d-flex align-items-end">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="maskInvert" name="mask_invert" {% if mockup.mask_invert %}checked{% endif %}>
+            <label class="form-check-label small" for="maskInvert">{% trans "Invert Mask" %}</label>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 d-flex align-items-end">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="clearMask">
+            <label class="form-check-label small" for="clearMask">{% trans "Clear Mask" %}</label>
+          </div>
+        </div>
+      </div>
+          <div class="d-flex justify-content-end gap-2 mt-3">
+            <button type="button" id="applyBtn" class="btn btn-soft-primary btn-sm">{% trans "Apply & Regenerate" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+  const applyBtn = document.getElementById('applyBtn');
+  if (!applyBtn) return;
+  const form = document.getElementById('controlsForm');
+  const preview = document.getElementById('generatedPreview');
+  applyBtn.addEventListener('click', async function(){
+    const url = "{% url 'projects:mockup_update' mockup.pk %}";
+    const fd = new FormData(form);
+    const clearMask = document.getElementById('clearMask');
+    if (clearMask && clearMask.checked) {
+      fd.append('clear_mask', '1');
+    }
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        body: fd
+      });
+      if (!res.ok) throw new Error('Failed to update');
+      const data = await res.json();
+      if (data.generated_image && preview) {
+        const bust = Date.now();
+        preview.src = data.generated_image + '?v=' + bust;
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Failed to regenerate mockup');
+    }
+  });
+})();
+</script>
+<style>
+  /* Local button variants */
+  .btn-soft-primary { color:#234; background:rgba(67,97,238,.12); border:1px solid rgba(67,97,238,.35); }
+  .btn-soft-primary:hover { background:rgba(67,97,238,.2); }
+  .btn-ghost { color:#495057; background:transparent; border:1px dashed rgba(108,117,125,.5); }
+  .btn-ghost:hover { background:rgba(108,117,125,.08); }
+  .btn-soft-danger { color:#7a1f28; background:rgba(220,53,69,.10); border:1px solid rgba(220,53,69,.35); }
+  .btn-soft-danger:hover { background:rgba(220,53,69,.18); }
+  /* Card header overrides (local) */
+  .mockup-card .card-header,
+  .preview-card .card-header,
+  .controls-card .card-header {
+    background: rgba(67,97,238,.08);
+    color: #234;
+    border-bottom: 1px solid rgba(67,97,238,.25);
+  }
+  /* Size constraints */
+  .preview-card img { max-height: 340px; max-width: 82%; width: auto; }
+  .mockup-card .card-body img { max-height: 200px; max-width: 88%; width: auto; }
+</style>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Delete Mockup" %}{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">{% trans "Delete Mockup" %}</h5>
+  </div>
+  <div class="card-body">
+    <p>{% trans "Are you sure you want to delete" %} <strong>{{ mockup.title }}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <a href="{% url 'projects:mockup_detail' mockup.pk %}" class="btn btn-outline-secondary btn-sm">{% trans "Cancel" %}</a>
+      <button class="btn btn-danger btn-sm" type="submit">{% trans "Delete" %}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

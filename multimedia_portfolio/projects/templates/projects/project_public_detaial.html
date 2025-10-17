@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">{{ project.title }}</h2>
+        <span class="badge {% if project.is_published %}bg-success{% else %}bg-warning{% endif %}">
+          {% if project.is_published %}Published{% else %}Draft{% endif %}
+        </span>
+      </div>
+      <div class="card-body">
+        {% if project.cover_image %}
+        <div class="text-center mb-4">
+          <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="img-fluid rounded zoomable-image" style="max-height: 400px; cursor: zoom-in;" data-zoom-src="{{ project.cover_image.url }}">
+        </div>
+        {% endif %}
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <p><strong>Type:</strong> {{ project.get_project_type_display }}</p>
+            <p><strong>Created:</strong> {{ project.created_at|date:"F j, Y" }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Categories:</strong></p>
+            {% for category in project.categories.all %}
+            <span class="badge bg-primary me-1">{{ category.name }}</span>
+            {% empty %}
+            <span class="text-muted">No categories</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h5>Description</h5>
+          <p class="card-text">{{ project.description|linebreaks }}</p>
+        </div>
+
+        {% if project.video_url %}
+        <div class="mb-4">
+          <h5>Video</h5>
+          <div class="ratio ratio-16x9">
+            {% load embed_video_tags %}
+            {% video project.video_url as my_video %}
+              {% video my_video "medium" %}
+            {% endvideo %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if project.audio_file %}
+        <div class="mb-4">
+          <h5>Audio</h5>
+          <audio controls class="w-100">
+            <source src="{{ project.audio_file.url }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if project.images.all %}
+    <div class="card mb-4">
+      <div class="card-header"><h5>Gallery Images</h5></div>
+      <div class="card-body">
+        <div class="row">
+          {% for image in project.images.all %}
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <img src="{{ image.image.url }}" class="card-img-top zoomable-image" alt="{{ image.caption }}" style="height: 200px; object-fit: cover; cursor: zoom-in;" data-zoom-src="{{ image.image.url }}">
+              {% if image.caption %}
+              <div class="card-body"><p class="card-text small">{{ image.caption }}</p></div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if project.files.all %}
+    <div class="card mb-4">
+      <div class="card-header"><h5>Project Files</h5></div>
+      <div class="card-body">
+        <div class="list-group">
+          {% for file in project.files.all %}
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ file.get_file_type_display }}</strong>
+              {% if file.description %}<br><small class="text-muted">{{ file.description }}</small>{% endif %}
+            </div>
+            <a href="{{ file.file.url }}" class="btn btn-soft-primary btn-sm" download>Download</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Messages</h5>
+        <small class="text-muted">Project owner: {{ project.owner.username }}</small>
+      </div>
+      <div class="card-body">
+        <div id="conversation" class="list-group mb-3" style="max-height: 320px; overflow-y: auto;"></div>
+        {% if user.is_authenticated and user != project.owner %}
+        <form id="messageForm" class="mt-3">
+          <div class="mb-2">
+            <textarea id="messageBody" class="form-control" rows="2" placeholder="Write a message to {{ project.owner.username }}..."></textarea>
+          </div>
+          <button class="btn btn-soft-primary btn-sm">Send</button>
+        </form>
+        {% else %}
+        <div class="text-muted small">Login as a different user to message the owner.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header"><h5 class="mb-0">Engagement</h5></div>
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <button class="btn like-btn btn-sm {% if liked %}liked{% endif %}"
+                  data-project-id="{{ project.id }}"
+                  data-like-url="{% url 'projects:toggle_like' project.id %}">
+            <i class="{% if liked %}fas fa-heart{% else %}far fa-heart{% endif %}"></i>
+            <span class="ms-1">Like</span>
+          </button>
+          <span class="badge bg-light text-dark">Likes: <span class="like-count">{{ likes_count }}</span></span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          {% if user.is_authenticated and user != project.owner %}
+          <button class="btn follow-btn btn-sm {% if is_following %}following{% endif %}"
+                  data-user-id="{{ project.owner.id }}"
+                  data-follow-url="{% url 'accounts:toggle_follow' project.owner.id %}">
+            <i class="{% if is_following %}fas fa-user-check{% else %}far fa-user{% endif %}"></i>
+            <span class="ms-1">{% if is_following %}Following{% else %}Follow{% endif %}</span>
+          </button>
+          {% else %}
+          <span class="text-muted small">Follow not available</span>
+          {% endif %}
+          <span class="badge bg-light text-dark">Followers: <span class="followers-count">{{ followers_count }}</span></span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Owner Following</span>
+          <span class="badge bg-secondary">{{ following_count }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  const likeBtn = document.querySelector('.like-btn');
+  if (likeBtn) {
+    likeBtn.addEventListener('click', async function(){
+      const url = this.dataset.likeUrl;
+      const likeIcon = this.querySelector('i');
+      const likeCountEl = document.querySelector('.like-count');
+      try {
+        const resp = await fetch(url, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrftoken } });
+        if (resp.redirected) { window.location.href = resp.url; return; }
+        if (!resp.ok) throw new Error('Request failed');
+        const data = await resp.json();
+        likeCountEl.textContent = data.count;
+        if (data.liked) { this.classList.add('liked'); likeIcon.className = 'fas fa-heart'; }
+        else { this.classList.remove('liked'); likeIcon.className = 'far fa-heart'; }
+      } catch(e) { console.error(e); }
+    });
+  }
+
+  const followBtn = document.querySelector('.follow-btn');
+  if (followBtn) {
+    followBtn.addEventListener('click', async function(){
+      const url = this.dataset.followUrl;
+      const icon = this.querySelector('i');
+      const text = this.querySelector('span');
+      const followersCountEl = document.querySelector('.followers-count');
+      try {
+        const resp = await fetch(url, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrftoken } });
+        if (resp.redirected) { window.location.href = resp.url; return; }
+        if (!resp.ok) throw new Error('Request failed');
+        const data = await resp.json();
+        followersCountEl.textContent = data.followers_count;
+        if (data.following) { this.classList.add('following'); icon.className = 'fas fa-user-check'; text.textContent = 'Following'; }
+        else { this.classList.remove('following'); icon.className = 'far fa-user'; text.textContent = 'Follow'; }
+      } catch(e) { console.error(e); }
+    });
+  }
+
+  // Messages
+  const conversationEl = document.getElementById('conversation');
+  const messageForm = document.getElementById('messageForm');
+  const messageBody = document.getElementById('messageBody');
+  const otherUserId = {% if user.is_authenticated %}Number('{{ project.owner.id }}'){% else %}null{% endif %};
+
+  async function loadConversation(){
+    if (!conversationEl || !otherUserId) return;
+    try {
+      const resp = await fetch(`{% url 'core:get_conversation' 0 %}`.replace('0', otherUserId));
+      if (resp.redirected) { window.location.href = resp.url; return; }
+      if (!resp.ok) throw new Error('Failed to load conversation');
+      const data = await resp.json();
+      conversationEl.innerHTML = '';
+      if (!data.messages.length) {
+        conversationEl.innerHTML = '<div class="text-muted">No messages yet.</div>';
+        return;
+      }
+      for (const m of data.messages) {
+        const item = document.createElement('div');
+        item.className = 'list-group-item';
+        item.innerHTML = `<div class="d-flex justify-content-between"><strong>${m.sender}</strong><small class="text-muted">${m.created_at}</small></div><div class="mt-2"></div>`;
+        item.querySelector('.mt-2').textContent = m.body;
+        conversationEl.appendChild(item);
+      }
+      conversationEl.scrollTop = conversationEl.scrollHeight;
+    } catch(e) { console.error(e); }
+  }
+
+  if (conversationEl) { loadConversation(); }
+
+  if (messageForm) {
+    messageForm.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const body = messageBody.value.trim();
+      if (!body || !otherUserId) return;
+      try {
+        const resp = await fetch(`{% url 'core:send_message' 0 %}`.replace('0', otherUserId), {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrftoken, 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ body })
+        });
+        if (resp.redirected) { window.location.href = resp.url; return; }
+        if (!resp.ok) throw new Error('Failed to send');
+        messageBody.value = '';
+        await loadConversation();
+      } catch(e) { console.error(e); }
+    });
+  }
+
+  // Image Zoom (Lightbox)
+  const zoomImages = document.querySelectorAll('.zoomable-image');
+  const modalEl = document.getElementById('imageZoomModal');
+  const modalImg = document.getElementById('imageZoomTarget');
+  if (zoomImages.length && modalEl && modalImg) {
+    zoomImages.forEach(img => {
+      img.addEventListener('click', function(){
+        const src = this.dataset.zoomSrc || this.src;
+        modalImg.src = src;
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+      });
+    });
+  }
+})();
+</script>
+
+<style>
+  /* Soft button variant */
+  .btn-soft-primary {
+    color: #234;
+    background: rgba(67, 97, 238, 0.12);
+    border: 1px solid rgba(67, 97, 238, 0.35);
+  }
+  .btn-soft-primary:hover { background: rgba(67, 97, 238, 0.2); }
+
+  /* Like button styles */
+  .like-btn {
+    color: #dc3545;
+    background: rgba(220,53,69,.08);
+    border: 1px solid rgba(220,53,69,.35);
+  }
+  .like-btn:hover { background: rgba(220,53,69,.15); }
+  .like-btn.liked { background: #dc3545; color: #fff; border-color: #dc3545; }
+
+  /* Follow button styles */
+  .follow-btn {
+    color: #234;
+    background: rgba(67,97,238,.10);
+    border: 1px solid rgba(67,97,238,.35);
+  }
+  .follow-btn:hover { background: rgba(67,97,238,.18); }
+  .follow-btn.following { background: #4361ee; color: #fff; border-color: #4361ee; }
+</style>
+
+<!-- Image Zoom Modal -->
+<div class="modal fade" id="imageZoomModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content" style="background: rgba(0,0,0,0.9);">
+      <div class="modal-body p-0 text-center">
+        <img id="imageZoomTarget" src="" alt="Zoomed image" style="max-width:100%; max-height:80vh;">
+      </div>
+      <div class="position-absolute top-0 end-0 p-2">
+        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal" aria-label="Close">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}

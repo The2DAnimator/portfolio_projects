@@ -1,0 +1,2178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-15 20:57+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\accounts\templates\accounts\login.html:4
+#: .\accounts\templates\accounts\login.html:11
+#: .\accounts\templates\accounts\login.html:33 .\templates\base.html:270
+msgid "Login"
+msgstr "Ingia"
+
+#: .\accounts\templates\accounts\login.html:19
+msgid "Your username and password didn't match. Please try again."
+msgstr "Jina la mtumiaji na nenosiri havilingani. Tafadhali jaribu tena."
+
+#: .\accounts\templates\accounts\login.html:24
+#: .\accounts\templates\accounts\register.html:24
+msgid "Username"
+msgstr "Jina la mtumiaji"
+
+#: .\accounts\templates\accounts\login.html:29
+#: .\accounts\templates\accounts\register.html:32
+msgid "Password"
+msgstr "Nenosiri"
+
+#: .\accounts\templates\accounts\login.html:36
+msgid "Don't have an account?"
+msgstr "Huna akaunti?"
+
+#: .\accounts\templates\accounts\login.html:36
+msgid "Register here"
+msgstr "Jisajili hapa"
+
+#: .\accounts\templates\accounts\profile.html:4
+#, python-format
+msgid "%(username)s's Profile"
+msgstr ""
+
+#: .\accounts\templates\accounts\profile.html:18
+#: .\accounts\templates\accounts\profile.html:21
+#: .\projects\templates\projects\project_detail.html:183
+#: .\projects\templates\projects\project_public_detail.html:170
+#: .\templates\core\home.html:135
+msgid "Follow"
+msgstr "Fuata"
+
+#: .\accounts\templates\accounts\profile.html:19
+#: .\accounts\templates\accounts\profile.html:21
+#: .\accounts\templates\accounts\profile.html:38
+#: .\projects\templates\projects\project_detail.html:183
+#: .\projects\templates\projects\project_public_detail.html:170
+#: .\templates\core\home.html:135
+msgid "Following"
+msgstr "Anafuata"
+
+#: .\accounts\templates\accounts\profile.html:26
+msgid "Name"
+msgstr ""
+
+#: .\accounts\templates\accounts\profile.html:30
+msgid "Email"
+msgstr ""
+
+#: .\accounts\templates\accounts\profile.html:34
+#, fuzzy
+#| msgid "Followers:"
+msgid "Followers"
+msgstr "Wafuatiliaji:"
+
+#: .\accounts\templates\accounts\profile.html:47
+#, fuzzy, python-format
+#| msgid "Write a message to %(username)s..."
+msgid "Message %(username)s"
+msgstr "Andika ujumbe kwa %(username)s..."
+
+#: .\accounts\templates\accounts\profile.html:50
+#, fuzzy
+#| msgid "No mockups yet."
+msgid "No messages yet."
+msgstr "Bado hakuna mockup."
+
+#: .\accounts\templates\accounts\profile.html:52
+#, fuzzy
+#| msgid "Write a message to %(username)s..."
+msgid "Write a message..."
+msgstr "Andika ujumbe kwa %(username)s..."
+
+#: .\accounts\templates\accounts\profile.html:53
+#: .\projects\templates\projects\project_detail.html:132
+#: .\projects\templates\projects\project_public_detail.html:142
+msgid "Send"
+msgstr "Tuma"
+
+#: .\accounts\templates\accounts\profile.html:62
+#, fuzzy
+#| msgid "My Projects"
+msgid "Projects"
+msgstr "Miradi Yangu"
+
+#: .\accounts\templates\accounts\profile.html:63
+#: .\projects\templates\projects\dashboard.html:13
+msgid "New Project"
+msgstr "Mradi Mpya"
+
+#: .\accounts\templates\accounts\profile.html:81
+#: .\projects\templates\projects\dashboard.html:45
+#: .\projects\templates\projects\mockups\list.html:26
+msgid "View"
+msgstr "Tazama"
+
+#: .\accounts\templates\accounts\profile.html:82
+#: .\projects\templates\projects\dashboard.html:46
+#: .\projects\templates\projects\project_detail.html:15
+msgid "Edit"
+msgstr "Hariri"
+
+#: .\accounts\templates\accounts\profile.html:83
+#: .\myproject_env\Lib\site-packages\django\forms\formsets.py:499
+#: .\projects\templates\projects\dashboard.html:47
+#: .\projects\templates\projects\mockups\confirm_delete.html:14
+#: .\projects\templates\projects\mockups\detail.html:11
+#: .\projects\templates\projects\mockups\list.html:29
+#: .\projects\templates\projects\project_detail.html:16
+#, fuzzy
+#| msgid "Yes, Delete"
+msgid "Delete"
+msgstr "Ndiyo, Futa"
+
+#: .\accounts\templates\accounts\profile.html:96
+#, fuzzy
+#| msgid "No projects yet"
+msgid "No published projects yet."
+msgstr "Bado hakuna miradi"
+
+#: .\accounts\templates\accounts\register.html:4
+#: .\accounts\templates\accounts\register.html:11
+#: .\accounts\templates\accounts\register.html:47 .\templates\base.html:274
+msgid "Register"
+msgstr "Jisajili"
+
+#: .\accounts\templates\accounts\register.html:19
+msgid "Please correct the errors below."
+msgstr "Tafadhali rekebisha makosa hapa chini."
+
+#: .\accounts\templates\accounts\register.html:40
+msgid "Confirm Password"
+msgstr "Thibitisha Nenosiri"
+
+#: .\accounts\templates\accounts\register.html:50
+msgid "Already have an account?"
+msgstr "Tayari una akaunti?"
+
+#: .\accounts\templates\accounts\register.html:50
+msgid "Login here"
+msgstr "Ingia hapa"
+
+#: .\myproject_env\Lib\site-packages\django\contrib\messages\apps.py:16
+#: .\projects\templates\projects\project_detail.html:121
+#: .\projects\templates\projects\project_public_detail.html:132
+msgid "Messages"
+msgstr "Ujumbe"
+
+#: .\myproject_env\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
+msgstr ""
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\myproject_env\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\paginator.py:32
+msgid "That page number is not an integer"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\paginator.py:33
+msgid "That page number is less than 1"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\paginator.py:34
+msgid "That page contains no results"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:70
+msgid "Enter a valid domain name."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:153
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:775
+msgid "Enter a valid URL."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:200
+msgid "Enter a valid integer."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:211
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:289
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:297
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:309
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:318
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:332
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2220
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:311
+msgid "IPv4"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:320
+#: .\myproject_env\Lib\site-packages\django\utils\ipv6.py:43
+msgid "IPv6"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:334
+msgid "IPv4 or IPv6"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:375
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:381
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:416
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:425
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:434
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:441
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:473
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:491
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:514
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:366
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:405
+msgid "Enter a number."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:516
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:521
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:526
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:597
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\core\validators.py:659
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\base.py:1600
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:908
+msgid "and"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\base.py:1602
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:135
+msgid "This field cannot be null."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:136
+msgid "This field cannot be blank."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1162
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1163
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1165
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1215
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1217
+msgid "String (unlimited)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1326
+msgid "Comma-separated integers"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1427
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1431
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1566
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1435
+msgid "Date (without time)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1562
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1570
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1575
+msgid "Date (with time)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1702
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1704
+msgid "Decimal number"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1864
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1868
+msgid "Duration"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1920
+msgid "Email address"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:1945
+msgid "File path"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2023
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2025
+msgid "Floating point number"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2065
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2067
+msgid "Integer"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2163
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2180
+msgid "Small integer"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2188
+msgid "IPv4 address"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2219
+msgid "IP address"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2310
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2311
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2313
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2364
+msgid "Positive big integer"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2379
+msgid "Positive integer"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2394
+msgid "Positive small integer"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2410
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2446
+msgid "Text"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2526
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2530
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2534
+msgid "Time"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2642
+msgid "URL"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2666
+msgid "Raw binary data"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2731
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\__init__.py:2733
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\files.py:244
+msgid "File"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\files.py:420
+msgid "Image"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\json.py:24
+msgid "A JSON object"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\json.py:26
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\related.py:979
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\related.py:982
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\related.py:1276
+msgid "One-to-one relationship"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\related.py:1333
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\related.py:1335
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\db\models\fields\related.py:1383
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: .\myproject_env\Lib\site-packages\django\forms\boundfield.py:185
+msgid ":?.!"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:95
+msgid "This field is required."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:315
+msgid "Enter a whole number."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:486
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:1267
+msgid "Enter a valid date."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:509
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:1268
+msgid "Enter a valid time."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:536
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:570
+msgid "Enter a valid duration."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:571
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:640
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:641
+msgid "No file was submitted."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:642
+msgid "The submitted file is empty."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:644
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:649
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:717
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:889
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:975
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:977
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:1096
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:1590
+msgid "Enter a list of values."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:1097
+msgid "Enter a complete value."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:1339
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\fields.py:1369
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: .\myproject_env\Lib\site-packages\django\forms\forms.py:97
+msgid ":"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\forms.py:239
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\formsets.py:70
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\formsets.py:484
+#: .\myproject_env\Lib\site-packages\django\forms\formsets.py:491
+msgid "Order"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:901
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:922
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:1450
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\utils.py:229
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\widgets.py:527
+#: .\projects\templates\projects\public_list.html:22
+msgid "Clear"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\widgets.py:528
+msgid "Currently"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\widgets.py:529
+msgid "Change"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\widgets.py:866
+msgid "Unknown"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\widgets.py:867
+msgid "Yes"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\forms\widgets.py:868
+msgid "No"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:903
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\template\defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dateformat.py:74
+msgid "p.m."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dateformat.py:75
+msgid "a.m."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dateformat.py:80
+msgid "PM"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dateformat.py:81
+msgid "AM"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dateformat.py:153
+msgid "midnight"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dateformat.py:155
+msgid "noon"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:21
+msgid "Sat"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:25
+msgid "January"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:26
+msgid "February"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:27
+msgid "March"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:28
+msgid "April"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:29
+msgid "May"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:30
+msgid "June"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:31
+msgid "July"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:32
+msgid "August"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:33
+msgid "September"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:34
+msgid "October"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:35
+msgid "November"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:36
+msgid "December"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:39
+msgid "jan"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:40
+msgid "feb"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:41
+msgid "mar"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:42
+msgid "apr"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:43
+msgid "may"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:44
+msgid "jun"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:45
+msgid "jul"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:46
+msgid "aug"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:47
+msgid "sep"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:48
+msgid "oct"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:49
+msgid "nov"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:50
+msgid "dec"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:77
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\ipv6.py:20
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\text.py:76
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\text.py:287
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: .\myproject_env\Lib\site-packages\django\utils\text.py:306
+#: .\myproject_env\Lib\site-packages\django\utils\timesince.py:135
+msgid ", "
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:29
+msgid "Forbidden"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:30
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:44
+msgid "No year specified"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:64
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:115
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:214
+msgid "Date out of range"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:94
+msgid "No month specified"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:147
+msgid "No day specified"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:194
+msgid "No week specified"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:353
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:384
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:680
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\dates.py:720
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\generic\list.py:173
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\static.py:49
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\static.py:68
+#: .\myproject_env\Lib\site-packages\django\views\templates\directory_index.html:8
+#: .\myproject_env\Lib\site-packages\django\views\templates\directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:217
+msgid "Django Documentation"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:227
+msgid "Get started with Django"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:235
+msgid "Django Community"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\django\views\templates\default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\embed_video\fields.py:44
+msgid "URL could not be recognized."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\embed_video\fields.py:47
+msgid "ID of this video could not be recognized."
+msgstr ""
+
+#: .\myproject_env\Lib\site-packages\embed_video\fields.py:50
+msgid "This media not found on site."
+msgstr ""
+
+#: .\projects\templates\projects\dashboard.html:4
+#: .\projects\templates\projects\dashboard.html:9 .\templates\base.html:243
+msgid "My Projects"
+msgstr "Miradi Yangu"
+
+#: .\projects\templates\projects\dashboard.html:4 .\templates\base.html:8
+#: .\templates\base.html:215 .\templates\base.html:312
+#: .\templates\base.html:324
+msgid "Multimedia Portfolio"
+msgstr "Wasifu wa Multimedia"
+
+#: .\projects\templates\projects\dashboard.html:10
+msgid "Manage and organize your portfolio"
+msgstr "Dhibiti na panga wasifu wako"
+
+#: .\projects\templates\projects\dashboard.html:26
+msgid "No Image"
+msgstr "Hakuna Picha"
+
+#: .\projects\templates\projects\dashboard.html:33
+#: .\projects\templates\projects\project_detail.html:37
+#: .\projects\templates\projects\project_public_detail.html:19
+msgid "Draft"
+msgstr "Rasimu"
+
+#: .\projects\templates\projects\dashboard.html:35
+#: .\projects\templates\projects\project_detail.html:35
+#: .\projects\templates\projects\project_public_detail.html:19
+msgid "Published"
+msgstr "Imechapishwa"
+
+#: .\projects\templates\projects\dashboard.html:57
+msgid "No projects yet"
+msgstr "Bado hakuna miradi"
+
+#: .\projects\templates\projects\dashboard.html:58
+msgid "Create your first project to get started!"
+msgstr "Unda mradi wako wa kwanza kuanza!"
+
+#: .\projects\templates\projects\dashboard.html:60
+msgid "Create Your First Project"
+msgstr "Unda Mradi Wako wa Kwanza"
+
+#: .\projects\templates\projects\mockups\confirm_delete.html:3
+#: .\projects\templates\projects\mockups\confirm_delete.html:7
+msgid "Delete Mockup"
+msgstr "Futa Mockup"
+
+#: .\projects\templates\projects\mockups\confirm_delete.html:10
+msgid "Are you sure you want to delete"
+msgstr "Je, una uhakika unataka kufuta"
+
+#: .\projects\templates\projects\mockups\confirm_delete.html:13
+#: .\projects\templates\projects\mockups\form.html:80
+#: .\projects\templates\projects\project_confirm_delete.html:19
+#: .\projects\templates\projects\project_form.html:105
+msgid "Cancel"
+msgstr "Ghairi"
+
+#: .\projects\templates\projects\mockups\detail.html:3
+#, fuzzy
+#| msgid "Mockups"
+msgid "Mockup:"
+msgstr "Miundo ya Mfano"
+
+#: .\projects\templates\projects\mockups\detail.html:8
+msgid "Back to list"
+msgstr "Rudi kwenye orodha"
+
+#: .\projects\templates\projects\mockups\detail.html:11
+#: .\projects\templates\projects\mockups\list.html:29
+msgid "Delete this mockup?"
+msgstr "Futa mockup hii?"
+
+#: .\projects\templates\projects\mockups\detail.html:19
+#: .\projects\templates\projects\mockups\detail.html:21
+msgid "Container"
+msgstr "Kopo/Chombo"
+
+#: .\projects\templates\projects\mockups\detail.html:27
+#: .\projects\templates\projects\mockups\detail.html:29
+msgid "Design"
+msgstr "Ubunifu"
+
+#: .\projects\templates\projects\mockups\detail.html:36
+msgid "Generated Mockup"
+msgstr "Mockup Iliyoundwa"
+
+#: .\projects\templates\projects\mockups\detail.html:39
+msgid "Generated"
+msgstr "Iliyoundwa"
+
+#: .\projects\templates\projects\mockups\detail.html:41
+msgid "No generated image available."
+msgstr "Hakuna picha iliyoundwa."
+
+#: .\projects\templates\projects\mockups\detail.html:47
+msgid "Controls"
+msgstr "Vidhibiti"
+
+#: .\projects\templates\projects\mockups\detail.html:52
+#, python-format
+msgid "X (%%)"
+msgstr "X (%%)"
+
+#: .\projects\templates\projects\mockups\detail.html:56
+#, python-format
+msgid "Y (%%)"
+msgstr "Y (%%)"
+
+#: .\projects\templates\projects\mockups\detail.html:60
+#, python-format
+msgid "Scale (%% width)"
+msgstr "Skeli (%% upana)"
+
+#: .\projects\templates\projects\mockups\detail.html:64
+#: .\projects\templates\projects\mockups\form.html:55
+msgid "Rotation (deg)"
+msgstr "Mzunguko (deg)"
+
+#: .\projects\templates\projects\mockups\detail.html:70
+msgid "Replace Design (optional)"
+msgstr "Badilisha Ubunifu (hiari)"
+
+#: .\projects\templates\projects\mockups\detail.html:74
+msgid "Mask (white visible, black hidden) (optional)"
+msgstr "Maski (nyeupe inaonekana, nyeusi imefichwa) (hiari)"
+
+#: .\projects\templates\projects\mockups\detail.html:80
+#: .\projects\templates\projects\mockups\form.html:62
+#, python-format
+msgid "Mask Opacity (%%)"
+msgstr "Uwazi wa Maski (%%)"
+
+#: .\projects\templates\projects\mockups\detail.html:84
+#: .\projects\templates\projects\mockups\form.html:67
+msgid "Mask Feather (px)"
+msgstr "Feather ya Maski (px)"
+
+#: .\projects\templates\projects\mockups\detail.html:90
+#: .\projects\templates\projects\mockups\form.html:74
+msgid "Invert Mask"
+msgstr "Geuza Maski"
+
+#: .\projects\templates\projects\mockups\detail.html:96
+msgid "Clear Mask"
+msgstr "Futa Maski"
+
+#: .\projects\templates\projects\mockups\detail.html:101
+msgid "Apply & Regenerate"
+msgstr "Tekeleza na Tengeneza Upya"
+
+#: .\projects\templates\projects\mockups\form.html:3
+msgid "Create Mockup"
+msgstr "Unda Mockup"
+
+#: .\projects\templates\projects\mockups\form.html:9
+msgid "New Package Mockup"
+msgstr "Mockup Mpya ya Kifurushi"
+
+#: .\projects\templates\projects\mockups\form.html:10
+#: .\projects\templates\projects\project_form.html:12
+msgid "Back"
+msgstr "Rudi"
+
+#: .\projects\templates\projects\mockups\form.html:19
+msgid "Title"
+msgstr "Kichwa"
+
+#: .\projects\templates\projects\mockups\form.html:24
+msgid "Container Image (PNG with transparency recommended)"
+msgstr "Picha ya Chombo (PNG yenye uonyesha ni bora)"
+
+#: .\projects\templates\projects\mockups\form.html:29
+msgid "Design Image"
+msgstr "Picha ya Ubunifu"
+
+#: .\projects\templates\projects\mockups\form.html:34
+msgid "Optional Mask Image (white visible, black hidden)"
+msgstr "Picha ya Maski (hiari) (nyeupe inaonekana, nyeusi imefichwa)"
+
+#: .\projects\templates\projects\mockups\form.html:40
+#, python-format
+msgid "Design X (%%)"
+msgstr "X ya Ubunifu (%%)"
+
+#: .\projects\templates\projects\mockups\form.html:45
+#, python-format
+msgid "Design Y (%%)"
+msgstr "Y ya Ubunifu (%%)"
+
+#: .\projects\templates\projects\mockups\form.html:50
+#, python-format
+msgid "Design Scale (%% width)"
+msgstr "Skeli ya Ubunifu (%% upana)"
+
+#: .\projects\templates\projects\mockups\form.html:81
+msgid "Create"
+msgstr "Unda"
+
+#: .\projects\templates\projects\mockups\list.html:3
+#: .\projects\templates\projects\mockups\list.html:6
+msgid "My Mockups"
+msgstr "Mockup Zangu"
+
+#: .\projects\templates\projects\mockups\list.html:7
+msgid "New Mockup"
+msgstr "Mockup Mpya"
+
+#: .\projects\templates\projects\mockups\list.html:19
+msgid "No preview"
+msgstr "Hakuna hakikisho"
+
+#: .\projects\templates\projects\mockups\list.html:39
+msgid "No mockups yet."
+msgstr "Bado hakuna mockup."
+
+#: .\projects\templates\projects\mockups\list.html:40
+msgid "Create your first mockup"
+msgstr "Unda mockup yako ya kwanza"
+
+#: .\projects\templates\projects\project_confirm_delete.html:4
+#: .\projects\templates\projects\project_confirm_delete.html:11
+#: .\projects\templates\projects\project_detail.html:245
+msgid "Delete Project"
+msgstr "Futa Mradi"
+
+#: .\projects\templates\projects\project_confirm_delete.html:14
+msgid "Are you sure you want to delete this project?"
+msgstr "Je, una uhakika unataka kufuta mradi huu?"
+
+#: .\projects\templates\projects\project_confirm_delete.html:18
+msgid "Yes, Delete"
+msgstr "Ndiyo, Futa"
+
+#: .\projects\templates\projects\project_detail.html:31
+#: .\projects\templates\projects\project_public_detail.html:31
+msgid "Type:"
+msgstr "Aina:"
+
+#: .\projects\templates\projects\project_detail.html:32
+#: .\projects\templates\projects\project_public_detail.html:32
+msgid "Created:"
+msgstr "Imeundwa:"
+
+#: .\projects\templates\projects\project_detail.html:33
+msgid "Status:"
+msgstr "Hali:"
+
+#: .\projects\templates\projects\project_detail.html:42
+#: .\projects\templates\projects\project_public_detail.html:35
+msgid "Categories:"
+msgstr "Vikundi:"
+
+#: .\projects\templates\projects\project_detail.html:46
+#: .\projects\templates\projects\project_public_detail.html:39
+msgid "No categories"
+msgstr "Hakuna vikundi"
+
+#: .\projects\templates\projects\project_detail.html:53
+#: .\projects\templates\projects\project_form.html:28
+#: .\projects\templates\projects\project_public_detail.html:45
+msgid "Description"
+msgstr "Maelezo"
+
+#: .\projects\templates\projects\project_detail.html:60
+#: .\projects\templates\projects\project_public_detail.html:51
+msgid "Video"
+msgstr "Video"
+
+#: .\projects\templates\projects\project_detail.html:67
+#: .\projects\templates\projects\project_public_detail.html:55
+#: .\projects\templates\projects\project_public_detail.html:64
+msgid "Your browser does not support the video tag."
+msgstr "Kivinjari chako hakisapoti lebo ya video."
+
+#: .\projects\templates\projects\project_detail.html:83
+#: .\projects\templates\projects\project_public_detail.html:81
+msgid "Audio"
+msgstr "Sauti"
+
+#: .\projects\templates\projects\project_detail.html:86
+#: .\projects\templates\projects\project_public_detail.html:84
+msgid "Your browser does not support the audio element."
+msgstr "Kivinjari chako hakisapoti kipengele cha sauti."
+
+#: .\projects\templates\projects\project_detail.html:97
+#: .\projects\templates\projects\project_public_detail.html:93
+msgid "Gallery Images"
+msgstr "Picha za Galari"
+
+#: .\projects\templates\projects\project_detail.html:122
+#: .\projects\templates\projects\project_public_detail.html:133
+msgid "Project owner:"
+msgstr "Mmiliki wa mradi:"
+
+#: .\projects\templates\projects\project_detail.html:128
+msgid ""
+"\n"
+"                        "
+msgstr ""
+
+#: .\projects\templates\projects\project_detail.html:130
+#: .\projects\templates\projects\project_public_detail.html:140
+#, python-format
+msgid "Write a message to %(username)s..."
+msgstr "Andika ujumbe kwa %(username)s..."
+
+#: .\projects\templates\projects\project_detail.html:141
+#: .\projects\templates\projects\project_public_detail.html:113
+msgid "Project Files"
+msgstr "Faili za Mradi"
+
+#: .\projects\templates\projects\project_detail.html:153
+#: .\projects\templates\projects\project_public_detail.html:122
+msgid "Download"
+msgstr "Pakua"
+
+#: .\projects\templates\projects\project_detail.html:166
+#: .\projects\templates\projects\project_public_detail.html:153
+msgid "Engagement"
+msgstr "Ushirikishwaji"
+
+#: .\projects\templates\projects\project_detail.html:174
+#: .\projects\templates\projects\project_public_detail.html:160
+msgid "Like"
+msgstr "Penda"
+
+#: .\projects\templates\projects\project_detail.html:176
+#: .\projects\templates\projects\project_public_detail.html:162
+msgid "Likes:"
+msgstr "Mapendo:"
+
+#: .\projects\templates\projects\project_detail.html:185
+#: .\projects\templates\projects\project_public_detail.html:175
+msgid "Followers:"
+msgstr "Wafuatiliaji:"
+
+#: .\projects\templates\projects\project_detail.html:188
+#: .\projects\templates\projects\project_public_detail.html:178
+msgid "Owner Following"
+msgstr "Wanaomfuata Mmiliki"
+
+#: .\projects\templates\projects\project_detail.html:197
+msgid "Add Media"
+msgstr "Ongeza Media"
+
+#: .\projects\templates\projects\project_detail.html:203
+#: .\projects\templates\projects\project_detail.html:210
+msgid "Add Image"
+msgstr "Ongeza Picha"
+
+#: .\projects\templates\projects\project_detail.html:208
+msgid "Caption (optional)"
+msgstr "Maelezo mafupi (hiari)"
+
+#: .\projects\templates\projects\project_detail.html:222
+msgid "Document"
+msgstr "Hati"
+
+#: .\projects\templates\projects\project_detail.html:223
+msgid "Source File"
+msgstr "Faili Chanzo"
+
+#: .\projects\templates\projects\project_detail.html:224
+msgid "Asset"
+msgstr "Rasilimali"
+
+#: .\projects\templates\projects\project_detail.html:225
+msgid "Other"
+msgstr "Nyingine"
+
+#: .\projects\templates\projects\project_detail.html:229
+msgid "File description"
+msgstr "Maelezo ya faili"
+
+#: .\projects\templates\projects\project_detail.html:231
+msgid "Add File"
+msgstr "Ongeza Faili"
+
+#: .\projects\templates\projects\project_detail.html:239
+msgid "Project Actions"
+msgstr "Vitendo vya Mradi"
+
+#: .\projects\templates\projects\project_detail.html:244
+#: .\projects\templates\projects\project_form.html:4
+#: .\projects\templates\projects\project_form.html:11
+msgid "Edit Project"
+msgstr "Hariri Mradi"
+
+#: .\projects\templates\projects\project_detail.html:247
+msgid "Back to Dashboard"
+msgstr "Rudi kwenye Dashibodi"
+
+#: .\projects\templates\projects\project_form.html:4
+#: .\projects\templates\projects\project_form.html:107
+#: .\templates\core\home.html:27
+msgid "Create Project"
+msgstr "Unda Mradi"
+
+#: .\projects\templates\projects\project_form.html:11
+#: .\templates\core\home.html:338
+msgid "Create New Project"
+msgstr "Unda Mradi Mpya"
+
+#: .\projects\templates\projects\project_form.html:21
+#: .\templates\core\home.html:354
+msgid "Project Title"
+msgstr "Kichwa cha Mradi"
+
+#: .\projects\templates\projects\project_form.html:35
+msgid "Project Type"
+msgstr "Aina ya Mradi"
+
+#: .\projects\templates\projects\project_form.html:42
+msgid "Publish"
+msgstr "Chapisha"
+
+#: .\projects\templates\projects\project_form.html:49
+msgid "Cover Image"
+msgstr "Picha ya Jalada"
+
+#: .\projects\templates\projects\project_form.html:57
+msgid "Video File"
+msgstr "Faili la Video"
+
+#: .\projects\templates\projects\project_form.html:67
+msgid "More options"
+msgstr "Chaguo zaidi"
+
+#: .\projects\templates\projects\project_form.html:73
+msgid "Categories"
+msgstr "Vikundi"
+
+#: .\projects\templates\projects\project_form.html:87
+msgid "Video URL"
+msgstr "Kiungo cha Video"
+
+#: .\projects\templates\projects\project_form.html:95
+msgid "Audio File"
+msgstr "Faili la Sauti"
+
+#: .\projects\templates\projects\project_form.html:107
+msgid "Update Project"
+msgstr "Sasisha Mradi"
+
+#: .\projects\templates\projects\project_public_detail.html:11
+msgid "Home"
+msgstr ""
+
+#: .\projects\templates\projects\project_public_detail.html:145
+msgid "Login as a different user to message the owner."
+msgstr ""
+
+#: .\projects\templates\projects\project_public_detail.html:173
+msgid "Follow not available"
+msgstr ""
+
+#: .\projects\templates\projects\project_public_detail.html:313
+#, fuzzy
+#| msgid "Cover Image"
+msgid "Zoomed image"
+msgstr "Picha ya Jalada"
+
+#: .\projects\templates\projects\project_public_detail.html:316
+msgid "Close"
+msgstr "Funga"
+
+#: .\projects\templates\projects\public_list.html:4
+#: .\projects\templates\projects\public_list.html:9
+msgid "All Projects"
+msgstr "Miradi Yote"
+
+#: .\projects\templates\projects\public_list.html:13
+#, fuzzy
+#| msgid "Create Project"
+msgid "Search projects..."
+msgstr "Miradi Iliyoangaziwa"
+
+#: .\projects\templates\projects\public_list.html:16
+msgid "All types"
+msgstr ""
+
+#: .\projects\templates\projects\public_list.html:21
+msgid "Filter"
+msgstr ""
+
+#: .\projects\templates\projects\public_list.html:53
+#: .\templates\core\home.html:112
+#, fuzzy
+#| msgid "New Project"
+msgid "View Project"
+msgstr "Tazama Mradi"
+
+#: .\projects\templates\projects\public_list.html:62
+#: .\templates\core\home.html:161
+#, fuzzy
+#| msgid "No projects yet"
+msgid "No Projects Yet"
+msgstr "Bado hakuna Miradi"
+
+#: .\projects\templates\projects\public_list.html:63
+#: .\templates\core\home.html:162
+msgid "Be the first to add a project to our community!"
+msgstr "Kuwa wa kwanza kuongeza mradi kwenye jamii yetu!"
+
+#: .\templates\base.html:234
+msgid "Public View"
+msgstr "Mwonekano wa Umma"
+
+#: .\templates\base.html:239
+msgid "Mockups"
+msgstr "Miundo ya Mfano"
+
+#: .\templates\base.html:251
+msgid "Profile"
+msgstr "Wasifu"
+
+#: .\templates\base.html:254
+msgid "Dashboard"
+msgstr "Dashibodi"
+
+#: .\templates\base.html:261
+msgid "Logout"
+msgstr "Ondoka"
+
+#: .\templates\base.html:313
+msgid ""
+"Share your creativity with the world. Showcase your images, videos, audio, "
+"and more."
+msgstr "Shiriki ubunifu wako na dunia. Onyesha picha, video, sauti, na zaidi."
+
+#: .\templates\base.html:325
+msgid "Built with"
+msgstr "Imetengenezwa kwa"
+
+#: .\templates\core\home.html:5
+msgid "Multimedia Portfolio - Showcase Your Creativity"
+msgstr "Wasifu wa Multimedia - Onyesha Ubunifu Wako"
+
+#: .\templates\core\home.html:16
+msgid "Showcase Your Creative Vision"
+msgstr "Onyesha Dira Yako ya Ubunifu"
+
+#: .\templates\core\home.html:19
+msgid ""
+"The ultimate platform for multimedia creators. Share your images, videos, "
+"audio projects, and build a stunning portfolio that stands out."
+msgstr ""
+"Jukwaa bora kwa waumbaji wa multimedia. Shiriki picha zako, video, miradi ya "
+"sauti, na unda wasifu mzuri unaong'aa."
+
+#: .\templates\core\home.html:24
+#, fuzzy
+#| msgid "Back to Dashboard"
+msgid "Go to Dashboard"
+msgstr "Nenda kwenye Dashibodi"
+
+#: .\templates\core\home.html:30 .\templates\core\home.html:40
+msgid "Browse All Projects"
+msgstr "Vinjari Miradi Yote"
+
+#: .\templates\core\home.html:34
+msgid "Get Started Free"
+msgstr "Anza Bure"
+
+#: .\templates\core\home.html:37
+msgid "Sign In"
+msgstr "Ingia"
+
+#: .\templates\core\home.html:50
+#, fuzzy
+#| msgid "New Project"
+msgid "View Projects"
+msgstr "Tazama Miradi"
+
+#: .\templates\core\home.html:55
+msgid "See Features"
+msgstr "Tazama Vipengele"
+
+#: .\templates\core\home.html:60
+msgid "View Stats"
+msgstr "Tazama Takwimu"
+
+#: .\templates\core\home.html:75
+msgid "Featured Creations"
+msgstr "Ubunifu Ulioangaziwa"
+
+#: .\templates\core\home.html:76
+msgid "Discover amazing projects from our creative community"
+msgstr "Gundua miradi ya kushangaza kutoka kwa jamii yetu ya wabunifu"
+
+#: .\templates\core\home.html:85
+#, fuzzy
+#| msgid "Create Project"
+msgid "Featured Projects"
+msgstr "Miradi Iliyoangaziwa"
+
+#: .\templates\core\home.html:115
+msgid "Quick Look"
+msgstr "Mtazamo wa Haraka"
+
+#: .\templates\core\home.html:139
+msgid "Chat"
+msgstr "Soga"
+
+#: .\templates\core\home.html:164
+#, fuzzy
+#| msgid "Create Your First Project"
+msgid "Create First Project"
+msgstr "Unda Mradi wa Kwanza"
+
+#: .\templates\core\home.html:186
+msgid "Everything You Need to Showcase Your Work"
+msgstr "Kila Unachohitaji Kuonyesha Kazi Yako"
+
+#: .\templates\core\home.html:187
+msgid "Powerful tools for creators of all kinds"
+msgstr "Zana zenye nguvu kwa waumbaji wa aina zote"
+
+#: .\templates\core\home.html:199
+msgid "Image Galleries"
+msgstr "Matunzio ya Picha"
+
+#: .\templates\core\home.html:201
+msgid ""
+"Create stunning image galleries with cover photos, captions, and organized "
+"collections. Perfect for photographers and digital artists."
+msgstr ""
+"Unda matunzio maridadi ya picha yenye picha za jalada, maelezo mafupi, na "
+"makusanyo yaliyo pangwa. Inafaa wapiga picha na wasanii wa kidijitali."
+
+#: .\templates\core\home.html:214
+#, fuzzy
+#| msgid "My Projects"
+msgid "Video Projects"
+msgstr "Miradi ya Video"
+
+#: .\templates\core\home.html:216
+msgid ""
+"Embed videos from YouTube, Vimeo, and other platforms. Showcase your film "
+"projects, animations, and video content seamlessly."
+msgstr ""
+"Weka video kutoka YouTube, Vimeo, na majukwaa mengine. Onyesha miradi yako "
+"ya filamu, michoro, na maudhui ya video kwa urahisi."
+
+#: .\templates\core\home.html:229
+msgid "Audio Showcase"
+msgstr "Maonyesho ya Sauti"
+
+#: .\templates\core\home.html:231
+msgid ""
+"Upload and share your audio creations. Built-in audio players let visitors "
+"listen to your music, podcasts, and sound designs directly."
+msgstr ""
+"Pakia na shiriki kazi zako za sauti. Vichezaji sauti vilivyojengewa ndani "
+"huruhusu wageni kusikiliza muziki, podikasti, na miundo ya sauti moja kwa "
+"moja."
+
+#: .\templates\core\home.html:244
+#, fuzzy
+#| msgid "Engagement"
+msgid "File Management"
+msgstr "Usimamizi wa Faili"
+
+#: .\templates\core\home.html:246
+msgid ""
+"Organize and share project files, source materials, and documents. Keep "
+"everything related to your projects in one place."
+msgstr ""
+"Panga na shiriki faili za mradi, nyenzo za chanzo, na hati. Weka kila kitu "
+"cha mradi wako sehemu moja."
+
+#: .\templates\core\home.html:259
+#, fuzzy
+#| msgid "Categories"
+msgid "Smart Categories"
+msgstr "Vikundi Mahiri"
+
+#: .\templates\core\home.html:261
+msgid ""
+"Categorize your projects by type, style, or medium. Make it easy for "
+"visitors to explore your work the way you want it seen."
+msgstr ""
+"Weka miradi yako katika makundi kulingana na aina, mtindo, au njia. "
+"Rahisisha wageni kuchunguza kazi yako jinsi unavyotaka ionekane."
+
+#: .\templates\core\home.html:274
+msgid "Complete Control"
+msgstr "Udhibiti Kamili"
+
+#: .\templates\core\home.html:276
+msgid ""
+"Full ownership of your content. Publish when ready, keep drafts private, and "
+"manage everything from one dashboard."
+msgstr ""
+"Umiliki kamili wa maudhui yako. Chapisha ukiwa tayari, hifadhi rasimu "
+"binafsi, na simamia kila kitu kutoka dashibodi moja."
+
+#: .\templates\core\home.html:292
+#, fuzzy
+#| msgid "Project Title"
+msgid "Projects Created"
+msgstr "Miradi Iliyoundwa"
+
+#: .\templates\core\home.html:298
+#, fuzzy
+#| msgid "Create"
+msgid "Creative Users"
+msgstr "Watumiaji Wabunifu"
+
+#: .\templates\core\home.html:304
+msgid "Access Anywhere"
+msgstr "Upatikanaji Kokote"
+
+#: .\templates\core\home.html:310
+msgid "No Hidden Fees"
+msgstr "Hakuna Ada za Siri"
+
+#: .\templates\core\home.html:322
+msgid "Ready to Build Your Portfolio?"
+msgstr "Uko Tayari Kujenga Wasifu Wako?"
+
+#: .\templates\core\home.html:324
+msgid ""
+"Join thousands of creators who are already showcasing their work on our "
+"platform. It takes less than a minute to get started."
+msgstr ""
+"Jiunge na maelfu ya waumbaji wanaoonyesha kazi zao kwenye jukwaa letu "
+"tayari. Inachukua chini ya dakika moja kuanza."
+
+#: .\templates\core\home.html:329
+msgid "Start Creating Now"
+msgstr "Anza Kuunda Sasa"
+
+#: .\templates\core\home.html:332
+msgid "Existing User"
+msgstr "Mtumiaji Aliyepo"
+
+#: .\templates\core\home.html:341
+#, fuzzy
+#| msgid "Dashboard"
+msgid "View Dashboard"
+msgstr "Tazama Dashibodi"
+
+#: .\templates\core\home.html:369
+#, fuzzy
+#| msgid "Built with"
+msgid "Chat with"
+msgstr "Soga na"
+
+#: .\templates\core\home.html:369
+#, fuzzy
+#| msgid "Username"
+msgid "User"
+msgstr "Mtumiaji"
+
+#: .\templates\core\home.html:379
+#, fuzzy
+#| msgid "Write a message to %(username)s..."
+msgid "Type your message..."
+msgstr "Andika ujumbe wako..."
+
+#~ msgid "Features"
+#~ msgstr "Vipengele"
+
+#, fuzzy
+#~| msgid "Status:"
+#~ msgid "Stats"
+#~ msgstr "Takwimu"
+
+#~ msgid "Get Started"
+#~ msgstr "Anza"

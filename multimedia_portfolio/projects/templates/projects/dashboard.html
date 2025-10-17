@@ -1,40 +1,65 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}My Projects - Multimedia Portfolio{% endblock %}
+{% block title %}{% trans "My Projects" %} - {% trans "Multimedia Portfolio" %}{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>My Projects</h1>
-    <a href="{% url 'projects:project_create' %}" class="btn btn-primary">Create New Project</a>
-</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-0" style="font-size:1.125rem; font-weight:700;">{% trans "My Projects" %}</h2>
+        <small class="text-muted">{% trans "Manage and organize your portfolio" %}</small>
+    </div>
+    <a href="{% url 'projects:project_create' %}" class="btn btn-soft-primary btn-sm">
+        <i class="fas fa-plus me-1"></i>{% trans "New Project" %}
+    </a>
+    </div>
+
+    {% if quota_mb and quota_mb|add:0 > 0 %}
+    <div class="mb-3">
+        <div class="d-flex justify-content-between small mb-1">
+            <span>{% trans "Storage used" %}: {{ used_mb }} MB / {{ quota_mb }} MB</span>
+            <span>{{ quota_percent }}%</span>
+        </div>
+        <div class="progress" style="height: 8px;">
+            <div class="progress-bar {% if quota_percent >= 90 %}bg-danger{% elif quota_percent >= 70 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar" style="width: {{ quota_percent }}%"></div>
+        </div>
+    </div>
+    {% endif %}
 
 {% if projects %}
-<div class="row">
+<div class="row g-3">
     {% for project in projects %}
-    <div class="col-md-6 col-lg-4 mb-4">
-        <div class="card h-100">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 project-card">
             {% if project.cover_image %}
-            <img src="{{ project.cover_image.url }}" class="card-img-top" alt="{{ project.title }}" style="height: 200px; object-fit: cover;">
+            <img src="{{ project.cover_image.url }}" class="card-img-top" alt="{{ project.title }}" style="height: 180px; object-fit: cover;">
             {% else %}
-            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                <span class="text-muted">No Image</span>
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                <span class="text-muted small">{% trans "No Image" %}</span>
             </div>
             {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ project.title }}</h5>
-                <p class="card-text">{{ project.description|truncatewords:20 }}</p>
-                <p class="text-muted">
-                    <small>Type: {{ project.get_project_type_display }}</small><br>
-                    <small>Created: {{ project.created_at|date:"M d, Y" }}</small>
-                </p>
-                {% if not project.is_published %}
-                <span class="badge bg-warning">Draft</span>
-                {% endif %}
-            </div>
-            <div class="card-footer">
-                <a href="{% url 'projects:project_detail' project.pk %}" class="btn btn-sm btn-outline-primary">View</a>
-                <a href="{% url 'projects:project_update' project.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                <a href="{% url 'projects:project_delete' project.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            <div class="card-body py-3 px-3 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                    <h6 class="mb-0" style="font-weight:600;">{{ project.title }}</h6>
+                    {% if not project.is_published %}
+                    <span class="badge bg-warning text-dark">{% trans "Draft" %}</span>
+                    {% else %}
+                    <span class="badge bg-success">{% trans "Published" %}</span>
+                    {% endif %}
+                </div>
+                <p class="text-muted small mb-2">{{ project.description|truncatewords:18 }}</p>
+                <div class="text-muted" style="font-size:.8rem;">
+                    <span class="me-2"><i class="far fa-clock me-1"></i>{{ project.created_at|date:"M d, Y" }}</span>
+                    <span><i class="fas fa-tag me-1"></i>{{ project.get_project_type_display }}</span>
+                </div>
+                <div class="mt-3 d-flex justify-content-between align-items-center">
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'projects:project_detail' project.pk %}" class="btn btn-soft-primary btn-sm">{% trans "View" %}</a>
+                        <a href="{% url 'projects:project_update' project.pk %}" class="btn btn-ghost btn-sm">{% trans "Edit" %}</a>
+                        <a href="{% url 'projects:project_delete' project.pk %}" class="btn btn-soft-danger btn-sm">{% trans "Delete" %}</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -42,9 +67,40 @@
 </div>
 {% else %}
 <div class="text-center py-5">
-    <h3>No projects yet</h3>
-    <p class="text-muted">Create your first project to get started!</p>
-    <a href="{% url 'projects:project_create' %}" class="btn btn-primary">Create Your First Project</a>
+    <h4 class="mb-2">{% trans "No projects yet" %}</h4>
+    <p class="text-muted mb-3">{% trans "Create your first project to get started!" %}</p>
+    <a href="{% url 'projects:project_create' %}" class="btn btn-soft-primary btn-sm">
+        <i class="fas fa-plus me-1"></i>{% trans "Create Your First Project" %}
+    </a>
 </div>
 {% endif %}
+
+<style>
+/* Dashboard compact overrides */
+.project-card .card-body { padding: .75rem; }
+.project-card h6 { font-size: 1rem; }
+.project-card p { font-size: .9rem; }
+.btn-group .btn { padding: .25rem .5rem; font-size: .85rem; }
+</style>
+<style>
+/* Local button variants */
+.btn-soft-primary {
+  color: #234;
+  background: rgba(67, 97, 238, 0.12);
+  border: 1px solid rgba(67, 97, 238, 0.35);
+}
+.btn-soft-primary:hover { background: rgba(67, 97, 238, 0.2); }
+.btn-ghost {
+  color: #495057;
+  background: transparent;
+  border: 1px dashed rgba(108, 117, 125, 0.5);
+}
+.btn-ghost:hover { background: rgba(108, 117, 125, 0.08); }
+.btn-soft-danger {
+  color: #7a1f28;
+  background: rgba(220,53,69,.10);
+  border: 1px solid rgba(220,53,69,.35);
+}
+.btn-soft-danger:hover { background: rgba(220,53,69,.18); }
+</style>
 {% endblock %}

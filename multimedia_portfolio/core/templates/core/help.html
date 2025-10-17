@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Help Center" %} - {% trans "Multimedia Portfolio" %}{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-3">{% trans "Help Center" %}</h1>
+  <p class="text-muted">{% trans "Find answers to common questions about using the Multimedia Portfolio system." %}</p>
+
+  <h5 class="mt-4">{% trans "Getting Started" %}</h5>
+  <ol>
+    <li>{% trans "Register an account and verify your email (if required)." %}</li>
+    <li>{% trans "Create a new project from the Dashboard." %}</li>
+    <li>{% trans "Upload a cover image, add media files or links, and publish when ready." %}</li>
+  </ol>
+
+  <h5 class="mt-4">{% trans "Managing Projects" %}</h5>
+  <ul>
+    <li>{% trans "Edit or unpublish projects anytime from your Dashboard." %}</li>
+    <li>{% trans "Add categories to help visitors discover your work." %}</li>
+    <li>{% trans "Use the Gallery and Files sections to organize visuals and downloadable assets." %}</li>
+  </ul>
+
+  <h5 class="mt-4">{% trans "Engagement Features" %}</h5>
+  <ul>
+    <li>{% trans "Visitors can like projects and follow creators." %}</li>
+    <li>{% trans "Use the Messages panel on a project to chat with the owner (sign-in required)." %}</li>
+  </ul>
+
+  <h5 class="mt-4">{% trans "Storage & Limits" %}</h5>
+  <p>{% trans "Your account may have a storage quota. See usage on your Dashboard. Contact admin if you need more space." %}</p>
+
+  <h5 class="mt-4">{% trans "Need More Help?" %}</h5>
+  <p>{% trans "Reach out via" %} <a href="mailto:deusbernad05@gmail.com">deusbernad05@gmail.com</a> {% trans "or WhatsApp" %} <a href="https://wa.me/255743295724" target="_blank" rel="noopener">+255 743 295 724</a>.</p>
+</div>
+{% endblock %}

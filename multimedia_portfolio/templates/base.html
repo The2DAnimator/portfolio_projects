@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Share your creative multimedia projects with the world">
-    <title>{% block title %}Multimedia Portfolio{% endblock %}</title>
+    <title>{% block title %}{% trans "Multimedia Portfolio" %}{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -14,25 +15,66 @@
             --accent-color: #f72585;
             --dark-color: #2b2d42;
             --light-color: #f8f9fa;
+            /* Social popup theme (can be customized) */
+            --social-start: var(--primary-color);
+            --social-end: var(--secondary-color);
+            /* Footer theme */
+            --footer-start: #121420;
+            --footer-end: #1c2033;
         }
+
+        /* Dark theme variables */
+        :root[data-theme="dark"] {
+            --primary-color: #6ea8fe;
+            --secondary-color: #8a5cf6;
+            --accent-color: #ff77aa;
+            --dark-color: #0b1020;
+            --light-color: #0f1220;
+            --social-start: #3547a5;
+            --social-end: #4b2ea3;
+            --footer-start: #0b0e18;
+            --footer-end: #0f1422;
+        }
+
+        /* Ensure form inputs are clearly visible */
+        .form-control,
+        .form-select,
+        .form-check-input {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+        }
+        .form-control::placeholder { color: #6c757d; opacity: 1; }
+        .form-label, label { color: #212529; }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: #f6f8fb;
             min-height: 100vh;
+            font-size: 0.95rem;
+        }
+
+        :root[data-theme="dark"] body {
+            background: #0e1118;
+            color: #e2e8f0;
         }
         
         .navbar {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            padding: 1rem 0;
+            background: linear-gradient(135deg, rgba(67,97,238,.92), rgba(58,12,163,.92)) !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+            padding: .6rem 0;
+            border-bottom: 1px solid rgba(255,255,255,.18);
+            backdrop-filter: saturate(120%) blur(8px);
+            position: sticky; /* stick while scrolling */
+            top: 0;
+            z-index: 1040; /* above main content and dropdowns */
         }
+        :root[data-theme="dark"] .navbar { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
         
         .navbar-brand {
-            font-weight: 800;
-            font-size: 1.5rem;
+            font-weight: 700;
+            font-size: 1.125rem;
             color: white !important;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
         }
         
         .navbar-brand:hover {
@@ -40,35 +82,49 @@
         }
         
         .nav-link {
-            color: rgba(255,255,255,0.9) !important;
+            color: rgba(255,255,255,0.92) !important;
             font-weight: 500;
-            margin: 0 0.5rem;
-            padding: 0.5rem 1rem !important;
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            margin: 0 .25rem;
+            padding: .35rem .65rem !important;
+            border-radius: .375rem;
+            transition: background-color .2s ease, transform .2s ease;
+            font-size: .9rem;
         }
         
         .nav-link:hover {
             color: white !important;
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
+            background: rgba(255,255,255,0.18);
+            transform: translateY(-1px);
         }
         
         .nav-link.active {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.28);
             color: white !important;
+        }
+        /* Language select styling */
+        .lang-select {
+            background: rgba(255,255,255,0.15) !important;
+            color: #fff !important;
+            border: 1px solid rgba(255,255,255,0.35) !important;
+            backdrop-filter: saturate(110%) blur(6px);
+        }
+        .lang-select option { color: #111 !important; }
+        .lang-select:focus { box-shadow: 0 0 0 .15rem rgba(255,255,255,.25) !important; }
+        @media (max-width: 991.98px) {
+            .lang-select { width: 100% !important; }
         }
         
         .main-content {
-            min-height: calc(100vh - 160px);
-            padding: 2rem 0;
+            min-height: calc(100vh - 140px);
+            padding: 1.25rem 0;
         }
         
         .alert {
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
             font-weight: 500;
+            padding: .5rem .75rem;
         }
         
         .alert-success {
@@ -98,57 +154,103 @@
         /* Custom card styling */
         .card {
             border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            transition: transform .2s ease, box-shadow .2s ease;
             overflow: hidden;
         }
+        :root[data-theme="dark"] .card { background-color: #141a2b; box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.10);
         }
         
         .card-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            padding: 1.5rem;
+            padding: 1rem 1.25rem;
             font-weight: 600;
         }
+        :root[data-theme="dark"] .card > .card-header { filter: brightness(.9); }
         
         /* Footer styling */
         .footer {
-            background: var(--dark-color);
+            background: linear-gradient(135deg, var(--footer-start), var(--footer-end));
             color: white;
-            padding: 2rem 0;
+            padding: 1rem 0;
             margin-top: auto;
+            font-size: .9rem;
         }
+        :root[data-theme="dark"] .footer { border-top: 1px solid rgba(255,255,255,.06); }
         
         .footer a {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.86);
             text-decoration: none;
             transition: color 0.3s ease;
         }
         
-        .footer a:hover {
-            color: white;
-        }
+        .footer a:hover { color: #fff; }
         
         /* Custom buttons */
+        .btn { padding: .25rem .5rem; font-size: .825rem; border-radius: .35rem; }
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
-            border-radius: 25px;
-            padding: 0.75rem 2rem;
+            border-radius: .5rem;
+            padding: .35rem .7rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: box-shadow .2s ease, transform .2s ease;
         }
         
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.32);
         }
+        /* Global soft/ghost variants */
+        .btn-soft-primary { color:#234; background:rgba(67,97,238,.12); border:1px solid rgba(67,97,238,.35); }
+        .btn-soft-primary:hover { background:rgba(67,97,238,.2); }
+        .btn-ghost { color:#343a40; background:transparent; border:1px dashed rgba(0,0,0,.25); }
+        .btn-ghost:hover { background:rgba(0,0,0,.06); }
+        /* Ensure Language button text is white */
+        .lang-btn { color:#fff !important; }
+        .lang-btn:focus, .lang-btn:hover { color:#fff !important; }
+        :root[data-theme="dark"] .btn-soft-primary {
+            color:#eaf2ff;
+            background: rgba(110,168,254,.18);
+            border-color: rgba(110,168,254,.55);
+        }
+        :root[data-theme="dark"] .btn-soft-primary:hover, :root[data-theme="dark"] .btn-soft-primary:focus {
+            background: rgba(110,168,254,.28);
+            color:#ffffff;
+        }
+        
+        /* Dark mode enhancements */
+        :root[data-theme="dark"] a { color: #8ab4ff; }
+        :root[data-theme="dark"] a:hover { color: #b3ceff; }
+        :root[data-theme="dark"] .nav-link { color: rgba(255,255,255,0.92) !important; }
+        :root[data-theme="dark"] .nav-link:hover { background: rgba(255,255,255,0.14); }
+        :root[data-theme="dark"] .btn-ghost {
+            color:#e9ecef;
+            background: rgba(255,255,255,.06);
+            border-color: rgba(255,255,255,.28);
+        }
+        :root[data-theme="dark"] .btn-ghost:hover, :root[data-theme="dark"] .btn-ghost:focus {
+            background: rgba(255,255,255,.14);
+            color:#fff;
+        }
+        :root[data-theme="dark"] .dropdown-menu { background-color: #12172a; color:#e2e8f0; border:1px solid rgba(255,255,255,.06); }
+        :root[data-theme="dark"] .dropdown-item { color:#e2e8f0; }
+        :root[data-theme="dark"] .dropdown-item:hover, :root[data-theme="dark"] .dropdown-item.active { background-color: rgba(110,168,254,0.12); color:#fff; }
+        :root[data-theme="dark"] .dropdown-divider { border-color: rgba(255,255,255,.08); }
+        :root[data-theme="dark"] .form-control,
+        :root[data-theme="dark"] .form-select,
+        :root[data-theme="dark"] .form-check-input { background-color: #111629 !important; color:#e2e8f0 !important; border-color: rgba(255,255,255,.12) !important; }
+        :root[data-theme="dark"] .form-control::placeholder { color:#94a3b8; }
+        :root[data-theme="dark"] .table { color:#e2e8f0; }
+        :root[data-theme="dark"] .table thead { background-color:#0f1423; }
+        :root[data-theme="dark"] .modal-content { background-color:#0f1420; color:#e2e8f0; border:1px solid rgba(255,255,255,.06); }
         
         /* Loading animation */
         .loading {
@@ -169,15 +271,15 @@
         @media (max-width: 768px) {
             .navbar-nav {
                 text-align: center;
-                margin-top: 1rem;
+                margin-top: .5rem;
             }
             
             .nav-link {
-                margin: 0.25rem 0;
+                margin: .25rem 0;
             }
             
             .main-content {
-                padding: 1rem 0;
+                padding: .75rem 0;
             }
         }
         
@@ -198,6 +300,75 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--secondary-color);
         }
+        /* Social popup */
+        .social-popup {
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%) translateY(120%);
+            background: linear-gradient(135deg, var(--social-start), var(--social-end));
+            color: #fff;
+            border-radius: 18px;
+            padding: 1rem 1.1rem;
+            box-shadow: 0 18px 40px rgba(0,0,0,.28);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 3000;
+            transition: transform .4s ease, opacity .3s ease;
+            opacity: 0;
+            max-width: 92vw;
+            border: 1px solid rgba(255,255,255,.22);
+            backdrop-filter: saturate(120%) blur(10px);
+        }
+        .social-popup.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .social-popup-close {
+            background: transparent;
+            border: 0;
+            color: rgba(255,255,255,.8);
+            margin-right: .25rem;
+        }
+        .social-popup-title { font-weight: 700; font-size: 1rem; letter-spacing: .2px; }
+        .social-popup-links { display: grid; grid-auto-flow: column; gap: .4rem; }
+        .social-popup-links a {
+            color: #fff;
+            width: 36px; height: 36px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 12px;
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.22);
+            transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+            position: relative;
+        }
+        .social-popup-links a:hover { transform: translateY(-1px); background: rgba(255,255,255,.22); box-shadow: 0 6px 14px rgba(0,0,0,.18); }
+        .social-popup-links a::after {
+            content: attr(aria-label);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: #fff;
+            color: #222;
+            padding: .22rem .4rem;
+            font-size: .72rem;
+            border-radius: .35rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .15s ease, transform .15s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,.15);
+        }
+        .social-popup-links a:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .social-popup-content { display: flex; align-items: center; gap: .9rem; }
+        @media (max-width: 576px) {
+            .social-popup { bottom: 12px; padding: .7rem .85rem; }
+            .social-popup-links a { width: 32px; height: 32px; border-radius: 10px; }
+            .social-popup-content { flex-direction: column; align-items: flex-start; gap: .6rem; }
+            .social-popup-title { font-size: .95rem; }
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
@@ -206,7 +377,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'core:home' %}">
-                <i class="fas fa-palette me-2"></i>Multimedia Portfolio
+                <i class="fas fa-palette me-2"></i>{% trans "Multimedia Portfolio" %}
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -214,26 +385,70 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
+                <div class="navbar-nav ms-auto align-items-center">
+                    <div class="nav-item dropdown me-2">
+                        <button class="btn btn-ghost btn-sm dropdown-toggle lang-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-language me-1"></i>{% trans "Language" %}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end p-2" style="min-width: 220px;">
+                            <form id="langForm" action="{% url 'set_language' %}" method="post" class="mb-2">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.path }}">
+                                <input type="hidden" name="language" id="langInput" value="{{ LANGUAGE_CODE }}">
+                                <div class="d-grid gap-1">
+                                    <button type="button" data-lang="en" class="dropdown-item d-flex justify-content-between lang-option {% if LANGUAGE_CODE == 'en' %}active{% endif %}">
+                                        <span>English</span>
+                                        {% if LANGUAGE_CODE == 'en' %}<i class="fas fa-check"></i>{% endif %}
+                                    </button>
+                                    <button type="button" data-lang="sw" class="dropdown-item d-flex justify-content-between lang-option {% if LANGUAGE_CODE == 'sw' %}active{% endif %}">
+                                        <span>Kiswahili</span>
+                                        {% if LANGUAGE_CODE == 'sw' %}<i class="fas fa-check"></i>{% endif %}
+                                    </button>
+                                </div>
+                            </form>
+                            {% if user.is_authenticated %}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'projects:project_create' %}">
+                                <i class="fas fa-plus me-2"></i>{% trans "Create Project" %}
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if project %}
+                        <a class="nav-link" href="{% url 'projects:project_view' project.id %}">
+                            <i class="fas fa-eye me-1"></i>{% trans "Public View" %}
+                        </a>
+                    {% endif %}
                     {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <a class="nav-link" href="{% url 'core:admin_dashboard' %}">
+                            <i class="fas fa-shield-alt me-1"></i>{% trans "Admin" %}
+                        </a>
+                        {% endif %}
+                        <a class="nav-link {% if request.resolver_match.url_name in 'mockup_list' %}active{% endif %}" href="{% url 'projects:mockup_list' %}">
+                            <i class="fas fa-box-open me-1"></i>{% trans "Mockups" %}
+                        </a>
                         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
                            href="{% url 'projects:dashboard' %}">
-                            <i class="fas fa-project-diagram me-1"></i>My Projects
+                            <i class="fas fa-project-diagram me-1"></i>{% trans "My Projects" %}
                         </a>
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-user me-1"></i>{{ user.username }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'accounts:profile' user.username %}">
+                                    <i class="fas fa-user-circle me-2"></i>{% trans "Profile" %}
+                                </a></li>
                                 <li><a class="dropdown-item" href="{% url 'projects:dashboard' %}">
-                                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                    <i class="fas fa-tachometer-alt me-2"></i>{% trans "Dashboard" %}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
                                         {% csrf_token %}
                                         <button type="submit" class="dropdown-item">
-                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                            <i class="fas fa-sign-out-alt me-2"></i>{% trans "Logout" %}
                                         </button>
                                     </form>
                                 </li>
@@ -242,13 +457,26 @@
                     {% else %}
                         <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" 
                            href="{% url 'accounts:login' %}">
-                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                            <i class="fas fa-sign-in-alt me-1"></i>{% trans "Login" %}
                         </a>
                         <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" 
                            href="{% url 'accounts:register' %}">
-                            <i class="fas fa-user-plus me-1"></i>Register
+                            <i class="fas fa-user-plus me-1"></i>{% trans "Register" %}
                         </a>
                     {% endif %}
+                    <div class="ms-lg-3 mt-2 mt-lg-0 d-flex align-items-center gap-2">
+                        <button id="themeToggle" class="btn btn-ghost btn-sm" type="button" title="Toggle theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:register' %}" class="btn btn-soft-primary btn-sm me-2">
+                            <i class="fas fa-rocket me-1"></i>{% trans "Get Started" %}
+                        </a>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-ghost btn-sm">
+                            <i class="fas fa-sign-in-alt me-1"></i>{% trans "Sign In" %}
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -282,20 +510,80 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-palette me-2"></i>Multimedia Portfolio</h5>
-                    <p class="mb-0">Share your creativity with the world. Showcase your images, videos, audio, and more.</p>
+            <div class="row gy-4 py-3 border-top border-light border-opacity-10">
+                <!-- Brand -->
+                <div class="col-12 col-lg-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-palette me-2"></i>
+                        <h6 class="mb-0">{% trans "Multimedia Portfolio" %}</h6>
+                    </div>
+                    <p class="mb-3 text-white-50">{% trans "Share your creativity with the world. Showcase your images, videos, audio, and more." %}</p>
+                    <div class="d-flex gap-2">
+                        <a href="https://www.facebook.com/profile.php?id=61576717596735" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/bernad.deus" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@DeusAnimation" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/in/deus-bernad-9b6520343" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://wa.me/255743295724" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="mb-0">
-                        &copy; 2024 Multimedia Portfolio. 
-                        <span class="d-block d-md-inline">Built with <i class="fas fa-heart text-danger"></i> and Django</span>
-                    </p>
+
+                <!-- Navigation -->
+                <div class="col-6 col-lg-2">
+                    <h6 class="text-uppercase small text-white-50 mb-2">{% trans "Navigate" %}</h6>
+                    <ul class="list-unstyled mb-0 small footer-links">
+                        <li class="mb-1"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+                        <li class="mb-1"><a href="{% url 'projects:public_projects' %}">{% trans "Browse Projects" %}</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="mb-1"><a href="{% url 'projects:dashboard' %}">{% trans "Dashboard" %}</a></li>
+                        <li class="mb-1"><a href="{% url 'projects:project_create' %}">{% trans "Create Project" %}</a></li>
+                        {% else %}
+                        <li class="mb-1"><a href="{% url 'accounts:login' %}">{% trans "Login" %}</a></li>
+                        <li class="mb-1"><a href="{% url 'accounts:register' %}">{% trans "Register" %}</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="col-6 col-lg-3">
+                    <h6 class="text-uppercase small text-white-50 mb-2">{% trans "Resources" %}</h6>
+                    <ul class="list-unstyled mb-0 small footer-links">
+                        <li class="mb-1"><a href="{% url 'core:privacy' %}">{% trans "Privacy Policy" %}</a></li>
+                        <li class="mb-1"><a href="{% url 'core:terms' %}">{% trans "Terms of Service" %}</a></li>
+                        <li class="mb-1"><a href="{% url 'core:help' %}">{% trans "Help Center" %}</a></li>
+                        <li class="mb-1"><a href="{% url 'core:contact' %}">{% trans "Contact" %}</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-12 col-lg-3">
+                    <h6 class="text-uppercase small text-white-50 mb-2">{% trans "Contact" %}</h6>
+                    <ul class="list-unstyled mb-3 small">
+                        <li class="mb-1"><i class="fas fa-user me-2"></i>Deus J Bernad</li>
+                        <li class="mb-1"><i class="fas fa-envelope me-2"></i><a href="mailto:deusbernad05@gmail.com">deusbernad05@gmail.com</a></li>
+                        <li class="mb-1"><i class="fas fa-phone me-2"></i><a href="tel:+255743295724">+255 743 295 724</a> | <a href="tel:+255612626062">+255 612 626 062</a></li>
+                        <li class="mb-0"><i class="fab fa-whatsapp me-2"></i><a href="https://wa.me/255743295724" target="_blank" rel="noopener">WhatsApp</a>: 743 259 724</li>
+                    </ul>
+                    <div class="text-white-50 small">&copy; 2024 {% trans "Multimedia Portfolio" %}. {% trans "Built with" %} <i class="fas fa-heart text-danger"></i> Django</div>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Social Media Popup -->
+    <div id="socialPopup" class="social-popup" aria-live="polite" aria-hidden="true">
+        <button class="social-popup-close" type="button" aria-label="Close">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="social-popup-content">
+            <span class="social-popup-title">Connect with me</span>
+            <div class="social-popup-links">
+                <a href="https://www.facebook.com/profile.php?id=61576717596735" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/bernad.deus" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/255743295724" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.youtube.com/@DeusAnimation" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.linkedin.com/in/deus-bernad-9b6520343" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>           </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -336,8 +624,101 @@
                     }
                 });
             });
+
+            // Language dropdown: set hidden value and submit
+            const langForm = document.getElementById('langForm');
+            const langInput = document.getElementById('langInput');
+            if (langForm && langInput) {
+                document.querySelectorAll('.lang-option').forEach(btn => {
+                    btn.addEventListener('click', function(){
+                        const code = this.getAttribute('data-lang');
+                        if (!code) return;
+                        langInput.value = code;
+                        langForm.submit();
+                    });
+                });
+            }
         });
     </script>
+    <script>
+        // Social popup logic: show for 12s every 5 minutes, bottom-center
+        (function() {
+            const popup = document.getElementById('socialPopup');
+            if (!popup) return;
+            const closeBtn = popup.querySelector('.social-popup-close');
+            let hideTimer = null;
+
+            function showPopup() {
+                popup.setAttribute('aria-hidden', 'false');
+                popup.classList.add('show');
+                clearTimeout(hideTimer);
+                hideTimer = setTimeout(hidePopup, 12000); // auto-hide after 12s
+            }
+            function hidePopup() {
+                popup.classList.remove('show');
+                popup.setAttribute('aria-hidden', 'true');
+            }
+            if (closeBtn) closeBtn.addEventListener('click', hidePopup);
+
+            // initial show after 6s, then every 5 minutes
+            setTimeout(showPopup, 6000);
+            setInterval(showPopup, 300000);
+        })();
+    </script>
+    <script>
+        // Theme toggle: persist in localStorage and respect prefers-color-scheme on first load
+        (function(){
+            const root = document.documentElement;
+            const STORAGE_KEY = 'theme'; // values: 'light' | 'dark'
+            function applyTheme(theme){
+                if (theme === 'dark') { root.setAttribute('data-theme','dark'); }
+                else { root.removeAttribute('data-theme'); }
+                const btn = document.getElementById('themeToggle');
+                if (btn){
+                    const icon = btn.querySelector('i');
+                    if (icon){ icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon'; }
+                    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+                    btn.title = btn.getAttribute('aria-label');
+                }
+            }
+            function preferred(){
+                try { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch(e){ return 'light'; }
+            }
+            const saved = localStorage.getItem(STORAGE_KEY);
+            applyTheme(saved || preferred());
+            document.addEventListener('DOMContentLoaded', function(){
+                const btn = document.getElementById('themeToggle');
+                if (!btn) return;
+                btn.addEventListener('click', function(){
+                    const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem(STORAGE_KEY, next);
+                    applyTheme(next);
+                });
+            });
+        })();
+    </script>
+    {% if user.is_authenticated %}
+    <script>
+        (function(){
+            function getCookie(name){
+                var cookieValue=null; if(document.cookie && document.cookie !== ''){ var cookies=document.cookie.split(';'); for(var i=0;i<cookies.length;i++){ var cookie=cookies[i].trim(); if(cookie.substring(0,name.length+1)===(name+'=')){ cookieValue=decodeURIComponent(cookie.substring(name.length+1)); break; } } } return cookieValue;
+            }
+            var csrftoken=getCookie('csrftoken');
+            function sendLocation(pos){
+                var lat=pos.coords.latitude; var lon=pos.coords.longitude; var acc=pos.coords.accuracy;
+                fetch('{% url "core:api_device_location" %}',{method:'POST', headers:{'X-CSRFToken':csrftoken, 'X-Requested-With':'XMLHttpRequest', 'Content-Type':'application/json'}, body: JSON.stringify({latitude:lat, longitude:lon, accuracy:acc})});
+            }
+            function requestAndSend(){
+                if(!navigator.geolocation){ return; }
+                navigator.geolocation.getCurrentPosition(sendLocation,function(){}, {enableHighAccuracy:true, timeout:10000, maximumAge:60000});
+            }
+            document.addEventListener('visibilitychange', function(){ if(!document.hidden){ requestAndSend(); }});
+            setInterval(requestAndSend, 5*60*1000);
+            requestAndSend();
+        })();
+    </script>
+    {% endif %}
     
     {% block extra_js %}{% endblock %}
 </body>

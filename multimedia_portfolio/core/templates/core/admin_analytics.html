@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Request Analytics" %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">{% trans "Request Analytics" %}</h2>
+    <a href="{% url 'core:admin_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+      <i class="fas fa-arrow-left me-1"></i>{% trans "Back to Admin Dashboard" %}
+    </a>
+  </div>
+
+  <!-- KPIs -->
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-md-3"><div class="card h-100"><div class="card-body py-2"><div class="text-muted small">{% trans "Total Requests" %}</div><div class="fw-bold">{{ total_requests }}</div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card h-100"><div class="card-body py-2"><div class="text-muted small">{% trans "Unique Users" %}</div><div class="fw-bold">{{ unique_users }}</div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card h-100"><div class="card-body py-2"><div class="text-muted small">{% trans "Countries" %}</div><div class="fw-bold">{{ unique_countries }}</div></div></div></div>
+    <div class="col-6 col-md-3"><div class="card h-100"><div class="card-body py-2"><div class="text-muted small">{% trans "Error Rate" %}</div><div class="fw-bold">{{ error_rate }}%</div></div></div></div>
+  </div>
+
+  <!-- Filters + Maintenance -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="d-flex flex-wrap align-items-center gap-2 justify-content-between">
+        <form method="get" class="d-flex flex-wrap align-items-center gap-2">
+          <div class="input-group input-group-sm" style="max-width: 280px;">
+            <span class="input-group-text">{% trans "Period" %}</span>
+            <select name="period" class="form-select form-select-sm" onchange="this.form.submit()">
+              <option value="7" {% if period == '7' %}selected{% endif %}>7d</option>
+              <option value="30" {% if period == '30' %}selected{% endif %}>30d</option>
+              <option value="90" {% if period == '90' %}selected{% endif %}>90d</option>
+            </select>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="excludeStaff" name="exclude_staff" value="1" {% if exclude_staff %}checked{% endif %} onchange="this.form.submit()">
+            <label class="form-check-label" for="excludeStaff">{% trans "Exclude staff" %}</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="hideI18n" name="hide_i18n" value="1" {% if hide_i18n %}checked{% endif %} onchange="this.form.submit()">
+            <label class="form-check-label" for="hideI18n">{% trans "Hide i18n/static" %}</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="hideQuery" name="hide_query" value="1" {% if hide_query %}checked{% endif %} onchange="this.form.submit()">
+            <label class="form-check-label" for="hideQuery">{% trans "Hide querystrings" %}</label>
+          </div>
+        </form>
+        <div class="d-flex flex-wrap gap-2">
+          <form method="post" onsubmit="return confirm('{% trans 'Purge ALL request logs?' %}');">{% csrf_token %}<input type="hidden" name="action" value="purge_all_logs"><button class="btn btn-outline-danger btn-sm" type="submit"><i class="fas fa-trash me-1"></i>{% trans "Purge Logs" %}</button></form>
+          <form method="post" onsubmit="return confirm('{% trans 'Purge ALL device locations?' %}');">{% csrf_token %}<input type="hidden" name="action" value="purge_all_locations"><button class="btn btn-outline-danger btn-sm" type="submit"><i class="fas fa-location-crosshairs me-1"></i>{% trans "Purge Locations" %}</button></form>
+          <form method="post" class="d-flex align-items-center gap-2" onsubmit="return confirm('{% trans 'Purge entries older than the specified days?' %}');">
+            {% csrf_token %}<input type="hidden" name="action" value="purge_older">
+            <div class="input-group input-group-sm" style="max-width: 220px;">
+              <span class="input-group-text">{% trans "Older than" %}</span>
+              <input type="number" class="form-control" name="days" value="90" min="1" step="1">
+              <span class="input-group-text">{% trans "days" %}</span>
+              <button class="btn btn-outline-warning" type="submit"><i class="fas fa-broom"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-8">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">{% trans "Top Countries" %}</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="chartCountries"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">{% trans "Status Distribution" %}</h5></div>
+        <div class="card-body">
+          <canvas id="chartDonut"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">{% trans "Top Regions" %}</h5></div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-sm align-middle">
+              <thead class="table-light">
+                <tr><th>{% trans "Country" %}</th><th>{% trans "Region" %}</th><th class="text-end">{% trans "Count" %}</th></tr>
+              </thead>
+              <tbody>
+                {% for r in by_region %}
+                <tr>
+                  <td>{{ r.country|default:'Unknown' }}</td>
+                  <td>{{ r.region|default:'-' }}</td>
+                  <td class="text-end">{{ r.count }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3" class="text-muted text-center">{% trans "No data" %}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header"><h5 class="mb-0">{% trans "Requests Over Time" %}</h5></div>
+        <div class="card-body">
+          <canvas id="chartTimeseries"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-header"><h5 class="mb-0">{% trans "Top Paths" %}</h5></div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead class="table-light">
+            <tr><th>{% trans "Path" %}</th><th class="text-end">{% trans "Count" %}</th></tr>
+          </thead>
+          <tbody>
+            {% for p in top_paths %}
+            <tr>
+              <td><code>{{ p.path }}</code></td>
+              <td class="text-end">{{ p.count }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2" class="text-muted text-center">{% trans "No data" %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  // Countries bar chart
+  const labels = JSON.parse('{{ chart_labels_json|escapejs }}');
+  const dataCounts = JSON.parse('{{ chart_counts_json|escapejs }}');
+  const ctx1 = document.getElementById('chartCountries').getContext('2d');
+  new Chart(ctx1, { type: 'bar', data: { labels, datasets: [{ label: 'Requests', data: dataCounts, backgroundColor: 'rgba(25, 135, 84, 0.5)', borderColor: 'rgba(25, 135, 84, 1)', borderWidth: 1, borderRadius: 4 }] }, options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { precision:0 } } } } });
+
+  // Status donut chart
+  const statusLabels = JSON.parse('{{ status_labels_json|escapejs }}');
+  const statusData = JSON.parse('{{ status_data_json|escapejs }}');
+  const ctx2 = document.getElementById('chartDonut').getContext('2d');
+  new Chart(ctx2, { type: 'doughnut', data: { labels: statusLabels, datasets: [{ data: statusData, backgroundColor: ['rgba(25, 135, 84, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)'], borderColor: ['rgba(25, 135, 84, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)'], borderWidth: 1 }] }, options: { responsive: true, cutout: '50%' } });
+
+  // Timeseries chart
+  const timeseriesLabels = JSON.parse('{{ timeseries_labels_json|escapejs }}');
+  const timeseriesData = JSON.parse('{{ timeseries_data_json|escapejs }}');
+  const ctx3 = document.getElementById('chartTimeseries').getContext('2d');
+  new Chart(ctx3, { type: 'line', data: { labels: timeseriesLabels, datasets: [{ label: 'Requests', data: timeseriesData, backgroundColor: 'rgba(25, 135, 84, 0.5)', borderColor: 'rgba(25, 135, 84, 1)', borderWidth: 1, borderRadius: 4 }] }, options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { precision:0 } } } } });
+</script>
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Manage Users" %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">{% trans "Users" %}</h2>
+    <div>
+      <a href="{% url 'core:admin_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i>{% trans "Back to Dashboard" %}
+      </a>
+    </div>
+  </div>
+
+  <form class="row g-2 align-items-end mb-3" method="get">
+    <div class="col-md-4">
+      <label class="form-label">{% trans "Search" %}</label>
+      <input type="text" class="form-control" name="q" value="{{ q }}" placeholder="{% trans 'Username, email, name' %}">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">{% trans "Sort by" %}</label>
+      <select class="form-select" name="sort">
+        <option value="date_joined" {% if sort == 'date_joined' %}selected{% endif %}>{% trans "Date Joined" %}</option>
+        <option value="username" {% if sort == 'username' %}selected{% endif %}>{% trans "Username" %}</option>
+        <option value="email" {% if sort == 'email' %}selected{% endif %}>{% trans "Email" %}</option>
+        <option value="is_active" {% if sort == 'is_active' %}selected{% endif %}>{% trans "Active" %}</option>
+        <option value="is_staff" {% if sort == 'is_staff' %}selected{% endif %}>{% trans "Staff" %}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "Direction" %}</label>
+      <select class="form-select" name="dir">
+        <option value="desc" {% if dir == 'desc' %}selected{% endif %}>{% trans "Desc" %}</option>
+        <option value="asc" {% if dir == 'asc' %}selected{% endif %}>{% trans "Asc" %}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "Per page" %}</label>
+      <select class="form-select" name="page_size">
+        <option value="10" {% if page_size == 10 %}selected{% endif %}>10</option>
+        <option value="25" {% if page_size == 25 %}selected{% endif %}>25</option>
+        <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+        <option value="100" {% if page_size == 100 %}selected{% endif %}>100</option>
+      </select>
+    </div>
+    <div class="col-md-1">
+      <button type="submit" class="btn btn-primary w-100">{% trans "Apply" %}</button>
+    </div>
+  </form>
+
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">{% trans "Results" %} ({{ total_users }})</h5>
+      <div class="d-flex gap-2">
+        <button id="bulk-activate" class="btn btn-success btn-sm" disabled>{% trans "Activate" %}</button>
+        <button id="bulk-deactivate" class="btn btn-warning btn-sm" disabled>{% trans "Deactivate" %}</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width:36px;"><input type="checkbox" id="check-all"></th>
+            <th>{% trans "Username" %}</th>
+            <th>{% trans "Email" %}</th>
+            <th class="text-center">{% trans "Active" %}</th>
+            <th class="text-center">{% trans "Staff" %}</th>
+            <th class="text-end">{% trans "Actions" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in page_obj.object_list %}
+          <tr>
+            <td><input type="checkbox" class="row-check" value="{{ u.id }}" {% if u.id == request.user.id %}disabled{% endif %}></td>
+            <td>@{{ u.username }}</td>
+            <td>{{ u.email|default:'—' }}</td>
+            <td class="text-center">{% if u.is_active %}<span class="badge bg-success">{% trans "Yes" %}</span>{% else %}<span class="badge bg-secondary">{% trans "No" %}</span>{% endif %}</td>
+            <td class="text-center">{% if u.is_staff %}<span class="badge bg-primary">{% trans "Yes" %}</span>{% else %}<span class="badge bg-secondary">{% trans "No" %}</span>{% endif %}</td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm" role="group">
+                <a class="btn btn-outline-secondary" href="/admin/auth/user/{{ u.id }}/password/" target="_blank" rel="noopener">{% trans "Reset Password" %}</a>
+                <button class="btn btn-outline-secondary" data-action="toggle-active" data-user-id="{{ u.id }}" {% if u.id == request.user.id %}disabled{% endif %}>{% trans "Toggle Active" %}</button>
+                <button class="btn btn-outline-primary" data-action="toggle-staff" data-user-id="{{ u.id }}" {% if u.id == request.user.id %}disabled{% endif %}>{% trans "Toggle Staff" %}</button>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="text-center text-muted py-3">{% trans "No users found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <div class="text-muted small">
+        {% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}
+      </div>
+      <nav>
+        <ul class="pagination mb-0">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page=1">«</a></li>
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.previous_page_number }}">{% trans "Prev" %}</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">«</span></li>
+            <li class="page-item disabled"><span class="page-link">{% trans "Prev" %}</span></li>
+          {% endif %}
+
+          <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.paginator.num_pages }}">»</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">{% trans "Next" %}</span></li>
+            <li class="page-item disabled"><span class="page-link">»</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // CSRF helper
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  // Toggle actions on per-row buttons
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    const userId = btn.dataset.userId;
+    const urlMap = {
+      'toggle-active': '{% url "core:admin_user_toggle_active" 0 %}'.replace('0', userId),
+      'toggle-staff': '{% url "core:admin_user_toggle_staff" 0 %}'.replace('0', userId),
+    };
+    const url = urlMap[action];
+    if (!url) return;
+    btn.disabled = true;
+    try {
+      const resp = await fetch(url, { method: 'POST', headers: { 'X-CSRFToken': csrftoken } });
+      if (!resp.ok) throw new Error('Request failed');
+      location.reload();
+    } catch (err) { alert('Action failed'); }
+    finally { btn.disabled = false; }
+  });
+
+  // Bulk selection
+  const checkAll = document.getElementById('check-all');
+  const bulkActivate = document.getElementById('bulk-activate');
+  const bulkDeactivate = document.getElementById('bulk-deactivate');
+
+  function updateBulkButtons() {
+    const anyChecked = !!document.querySelector('.row-check:checked');
+    bulkActivate.disabled = !anyChecked;
+    bulkDeactivate.disabled = !anyChecked;
+  }
+
+  checkAll.addEventListener('change', () => {
+    document.querySelectorAll('.row-check:not(:disabled)').forEach(cb => cb.checked = checkAll.checked);
+    updateBulkButtons();
+  });
+  document.querySelectorAll('.row-check').forEach(cb => cb.addEventListener('change', updateBulkButtons));
+
+  async function bulkAction(action) {
+    const ids = Array.from(document.querySelectorAll('.row-check:checked')).map(cb => cb.value);
+    if (ids.length === 0) return;
+    const formData = new FormData();
+    formData.append('action', action);
+    ids.forEach(id => formData.append('ids[]', id));
+    bulkActivate.disabled = bulkDeactivate.disabled = true;
+    try {
+      const resp = await fetch('{% url "core:admin_users_bulk" %}', { method: 'POST', headers: { 'X-CSRFToken': csrftoken }, body: formData });
+      if (!resp.ok) throw new Error('Request failed');
+      location.reload();
+    } catch (err) { alert('Bulk action failed'); }
+  }
+
+  bulkActivate.addEventListener('click', () => bulkAction('activate'));
+  bulkDeactivate.addEventListener('click', () => bulkAction('deactivate'));
+</script>
+{% endblock %}

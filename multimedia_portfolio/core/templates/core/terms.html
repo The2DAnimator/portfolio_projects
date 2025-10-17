@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Terms of Service" %} - {% trans "Multimedia Portfolio" %}{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-3">{% trans "Terms of Service" %}</h1>
+  <p class="text-muted">{% trans "Last updated" %}: {{ now|date:"F d, Y" }}</p>
+  <h5 class="mt-3">{% trans "Acceptance of Terms" %}</h5>
+  <p>{% trans "By accessing or using the Multimedia Portfolio system, you agree to these terms." %}</p>
+  <h5 class="mt-3">{% trans "User Content" %}</h5>
+  <ul>
+    <li>{% trans "You retain ownership of the content you upload." %}</li>
+    <li>{% trans "You must have rights to the content and ensure it complies with applicable laws." %}</li>
+    <li>{% trans "Prohibited content includes unlawful, infringing, or abusive material." %}</li>
+  </ul>
+  <h5 class="mt-3">{% trans "Usage Rules" %}</h5>
+  <ul>
+    <li>{% trans "Do not attempt to disrupt or abuse the service." %}</li>
+    <li>{% trans "Respect storage quotas and performance limits." %}</li>
+    <li>{% trans "Administrator may remove content that violates these terms." %}</li>
+  </ul>
+  <h5 class="mt-3">{% trans "Disclaimers" %}</h5>
+  <p>{% trans "The service is provided 'as is' without warranties. We are not liable for data loss or service interruptions." %}</p>
+  <h5 class="mt-3">{% trans "Changes" %}</h5>
+  <p>{% trans "We may update these terms. Continued use constitutes acceptance of the updated terms." %}</p>
+</div>
+{% endblock %}

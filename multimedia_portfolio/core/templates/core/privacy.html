@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Privacy Policy" %} - {% trans "Multimedia Portfolio" %}{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-3">{% trans "Privacy Policy" %}</h1>
+  <p class="text-muted">{% trans "Last updated" %}: {{ now|date:"F d, Y" }}</p>
+  <p>{% trans "We respect your privacy. This policy describes how the Multimedia Portfolio system collects, uses, and protects your information." %}</p>
+  <h5 class="mt-4">{% trans "Information We Collect" %}</h5>
+  <ul>
+    <li>{% trans "Account data you provide (username, email)." %}</li>
+    <li>{% trans "Content you upload (images, videos, audio, files, descriptions)." %}</li>
+    <li>{% trans "Usage data for analytics and security (request logs, optional device location if you grant permission)." %}</li>
+  </ul>
+  <h5 class="mt-4">{% trans "How We Use Information" %}</h5>
+  <ul>
+    <li>{% trans "To operate and improve the portfolio features (projects, likes, follows, messaging)." %}</li>
+    <li>{% trans "To secure the service, monitor abuse, and diagnose issues." %}</li>
+    <li>{% trans "To communicate essential updates about your account and projects." %}</li>
+  </ul>
+  <h5 class="mt-4">{% trans "Data Retention" %}</h5>
+  <p>{% trans "Project media remains until you delete it. Request logs and device location (if enabled) are retained for operational analytics and may be periodically purged." %}</p>
+  <h5 class="mt-4">{% trans "Your Choices" %}</h5>
+  <ul>
+    <li>{% trans "You can edit or delete your projects at any time." %}</li>
+    <li>{% trans "You can request account deletion by contacting the administrator." %}</li>
+    <li>{% trans "You may disable location sharing from your device/browser settings." %}</li>
+  </ul>
+  <h5 class="mt-4">{% trans "Contact" %}</h5>
+  <p>{% trans "For privacy requests, contact" %}: <a href="mailto:deusbernad05@gmail.com">deusbernad05@gmail.com</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Manage Projects" %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">{% trans "Projects" %}</h2>
+    <div>
+      <a href="{% url 'core:admin_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i>{% trans "Back to Dashboard" %}
+      </a>
+    </div>
+  </div>
+
+  <form class="row g-2 align-items-end mb-3" method="get">
+    <div class="col-md-3">
+      <label class="form-label">{% trans "Search" %}</label>
+      <input type="text" class="form-control" name="q" value="{{ q }}" placeholder="{% trans 'Title or description' %}">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">{% trans "Type" %}</label>
+      <select class="form-select" name="type">
+        <option value="">{% trans "All" %}</option>
+        {% for t in type_choices %}
+          <option value="{{ t }}" {% if type_filter == t %}selected{% endif %}>{{ t|capfirst }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "Owner" %}</label>
+      <input type="text" class="form-control" name="owner" value="{{ owner }}" placeholder="{% trans 'Username' %}">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "From" %}</label>
+      <input type="date" class="form-control" name="from" value="{{ date_from }}">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "To" %}</label>
+      <input type="date" class="form-control" name="to" value="{{ date_to }}">
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">{% trans "Sort by" %}</label>
+      <select class="form-select" name="sort">
+        <option value="created_at" {% if sort == 'created_at' %}selected{% endif %}>{% trans "Created" %}</option>
+        <option value="title" {% if sort == 'title' %}selected{% endif %}>{% trans "Title" %}</option>
+        <option value="is_published" {% if sort == 'is_published' %}selected{% endif %}>{% trans "Published" %}</option>
+        <option value="owner" {% if sort == 'owner' %}selected{% endif %}>{% trans "Owner" %}</option>
+        <option value="project_type" {% if sort == 'project_type' %}selected{% endif %}>{% trans "Type" %}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "Direction" %}</label>
+      <select class="form-select" name="dir">
+        <option value="desc" {% if dir == 'desc' %}selected{% endif %}>{% trans "Desc" %}</option>
+        <option value="asc" {% if dir == 'asc' %}selected{% endif %}>{% trans "Asc" %}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "Per page" %}</label>
+      <select class="form-select" name="page_size">
+        <option value="10" {% if page_size == 10 %}selected{% endif %}>10</option>
+        <option value="25" {% if page_size == 25 %}selected{% endif %}>25</option>
+        <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+        <option value="100" {% if page_size == 100 %}selected{% endif %}>100</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary w-100">{% trans "Apply" %}</button>
+    </div>
+  </form>
+
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">{% trans "Results" %} ({{ total_projects }})</h5>
+      <div class="d-flex gap-2">
+        <button id="bulk-publish" class="btn btn-success btn-sm" disabled>{% trans "Publish" %}</button>
+        <button id="bulk-unpublish" class="btn btn-warning btn-sm" disabled>{% trans "Unpublish" %}</button>
+        <button id="bulk-delete" class="btn btn-danger btn-sm" disabled>{% trans "Delete" %}</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width:36px;"><input type="checkbox" id="check-all"></th>
+            <th>{% trans "Title" %}</th>
+            <th>{% trans "Owner" %}</th>
+            <th>{% trans "Type" %}</th>
+            <th class="text-center">{% trans "Published" %}</th>
+            <th class="text-end">{% trans "Created" %}</th>
+            <th class="text-end">{% trans "Actions" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in page_obj.object_list %}
+          <tr>
+            <td><input type="checkbox" class="row-check" value="{{ p.id }}"></td>
+            <td><a href="{% url 'projects:project_detail' p.pk %}" target="_blank" rel="noopener">{{ p.title }}</a></td>
+            <td>@{{ p.owner.username }}</td>
+            <td>{{ p.project_type|capfirst }}</td>
+            <td class="text-center">{% if p.is_published %}<span class="badge bg-success">{% trans "Yes" %}</span>{% else %}<span class="badge bg-secondary">{% trans "No" %}</span>{% endif %}</td>
+            <td class="text-end">{{ p.created_at|date:"M d, Y" }}</td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm" role="group">
+                {% if p.is_published %}
+                <button class="btn btn-outline-warning" data-action="unpublish" data-id="{{ p.id }}">{% trans "Unpublish" %}</button>
+                {% else %}
+                <button class="btn btn-outline-success" data-action="publish" data-id="{{ p.id }}">{% trans "Publish" %}</button>
+                {% endif %}
+                <button class="btn btn-outline-danger" data-action="delete" data-id="{{ p.id }}">{% trans "Delete" %}</button>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" class="text-center text-muted py-3">{% trans "No projects found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <div class="text-muted small">
+        {% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}
+      </div>
+      <nav>
+        <ul class="pagination mb-0">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&type={{ type_filter }}&owner={{ owner }}&from={{ date_from }}&to={{ date_to }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page=1">«</a></li>
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&type={{ type_filter }}&owner={{ owner }}&from={{ date_from }}&to={{ date_to }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.previous_page_number }}">{% trans "Prev" %}</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">«</span></li>
+            <li class="page-item disabled"><span class="page-link">{% trans "Prev" %}</span></li>
+          {% endif %}
+
+          <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&type={{ type_filter }}&owner={{ owner }}&from={{ date_from }}&to={{ date_to }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&type={{ type_filter }}&owner={{ owner }}&from={{ date_from }}&to={{ date_to }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.paginator.num_pages }}">»</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">{% trans "Next" %}</span></li>
+            <li class="page-item disabled"><span class="page-link">»</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // CSRF helper
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  // Bulk selection
+  const checkAll = document.getElementById('check-all');
+  const bulkPublish = document.getElementById('bulk-publish');
+  const bulkUnpublish = document.getElementById('bulk-unpublish');
+  const bulkDelete = document.getElementById('bulk-delete');
+
+  function updateBulkButtons() {
+    const anyChecked = !!document.querySelector('.row-check:checked');
+    bulkPublish.disabled = !anyChecked;
+    bulkUnpublish.disabled = !anyChecked;
+    bulkDelete.disabled = !anyChecked;
+  }
+
+  checkAll.addEventListener('change', () => {
+    document.querySelectorAll('.row-check').forEach(cb => cb.checked = checkAll.checked);
+    updateBulkButtons();
+  });
+  document.querySelectorAll('.row-check').forEach(cb => cb.addEventListener('change', updateBulkButtons));
+
+  async function bulkAction(action) {
+    const ids = Array.from(document.querySelectorAll('.row-check:checked')).map(cb => cb.value);
+    if (ids.length === 0) return;
+    if (action === 'delete' && !confirm('Are you sure you want to delete selected projects?')) return;
+    const formData = new FormData();
+    formData.append('action', action);
+    ids.forEach(id => formData.append('ids[]', id));
+    bulkPublish.disabled = bulkUnpublish.disabled = bulkDelete.disabled = true;
+    try {
+      const resp = await fetch('{% url "core:admin_projects_bulk" %}', { method: 'POST', headers: { 'X-CSRFToken': csrftoken }, body: formData });
+      if (!resp.ok) throw new Error('Request failed');
+      location.reload();
+    } catch (err) { alert('Bulk action failed'); }
+  }
+
+  bulkPublish.addEventListener('click', () => bulkAction('publish'));
+  bulkUnpublish.addEventListener('click', () => bulkAction('unpublish'));
+  bulkDelete.addEventListener('click', () => bulkAction('delete'));
+
+  // Row actions
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    const id = btn.dataset.id;
+    const urlMap = {
+      'publish': '{% url "core:admin_project_publish" 0 %}'.replace('0', id),
+      'unpublish': '{% url "core:admin_project_unpublish" 0 %}'.replace('0', id),
+      'delete': '{% url "core:admin_project_delete" 0 %}'.replace('0', id),
+    };
+    const url = urlMap[action];
+    if (!url) return;
+    if (action === 'delete' && !confirm('Delete this project?')) return;
+    btn.disabled = true;
+    try {
+      const resp = await fetch(url, { method: 'POST', headers: { 'X-CSRFToken': csrftoken } });
+      if (!resp.ok) throw new Error('Request failed');
+      location.reload();
+    } catch (err) { alert('Action failed'); }
+    finally { btn.disabled = false; }
+  });
+</script>
+{% endblock %}

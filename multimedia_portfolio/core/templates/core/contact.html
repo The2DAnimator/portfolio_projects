@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Contact" %} - {% trans "Multimedia Portfolio" %}{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="mb-3">{% trans "Contact" %}</h1>
+  <p class="text-muted">{% trans "We'd love to hear from you. Use the info below to reach the administrator of the Multimedia Portfolio system." %}</p>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{% trans "Direct Contact" %}</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2"><i class="fas fa-user me-2"></i>Deus J Bernad</li>
+            <li class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:deusbernad05@gmail.com">deusbernad05@gmail.com</a></li>
+            <li class="mb-2"><i class="fas fa-phone me-2"></i><a href="tel:+255743295724">+255 743 295 724</a></li>
+            <li class="mb-2"><i class="fab fa-whatsapp me-2"></i><a href="https://wa.me/255743295724" target="_blank" rel="noopener">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{% trans "Support" %}</h5>
+          <p class="mb-2">{% trans "For bug reports, feature requests, or account issues, please email with as much detail as possible (screenshots, steps)." %}</p>
+          <a href="mailto:deusbernad05@gmail.com" class="btn btn-soft-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>{% trans "Email Support" %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

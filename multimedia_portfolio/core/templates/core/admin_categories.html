@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Manage Categories" %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">{% trans "Categories" %}</h2>
+    <div class="d-flex gap-2">
+      <a href="{% url 'core:admin_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i>{% trans "Back to Dashboard" %}
+      </a>
+      <a href="{% url 'core:admin_category_create' %}" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus me-1"></i>{% trans "New Category" %}
+      </a>
+    </div>
+  </div>
+
+  <form class="row g-2 align-items-end mb-3" method="get">
+    <div class="col-md-6">
+      <label class="form-label">{% trans "Search" %}</label>
+      <input type="text" class="form-control" name="q" value="{{ q }}" placeholder="{% trans 'Name or description' %}">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">{% trans "Sort by" %}</label>
+      <select class="form-select" name="sort">
+        <option value="name" {% if sort == 'name' %}selected{% endif %}>{% trans "Name" %}</option>
+        <option value="created" {% if sort == 'created' %}selected{% endif %}>{% trans "Created" %}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{% trans "Direction" %}</label>
+      <select class="form-select" name="dir">
+        <option value="asc" {% if dir == 'asc' %}selected{% endif %}>{% trans "Asc" %}</option>
+        <option value="desc" {% if dir == 'desc' %}selected{% endif %}>{% trans "Desc" %}</option>
+      </select>
+    </div>
+    <div class="col-md-1">
+      <button type="submit" class="btn btn-primary w-100">{% trans "Apply" %}</button>
+    </div>
+  </form>
+
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">{% trans "Results" %} ({{ total_categories }})</h5>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Description" %}</th>
+            <th class="text-end">{% trans "Actions" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in page_obj.object_list %}
+          <tr>
+            <td>{{ c.name }}</td>
+            <td class="text-muted">{{ c.description|default:'—' }}</td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm" role="group">
+                <a class="btn btn-outline-secondary" href="{% url 'core:admin_category_edit' c.id %}">{% trans "Edit" %}</a>
+                <button class="btn btn-outline-danger" data-action="delete" data-id="{{ c.id }}">{% trans "Delete" %}</button>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" class="text-center text-muted py-3">{% trans "No categories found." %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <div class="text-muted small">
+        {% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}
+      </div>
+      <nav>
+        <ul class="pagination mb-0">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page=1">«</a></li>
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.previous_page_number }}">{% trans "Prev" %}</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">«</span></li>
+            <li class="page-item disabled"><span class="page-link">{% trans "Prev" %}</span></li>
+          {% endif %}
+
+          <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
+            <li class="page-item"><a class="page-link" href="?q={{ q }}&sort={{ sort }}&dir={{ dir }}&page_size={{ page_size }}&page={{ page_obj.paginator.num_pages }}">»</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">{% trans "Next" %}</span></li>
+            <li class="page-item disabled"><span class="page-link">»</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // CSRF helper
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  // Row actions
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-action="delete"]');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    if (!confirm('Delete this category?')) return;
+    btn.disabled = true;
+    try {
+      const url = '{% url "core:admin_category_delete" 0 %}'.replace('0', id);
+      const resp = await fetch(url, { method: 'POST', headers: { 'X-CSRFToken': csrftoken } });
+      if (!resp.ok) throw new Error('Request failed');
+      location.reload();
+    } catch (err) {
+      alert('Action failed');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Create Mockup" %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{% trans "New Package Mockup" %}</h5>
+        <a href="{% url 'projects:mockup_list' %}" class="btn btn-ghost btn-sm">{% trans "Back" %}</a>
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="project-form-compact">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
+          {% endif %}
+          <div class="mb-3">
+            <label class="form-label small" for="id_title">{% trans "Title" %}</label>
+            {{ form.title }}
+            {{ form.title.errors }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small" for="id_container_image">{% trans "Container Image (PNG with transparency recommended)" %}</label>
+            {{ form.container_image }}
+            {{ form.container_image.errors }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small" for="id_design_image">{% trans "Design Image" %}</label>
+            {{ form.design_image }}
+            {{ form.design_image.errors }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small" for="id_mask_image">{% trans "Optional Mask Image (white visible, black hidden)" %}</label>
+            {{ form.mask_image }}
+            {{ form.mask_image.errors }}
+          </div>
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label small" for="id_design_pos_x">{% trans "Design X (%)" %}</label>
+              {{ form.design_pos_x }}
+              {{ form.design_pos_x.errors }}
+            </div>
+            <div class="col-6">
+              <label class="form-label small" for="id_design_pos_y">{% trans "Design Y (%)" %}</label>
+              {{ form.design_pos_y }}
+              {{ form.design_pos_y.errors }}
+            </div>
+            <div class="col-6">
+              <label class="form-label small" for="id_design_scale">{% trans "Design Scale (% width)" %}</label>
+              {{ form.design_scale }}
+              {{ form.design_scale.errors }}
+            </div>
+            <div class="col-6">
+              <label class="form-label small" for="id_design_rotation">{% trans "Rotation (deg)" %}</label>
+              {{ form.design_rotation }}
+              {{ form.design_rotation.errors }}
+            </div>
+          </div>
+          <div class="row g-2 mt-2">
+            <div class="col-6 col-md-4">
+              <label class="form-label small" for="id_mask_opacity">{% trans "Mask Opacity (%)" %}</label>
+              {{ form.mask_opacity }}
+              {{ form.mask_opacity.errors }}
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label small" for="id_mask_feather">{% trans "Mask Feather (px)" %}</label>
+              {{ form.mask_feather }}
+              {{ form.mask_feather.errors }}
+            </div>
+            <div class="col-6 col-md-4 d-flex align-items-end">
+              <div class="form-check">
+                {{ form.mask_invert }}
+                <label class="form-check-label small" for="id_mask_invert">{% trans "Invert Mask" %}</label>
+              </div>
+              {{ form.mask_invert.errors }}
+            </div>
+          </div>
+          <div class="d-flex justify-content-end gap-2">
+            <a href="{% url 'projects:mockup_list' %}" class="btn btn-ghost btn-sm">{% trans "Cancel" %}</a>
+            <button class="btn btn-soft-primary btn-sm" type="submit">{% trans "Create" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  /* Compact form overrides scoped to this page */
+  .project-form-compact input[type="text"],
+  .project-form-compact input[type="number"],
+  .project-form-compact input[type="file"],
+  .project-form-compact select,
+  .project-form-compact textarea { font-size:.9rem; padding:.4rem .6rem; }
+  .project-form-compact .form-check-input { transform: scale(.9); }
+  .project-form-compact .form-label { font-size:.85rem; }
+  .project-form-compact .form-text { font-size:.8rem; }
+
+  /* Local button variants */
+  .btn-soft-primary { color:#234; background:rgba(67,97,238,.12); border:1px solid rgba(67,97,238,.35); }
+  .btn-soft-primary:hover { background:rgba(67,97,238,.2); }
+  .btn-ghost { color:#495057; background:transparent; border:1px dashed rgba(108,117,125,.5); }
+  .btn-ghost:hover { background:rgba(108,117,125,.08); }
+</style>
+{% endblock %}

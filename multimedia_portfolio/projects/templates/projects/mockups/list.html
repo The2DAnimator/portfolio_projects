@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "My Mockups" %}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">{% trans "My Mockups" %}</h3>
+  <a href="{% url 'projects:mockup_create' %}" class="btn btn-soft-primary btn-sm"><i class="fas fa-plus me-1"></i>{% trans "New Mockup" %}</a>
+</div>
+
+{% if mockups %}
+<div class="row g-3">
+  {% for m in mockups %}
+  <div class="col-md-4">
+    <div class="card h-100 mockup-card">
+      {% if m.generated_image %}
+      <img src="{{ m.generated_image.url }}" class="card-img-top" style="height:200px; object-fit:cover; border-top-left-radius:.5rem; border-top-right-radius:.5rem;" alt="{{ m.title }}">
+      {% else %}
+      <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:200px; border-top-left-radius:.5rem; border-top-right-radius:.5rem;">
+        <span class="text-muted small">{% trans "No preview" %}</span>
+      </div>
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        <h6 class="mb-1">{{ m.title }}</h6>
+        <small class="text-muted mb-3">{{ m.created_at|date:"M d, Y H:i" }}</small>
+        <div class="mt-auto d-flex gap-2">
+          <a href="{% url 'projects:mockup_detail' m.pk %}" class="btn btn-soft-primary btn-sm">{% trans "View" %}</a>
+          <form method="post" action="{% url 'projects:mockup_delete' m.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-soft-danger btn-sm" data-confirm="{% trans 'Delete this mockup?' %}" onclick="return confirm(this.dataset.confirm)">{% trans "Delete" %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+  <p class="mb-3">{% trans "No mockups yet." %}</p>
+  <a href="{% url 'projects:mockup_create' %}" class="btn btn-soft-primary btn-sm">{% trans "Create your first mockup" %}</a>
+</div>
+{% endif %}
+<style>
+  /* Local button variants */
+  .btn-soft-primary { color:#234; background:rgba(67,97,238,.12); border:1px solid rgba(67,97,238,.35); }
+  .btn-soft-primary:hover { background:rgba(67,97,238,.2); }
+  .btn-ghost { color:#495057; background:transparent; border:1px dashed rgba(108,117,125,.5); }
+  .btn-ghost:hover { background:rgba(108,117,125,.08); }
+  .btn-soft-danger { color:#7a1f28; background:rgba(220,53,69,.10); border:1px solid rgba(220,53,69,.35); }
+  .btn-soft-danger:hover { background:rgba(220,53,69,.18); }
+  /* Card hover */
+  .mockup-card { transition: transform .2s ease, box-shadow .2s ease; border-radius:.5rem; overflow:hidden; }
+  .mockup-card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,.08); }
+</style>
+{% endblock %}
