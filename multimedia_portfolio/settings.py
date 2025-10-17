@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')  # ✅ Make sure .env is loaded
+
+os.makedirs(BASE_DIR / 'logs', exist_ok=True)
+os.makedirs(BASE_DIR / 'geoip', exist_ok=True)
+GEOIP_PATH = str(BASE_DIR / 'geoip')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
