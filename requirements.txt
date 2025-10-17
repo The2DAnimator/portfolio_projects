@@ -1,0 +1,7 @@
+Django
+django-embed-video
+django-otp
+Pillow
+python-dotenv
+psycopg2-binary
+gunicorn
