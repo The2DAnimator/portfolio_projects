@@ -15,12 +15,11 @@
             --accent-color: #f72585;
             --dark-color: #2b2d42;
             --light-color: #f8f9fa;
-            /* Social popup theme (can be customized) */
             --social-start: var(--primary-color);
             --social-end: var(--secondary-color);
-            /* Footer theme */
             --footer-start: #121420;
             --footer-end: #1c2033;
+            --header-height: 70px;
         }
 
         /* Dark theme variables */
@@ -51,6 +50,8 @@
             background: #f6f8fb;
             min-height: 100vh;
             font-size: 0.95rem;
+            display: flex;
+            flex-direction: column;
         }
 
         :root[data-theme="dark"] body {
@@ -58,62 +59,438 @@
             color: #e2e8f0;
         }
         
+        /* ========== HEADER REDESIGN ========== */
         .navbar {
-            background: linear-gradient(135deg, rgba(67,97,238,.92), rgba(58,12,163,.92)) !important;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-            padding: .6rem 0;
-            border-bottom: 1px solid rgba(255,255,255,.18);
-            backdrop-filter: saturate(120%) blur(8px);
-            position: sticky; /* stick while scrolling */
+            background: linear-gradient(135deg, rgba(67,97,238,.95), rgba(58,12,163,.95)) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            padding: 0;
+            border-bottom: none;
+            backdrop-filter: saturate(180%) blur(12px);
+            position: sticky;
             top: 0;
-            z-index: 1040; /* above main content and dropdowns */
+            z-index: 1040;
+            min-height: var(--header-height);
         }
-        :root[data-theme="dark"] .navbar { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
         
         .navbar-brand {
-            font-weight: 700;
-            font-size: 1.125rem;
+            font-weight: 800;
+            font-size: 1.3rem;
             color: white !important;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 0;
         }
         
         .navbar-brand:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+        }
+        
+        .brand-icon {
+            background: rgba(255,255,255,0.2);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand:hover .brand-icon {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(10deg);
         }
         
         .nav-link {
             color: rgba(255,255,255,0.92) !important;
             font-weight: 500;
             margin: 0 .25rem;
-            padding: .35rem .65rem !important;
-            border-radius: .375rem;
-            transition: background-color .2s ease, transform .2s ease;
+            padding: .5rem .85rem !important;
+            border-radius: .5rem;
+            transition: all 0.3s ease;
             font-size: .9rem;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 70%;
         }
         
         .nav-link:hover {
             color: white !important;
-            background: rgba(255,255,255,0.18);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
         
         .nav-link.active {
-            background: rgba(255,255,255,0.28);
+            background: rgba(255,255,255,0.15);
             color: white !important;
         }
-        /* Language select styling */
-        .lang-select {
+        
+        /* Language dropdown redesign */
+        .lang-dropdown .btn {
             background: rgba(255,255,255,0.15) !important;
-            color: #fff !important;
-            border: 1px solid rgba(255,255,255,0.35) !important;
-            backdrop-filter: saturate(110%) blur(6px);
-        }
-        .lang-select option { color: #111 !important; }
-        .lang-select:focus { box-shadow: 0 0 0 .15rem rgba(255,255,255,.25) !important; }
-        @media (max-width: 991.98px) {
-            .lang-select { width: 100% !important; }
+            color: white !important;
+            border: 1px solid rgba(255,255,255,0.25) !important;
+            border-radius: .5rem;
+            padding: .4rem .8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
         
+        .lang-dropdown .btn:hover {
+            background: rgba(255,255,255,0.25) !important;
+            transform: translateY(-2px);
+        }
+        
+        .lang-dropdown .dropdown-menu {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: .75rem;
+            min-width: 200px;
+        }
+        
+        .lang-option {
+            border-radius: 8px;
+            padding: .6rem .75rem;
+            transition: all 0.2s ease;
+        }
+        
+        .lang-option:hover {
+            background: rgba(67,97,238,0.1);
+        }
+        
+        /* User dropdown redesign */
+        .user-dropdown .dropdown-toggle {
+            border-radius: 50px;
+            padding: .4rem .8rem .4rem .5rem;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .user-dropdown .dropdown-toggle:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: .5rem;
+        }
+        
+        .user-dropdown .dropdown-menu {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: .5rem;
+            min-width: 200px;
+        }
+        
+        .user-dropdown .dropdown-item {
+            border-radius: 8px;
+            padding: .6rem .75rem;
+            transition: all 0.2s ease;
+        }
+        
+        .user-dropdown .dropdown-item:hover {
+            background: rgba(67,97,238,0.1);
+        }
+        
+        /* Theme toggle redesign */
+        .theme-toggle {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px) rotate(15deg);
+        }
+        
+        /* Auth buttons redesign */
+        .auth-buttons .btn {
+            border-radius: 50px;
+            padding: .5rem 1.25rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-buttons .btn-primary {
+            background: rgba(255,255,255,0.25);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .auth-buttons .btn-primary:hover {
+            background: rgba(255,255,255,0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        
+        .auth-buttons .btn-outline-light {
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        
+        .auth-buttons .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Mobile menu toggle */
+        .navbar-toggler {
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: .4rem .6rem;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.25);
+        }
+        
+        /* ========== FOOTER REDESIGN ========== */
+        .footer {
+            background: linear-gradient(135deg, var(--footer-start), var(--footer-end));
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: auto;
+            font-size: .9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+        
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo-icon {
+            background: rgba(255,255,255,0.1);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .footer-logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        
+        .footer-description {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-3px);
+        }
+        
+        .footer-heading {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1.25rem;
+            color: white;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            width: 16px;
+            text-align: center;
+        }
+        
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .footer-contact li i {
+            margin-top: 0.25rem;
+            color: var(--primary-color);
+        }
+        
+        .footer-contact a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-contact a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+        }
+        
+        .footer-copyright {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+        }
+        
+        .footer-credits {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+        }
+        
+        .footer-credits i {
+            color: var(--accent-color);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                padding: 1rem 0;
+            }
+            
+            .nav-link {
+                margin: 0.25rem 0;
+            }
+            
+            .auth-buttons {
+                margin-top: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        
+        /* Rest of your existing styles... */
         .main-content {
             min-height: calc(100vh - 140px);
             padding: 1.25rem 0;
@@ -174,24 +551,6 @@
             font-weight: 600;
         }
         :root[data-theme="dark"] .card > .card-header { filter: brightness(.9); }
-        
-        /* Footer styling */
-        .footer {
-            background: linear-gradient(135deg, var(--footer-start), var(--footer-end));
-            color: white;
-            padding: 1rem 0;
-            margin-top: auto;
-            font-size: .9rem;
-        }
-        :root[data-theme="dark"] .footer { border-top: 1px solid rgba(255,255,255,.06); }
-        
-        .footer a {
-            color: rgba(255,255,255,0.86);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer a:hover { color: #fff; }
         
         /* Custom buttons */
         .btn { padding: .25rem .5rem; font-size: .825rem; border-radius: .35rem; }
@@ -265,22 +624,6 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
-        }
-        
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .navbar-nav {
-                text-align: center;
-                margin-top: .5rem;
-            }
-            
-            .nav-link {
-                margin: .25rem 0;
-            }
-            
-            .main-content {
-                padding: .75rem 0;
-            }
         }
         
         /* Custom scrollbar */
@@ -375,9 +718,12 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
+        <div class="navbar-container">
             <a class="navbar-brand" href="{% url 'core:home' %}">
-                <i class="fas fa-palette me-2"></i>{% trans "Multimedia Portfolio" %}
+                <div class="brand-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                {% trans "Multimedia Portfolio" %}
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -386,11 +732,12 @@
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav ms-auto align-items-center">
-                    <div class="nav-item dropdown me-2">
-                        <button class="btn btn-ghost btn-sm dropdown-toggle lang-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- Language Dropdown -->
+                    <div class="nav-item dropdown lang-dropdown me-2">
+                        <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-language me-1"></i>{% trans "Language" %}
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end p-2" style="min-width: 220px;">
+                        <div class="dropdown-menu dropdown-menu-end p-2">
                             <form id="langForm" action="{% url 'set_language' %}" method="post" class="mb-2">
                                 {% csrf_token %}
                                 <input name="next" type="hidden" value="{{ request.path }}">
@@ -408,46 +755,57 @@
                             </form>
                             {% if user.is_authenticated %}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'projects:project_create' %}">
+                            <a class="dropdown-item d-flex align-items-center" href="{% url 'projects:project_create' %}">
                                 <i class="fas fa-plus me-2"></i>{% trans "Create Project" %}
                             </a>
                             {% endif %}
                         </div>
                     </div>
+                    
+                    <!-- Project View Link -->
                     {% if project %}
                         <a class="nav-link" href="{% url 'projects:project_view' project.id %}">
                             <i class="fas fa-eye me-1"></i>{% trans "Public View" %}
                         </a>
                     {% endif %}
+                    
+                    <!-- Authenticated User Menu -->
                     {% if user.is_authenticated %}
                         {% if user.is_staff %}
                         <a class="nav-link" href="{% url 'core:admin_dashboard' %}">
                             <i class="fas fa-shield-alt me-1"></i>{% trans "Admin" %}
                         </a>
                         {% endif %}
+                        
                         <a class="nav-link {% if request.resolver_match.url_name in 'mockup_list' %}active{% endif %}" href="{% url 'projects:mockup_list' %}">
                             <i class="fas fa-box-open me-1"></i>{% trans "Mockups" %}
                         </a>
+                        
                         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
                            href="{% url 'projects:dashboard' %}">
                             <i class="fas fa-project-diagram me-1"></i>{% trans "My Projects" %}
                         </a>
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i>{{ user.username }}
+                        
+                        <!-- User Dropdown -->
+                        <div class="nav-item dropdown user-dropdown ms-2">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span>{{ user.username }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{% url 'accounts:profile' user.username %}">
+                                <li><a class="dropdown-item d-flex align-items-center" href="{% url 'accounts:profile' user.username %}">
                                     <i class="fas fa-user-circle me-2"></i>{% trans "Profile" %}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{% url 'projects:dashboard' %}">
+                                <li><a class="dropdown-item d-flex align-items-center" href="{% url 'projects:dashboard' %}">
                                     <i class="fas fa-tachometer-alt me-2"></i>{% trans "Dashboard" %}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                                    <form method="post" action="{% url 'accounts:logout' %}" class="d-inline w-100">
                                         {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">
+                                        <button type="submit" class="dropdown-item d-flex align-items-center w-100">
                                             <i class="fas fa-sign-out-alt me-2"></i>{% trans "Logout" %}
                                         </button>
                                     </form>
@@ -455,28 +813,28 @@
                             </ul>
                         </div>
                     {% else %}
-                        <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" 
-                           href="{% url 'accounts:login' %}">
-                            <i class="fas fa-sign-in-alt me-1"></i>{% trans "Login" %}
-                        </a>
-                        <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" 
-                           href="{% url 'accounts:register' %}">
-                            <i class="fas fa-user-plus me-1"></i>{% trans "Register" %}
-                        </a>
+                        <!-- Guest User Menu -->
+                        <div class="auth-buttons d-flex align-items-center gap-2">
+                            <button id="themeToggle" class="btn theme-toggle" type="button" title="Toggle theme">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                            <a href="{% url 'accounts:login' %}" class="btn btn-outline-light btn-sm">
+                                <i class="fas fa-sign-in-alt me-1"></i>{% trans "Sign In" %}
+                            </a>
+                            <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-rocket me-1"></i>{% trans "Get Started" %}
+                            </a>
+                        </div>
                     {% endif %}
-                    <div class="ms-lg-3 mt-2 mt-lg-0 d-flex align-items-center gap-2">
-                        <button id="themeToggle" class="btn btn-ghost btn-sm" type="button" title="Toggle theme">
+                    
+                    <!-- Theme Toggle for Authenticated Users -->
+                    {% if user.is_authenticated %}
+                    <div class="ms-2">
+                        <button id="themeToggle" class="btn theme-toggle" type="button" title="Toggle theme">
                             <i class="fas fa-moon"></i>
                         </button>
-                        {% if not user.is_authenticated %}
-                        <a href="{% url 'accounts:register' %}" class="btn btn-soft-primary btn-sm me-2">
-                            <i class="fas fa-rocket me-1"></i>{% trans "Get Started" %}
-                        </a>
-                        <a href="{% url 'accounts:login' %}" class="btn btn-ghost btn-sm">
-                            <i class="fas fa-sign-in-alt me-1"></i>{% trans "Sign In" %}
-                        </a>
-                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -509,62 +867,83 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="row gy-4 py-3 border-top border-light border-opacity-10">
-                <!-- Brand -->
-                <div class="col-12 col-lg-4">
-                    <div class="d-flex align-items-center mb-2">
-                        <i class="fas fa-palette me-2"></i>
-                        <h6 class="mb-0">{% trans "Multimedia Portfolio" %}</h6>
+        <div class="footer-container">
+            <div class="row">
+                <!-- Brand and Description -->
+                <div class="col-12 col-lg-4 footer-section">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="footer-logo-text">{% trans "Multimedia Portfolio" %}</div>
                     </div>
-                    <p class="mb-3 text-white-50">{% trans "Share your creativity with the world. Showcase your images, videos, audio, and more." %}</p>
-                    <div class="d-flex gap-2">
-                        <a href="https://www.facebook.com/profile.php?id=61576717596735" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://instagram.com/bernad.deus" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@DeusAnimation" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
-                        <a href="https://www.linkedin.com/in/deus-bernad-9b6520343" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://wa.me/255743295724" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+                    <p class="footer-description">{% trans "Share your creativity with the world. Showcase your images, videos, audio, and more in one beautiful portfolio." %}</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/profile.php?id=61576717596735" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/bernad.deus" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@DeusAnimation" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/in/deus-bernad-9b6520343" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://wa.me/255743295724" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
 
                 <!-- Navigation -->
-                <div class="col-6 col-lg-2">
-                    <h6 class="text-uppercase small text-white-50 mb-2">{% trans "Navigate" %}</h6>
-                    <ul class="list-unstyled mb-0 small footer-links">
-                        <li class="mb-1"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
-                        <li class="mb-1"><a href="{% url 'projects:public_projects' %}">{% trans "Browse Projects" %}</a></li>
+                <div class="col-6 col-lg-2 footer-section">
+                    <h6 class="footer-heading">{% trans "Navigate" %}</h6>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:home' %}"><i class="fas fa-home"></i>{% trans "Home" %}</a></li>
+                        <li><a href="{% url 'projects:public_projects' %}"><i class="fas fa-compass"></i>{% trans "Browse Projects" %}</a></li>
                         {% if user.is_authenticated %}
-                        <li class="mb-1"><a href="{% url 'projects:dashboard' %}">{% trans "Dashboard" %}</a></li>
-                        <li class="mb-1"><a href="{% url 'projects:project_create' %}">{% trans "Create Project" %}</a></li>
+                        <li><a href="{% url 'projects:dashboard' %}"><i class="fas fa-tachometer-alt"></i>{% trans "Dashboard" %}</a></li>
+                        <li><a href="{% url 'projects:project_create' %}"><i class="fas fa-plus"></i>{% trans "Create Project" %}</a></li>
                         {% else %}
-                        <li class="mb-1"><a href="{% url 'accounts:login' %}">{% trans "Login" %}</a></li>
-                        <li class="mb-1"><a href="{% url 'accounts:register' %}">{% trans "Register" %}</a></li>
+                        <li><a href="{% url 'accounts:login' %}"><i class="fas fa-sign-in-alt"></i>{% trans "Login" %}</a></li>
+                        <li><a href="{% url 'accounts:register' %}"><i class="fas fa-user-plus"></i>{% trans "Register" %}</a></li>
                         {% endif %}
                     </ul>
                 </div>
 
                 <!-- Resources -->
-                <div class="col-6 col-lg-3">
-                    <h6 class="text-uppercase small text-white-50 mb-2">{% trans "Resources" %}</h6>
-                    <ul class="list-unstyled mb-0 small footer-links">
-                        <li class="mb-1"><a href="{% url 'core:privacy' %}">{% trans "Privacy Policy" %}</a></li>
-                        <li class="mb-1"><a href="{% url 'core:terms' %}">{% trans "Terms of Service" %}</a></li>
-                        <li class="mb-1"><a href="{% url 'core:help' %}">{% trans "Help Center" %}</a></li>
-                        <li class="mb-1"><a href="{% url 'core:contact' %}">{% trans "Contact" %}</a></li>
+                <div class="col-6 col-lg-3 footer-section">
+                    <h6 class="footer-heading">{% trans "Resources" %}</h6>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:privacy' %}"><i class="fas fa-shield-alt"></i>{% trans "Privacy Policy" %}</a></li>
+                        <li><a href="{% url 'core:terms' %}"><i class="fas fa-file-contract"></i>{% trans "Terms of Service" %}</a></li>
+                        <li><a href="{% url 'core:help' %}"><i class="fas fa-question-circle"></i>{% trans "Help Center" %}</a></li>
+                        <li><a href="{% url 'core:contact' %}"><i class="fas fa-envelope"></i>{% trans "Contact" %}</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact -->
-                <div class="col-12 col-lg-3">
-                    <h6 class="text-uppercase small text-white-50 mb-2">{% trans "Contact" %}</h6>
-                    <ul class="list-unstyled mb-3 small">
-                        <li class="mb-1"><i class="fas fa-user me-2"></i>Deus J Bernad</li>
-                        <li class="mb-1"><i class="fas fa-envelope me-2"></i><a href="mailto:deusbernad05@gmail.com">deusbernad05@gmail.com</a></li>
-                        <li class="mb-1"><i class="fas fa-phone me-2"></i><a href="tel:+255743295724">+255 743 295 724</a> | <a href="tel:+255612626062">+255 612 626 062</a></li>
-                        <li class="mb-0"><i class="fab fa-whatsapp me-2"></i><a href="https://wa.me/255743295724" target="_blank" rel="noopener">WhatsApp</a>: 743 259 724</li>
+                <div class="col-12 col-lg-3 footer-section">
+                    <h6 class="footer-heading">{% trans "Contact" %}</h6>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-user"></i>
+                            <div>Deus J Bernad</div>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <div><a href="mailto:deusbernad05@gmail.com">deusbernad05@gmail.com</a></div>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <a href="tel:+255743295724">+255 743 295 724</a><br>
+                                <a href="tel:+255612626062">+255 612 626 062</a>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fab fa-whatsapp"></i>
+                            <div><a href="https://wa.me/255743295724" target="_blank" rel="noopener">WhatsApp: 743 259 724</a></div>
+                        </li>
                     </ul>
-                    <div class="text-white-50 small">&copy; 2024 {% trans "Multimedia Portfolio" %}. {% trans "Built with" %} <i class="fas fa-heart text-danger"></i> Django</div>
                 </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copyright">&copy; 2024 {% trans "Multimedia Portfolio" %}. {% trans "All rights reserved." %}</div>
+                <div class="footer-credits">{% trans "Built with" %} <i class="fas fa-heart"></i> {% trans "using Django" %}</div>
             </div>
         </div>
     </footer>
@@ -581,7 +960,8 @@
                 <a href="https://instagram.com/bernad.deus" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="https://wa.me/255743295724" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 <a href="https://www.youtube.com/@DeusAnimation" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.linkedin.com/in/deus-bernad-9b6520343" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>           </div>
+                <a href="https://www.linkedin.com/in/deus-bernad-9b6520343" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
         </div>
     </div>
 
