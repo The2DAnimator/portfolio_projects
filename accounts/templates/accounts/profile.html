@@ -6,120 +6,709 @@
 {% block content %}
 <div class="container py-4" id="profileRoot" {% if not is_owner %}data-other-user-id="{{ profile_user.id }}"{% endif %}>
   <div class="row g-4">
+    <!-- Left Column -->
     <div class="col-lg-4">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between mb-2">
-            <h4 class="mb-0">@{{ profile_user.username }}</h4>
-            {% if not is_owner %}
-              <button class="btn btn-sm btn-outline-primary follow-btn {% if is_following %}following{% endif %}"
-                      data-user-id="{{ profile_user.id }}"
-                      data-follow-url="{% url 'accounts:toggle_follow' profile_user.id %}"
-                      data-follow-label="{% trans 'Follow' %}"
-                      data-following-label="{% trans 'Following' %}">
-                <i class="{% if is_following %}fas fa-user-check{% else %}far fa-user{% endif %}"></i>
-                <span class="ms-1">{% if is_following %}{% trans "Following" %}{% else %}{% trans "Follow" %}{% endif %}</span>
-              </button>
-            {% endif %}
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <i class="fas fa-user-circle"></i>
           </div>
-          <div class="d-flex justify-content-between mb-2">
-            <div>{% trans "Name" %}</div>
-            <div class="text-muted small">{{ profile_user.get_full_name|default:profile_user.username }}</div>
+          <div class="profile-info">
+            <h3>@{{ profile_user.username }}</h3>
+            <p class="profile-name">{{ profile_user.get_full_name|default:profile_user.username }}</p>
           </div>
-          <div class="d-flex justify-content-between mb-2">
-            <div>{% trans "Email" %}</div>
-            <div class="text-muted small">{{ profile_user.email }}</div>
+          {% if not is_owner %}
+            <button class="follow-btn {% if is_following %}following{% endif %}"
+                    data-user-id="{{ profile_user.id }}"
+                    data-follow-url="{% url 'accounts:toggle_follow' profile_user.id %}"
+                    data-follow-label="{% trans 'Follow' %}"
+                    data-following-label="{% trans 'Following' %}">
+              <i class="{% if is_following %}fas fa-user-check{% else %}far fa-user{% endif %}"></i>
+              <span>{% if is_following %}{% trans "Following" %}{% else %}{% trans "Follow" %}{% endif %}</span>
+            </button>
+          {% endif %}
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value">{{ followers_count }}</div>
+            <div class="stat-label">{% trans "Followers" %}</div>
           </div>
-          <div class="d-flex justify-content-between mb-2">
-            <div>{% trans "Followers" %}</div>
-            <div class="badge bg-light text-dark followers-count">{{ followers_count }}</div>
+          <div class="stat-item">
+            <div class="stat-value">{{ following_count }}</div>
+            <div class="stat-label">{% trans "Following" %}</div>
           </div>
-          <div class="d-flex justify-content-between">
-            <div>{% trans "Following" %}</div>
-            <div class="badge bg-light text-dark">{{ following_count }}</div>
+        </div>
+
+        <div class="profile-details">
+          <div class="detail-item">
+            <i class="fas fa-envelope"></i>
+            <span>{{ profile_user.email }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>{% trans "Joined" %} {{ profile_user.date_joined|date:"M Y" }}</span>
           </div>
         </div>
       </div>
 
+      <!-- Account Settings (Owner Only) -->
       {% if is_owner %}
-      <div class="card mt-3">
-        <div class="card-header d-flex align-items-center justify-content-between">
-          <h6 class="mb-0">{% trans "Account Settings" %}</h6>
+      <div class="settings-card">
+        <div class="card-header">
+          <h4>{% trans "Account Settings" %}</h4>
         </div>
-        <div class="card-body p-0">
-          <div class="list-group list-group-flush">
-            <a href="{% url 'accounts:password_change' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <span><i class="fas fa-key me-2"></i>{% trans "Change Password" %}</span>
-              <i class="fas fa-chevron-right text-muted"></i>
-            </a>
-            <a href="{% url 'accounts:email_2fa_setup' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-              <span><i class="fas fa-shield-alt me-2"></i>{% trans "Email Two-Factor Authentication" %}</span>
-              <i class="fas fa-chevron-right text-muted"></i>
-            </a>
-          </div>
+        <div class="settings-list">
+          <a href="{% url 'accounts:password_change' %}" class="setting-item">
+            <div class="setting-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <div class="setting-content">
+              <div class="setting-title">{% trans "Change Password" %}</div>
+              <div class="setting-desc">{% trans "Update your password" %}</div>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+          </a>
+          <a href="{% url 'accounts:email_2fa_setup' %}" class="setting-item">
+            <div class="setting-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="setting-content">
+              <div class="setting-title">{% trans "Two-Factor Auth" %}</div>
+              <div class="setting-desc">{% trans "Email verification" %}</div>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+          </a>
         </div>
       </div>
       {% endif %}
 
+      <!-- Messaging (Other Users Only) -->
       {% if not is_owner %}
-      <div class="card mt-3">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h6 class="mb-0">{% blocktrans with username=profile_user.username %}Message {{ username }}{% endblocktrans %}</h6>
+      <div class="message-card">
+        <div class="card-header">
+          <h4>{% blocktrans with username=profile_user.username %}Message {{ username }}{% endblocktrans %}</h4>
         </div>
-        <div class="card-body">
-          <div id="conversation" class="list-group mb-3" style="max-height: 300px; overflow-y: auto;" data-no-messages="{% trans 'No messages yet.' %}"></div>
-          <form id="messageForm">
-            <div class="mb-2"><textarea id="messageBody" class="form-control" rows="2" placeholder="{% trans 'Write a message...' %}"></textarea></div>
-            <button class="btn btn-primary btn-sm" type="submit">{% trans "Send" %}</button>
+        <div class="message-content">
+          <div id="conversation" class="message-list" data-no-messages="{% trans 'No messages yet.' %}"></div>
+          <form id="messageForm" class="message-form">
+            <div class="message-input">
+              <textarea id="messageBody" placeholder="{% trans 'Write a message...' %}" rows="2"></textarea>
+            </div>
+            <button type="submit" class="send-btn">
+              <i class="fas fa-paper-plane"></i>
+              {% trans "Send" %}
+            </button>
           </form>
         </div>
       </div>
       {% endif %}
     </div>
+
+    <!-- Right Column - Projects -->
     <div class="col-lg-8">
-      <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between">
-          <h5 class="mb-0">{% trans "Projects" %}</h5>
-          {% if is_owner %}<a href="{% url 'projects:project_create' %}" class="btn btn-sm btn-primary">{% trans "New Project" %}</a>{% endif %}
+      <div class="projects-section">
+        <div class="section-header">
+          <h2>{% trans "Projects" %}</h2>
+          {% if is_owner %}
+          <a href="{% url 'projects:project_create' %}" class="new-project-btn">
+            <i class="fas fa-plus"></i>
+            {% trans "New Project" %}
+          </a>
+          {% endif %}
         </div>
-        <div class="card-body">
-          {% if projects %}
-          <div class="row g-3">
-            {% for p in projects %}
-            <div class="col-md-6">
-              <div class="card h-100">
-                {% if p.cover_image %}
-                <img src="{{ p.cover_image.url }}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="{{ p.title }}">
-                {% endif %}
-                <div class="card-body d-flex flex-column">
-                  <h6 class="mb-1">{{ p.title }}</h6>
-                  <small class="text-muted mb-2">{{ p.created_at|date:"M d, Y" }} • {{ p.get_project_type_display }}</small>
-                  <p class="text-muted small mb-3">{{ p.description|truncatewords:20 }}</p>
-                  <div class="mt-auto d-flex justify-content-between align-items-center">
-                    {% if is_owner %}
-                      <div class="btn-group" role="group">
-                        <a href="{% url 'projects:project_detail' p.pk %}" class="btn btn-outline-primary btn-sm">{% trans "View" %}</a>
-                        <a href="{% url 'projects:project_update' p.pk %}" class="btn btn-outline-secondary btn-sm">{% trans "Edit" %}</a>
-                        <a href="{% url 'projects:project_delete' p.pk %}" class="btn btn-outline-danger btn-sm">{% trans "Delete" %}</a>
-                      </div>
-                    {% else %}
-                      <a href="{% url 'projects:project_view' p.pk %}" class="btn btn-outline-secondary btn-sm">View</a>
-                    {% endif %}
-                    <span class="text-muted small"><i class="far fa-heart me-1"></i>{{ p.likes.count }}</span>
-                  </div>
+
+        {% if projects %}
+        <div class="projects-grid">
+          {% for p in projects %}
+          <div class="project-card">
+            {% if p.cover_image %}
+            <div class="project-image">
+              <img src="{{ p.cover_image.url }}" alt="{{ p.title }}">
+            </div>
+            {% endif %}
+            <div class="project-content">
+              <h4 class="project-title">{{ p.title }}</h4>
+              <p class="project-meta">
+                {{ p.created_at|date:"M d, Y" }} • {{ p.get_project_type_display }}
+              </p>
+              <p class="project-desc">{{ p.description|truncatewords:20 }}</p>
+              <div class="project-footer">
+                <div class="project-actions">
+                  {% if is_owner %}
+                    <a href="{% url 'projects:project_detail' p.pk %}" class="btn-sm">{% trans "View" %}</a>
+                    <a href="{% url 'projects:project_update' p.pk %}" class="btn-sm secondary">{% trans "Edit" %}</a>
+                    <a href="{% url 'projects:project_delete' p.pk %}" class="btn-sm danger">{% trans "Delete" %}</a>
+                  {% else %}
+                    <a href="{% url 'projects:project_view' p.pk %}" class="btn-sm">{% trans "View" %}</a>
+                  {% endif %}
+                </div>
+                <div class="project-likes">
+                  <i class="far fa-heart"></i>
+                  <span>{{ p.likes.count }}</span>
                 </div>
               </div>
             </div>
-            {% endfor %}
           </div>
-          {% else %}
-          <div class="text-center text-muted py-4">{% trans "No published projects yet." %}</div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <i class="fas fa-folder-open"></i>
+          <h3>{% trans "No projects yet" %}</h3>
+          <p>{% trans "When you create projects, they'll appear here." %}</p>
+          {% if is_owner %}
+          <a href="{% url 'projects:project_create' %}" class="empty-btn">
+            {% trans "Create your first project" %}
+          </a>
           {% endif %}
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
 </div>
+
+<style>
+/* Profile Card */
+.profile-card {
+  background: var(--light-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.profile-header {
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  position: relative;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.profile-avatar i {
+  font-size: 2.5rem;
+}
+
+.profile-info h3 {
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+}
+
+.profile-name {
+  opacity: 0.9;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.follow-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.follow-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.follow-btn.following {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--primary-color);
+}
+
+.profile-stats {
+  display: flex;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--dark-color);
+  opacity: 0.7;
+}
+
+.profile-details {
+  padding: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item i {
+  width: 20px;
+  color: var(--primary-color);
+}
+
+/* Settings Card */
+.settings-card {
+  background: var(--light-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 1.5rem;
+  overflow: hidden;
+}
+
+.settings-card .card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.settings-card .card-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.settings-list {
+  padding: 0.5rem 0;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.3s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-item:hover {
+  background: rgba(67, 97, 238, 0.05);
+}
+
+.setting-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(67, 97, 238, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.setting-content {
+  flex: 1;
+}
+
+.setting-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.setting-desc {
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+.setting-item .fa-chevron-right {
+  opacity: 0.5;
+}
+
+/* Message Card */
+.message-card {
+  background: var(--light-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 1.5rem;
+  overflow: hidden;
+}
+
+.message-card .card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.message-card .card-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.message-content {
+  padding: 1.5rem;
+}
+
+.message-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  background: white;
+}
+
+.message-form {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.message-input {
+  flex: 1;
+}
+
+.message-input textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.message-input textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.send-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.send-btn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+}
+
+/* Projects Section */
+.projects-section {
+  background: var(--light-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.new-project-btn {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.new-project-btn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+  color: white;
+}
+
+.projects-grid {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.project-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.project-image {
+  height: 160px;
+  overflow: hidden;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-content {
+  padding: 1.25rem;
+}
+
+.project-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.project-meta {
+  font-size: 0.875rem;
+  opacity: 0.7;
+  margin: 0 0 0.75rem;
+}
+
+.project-desc {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0 0 1rem;
+  opacity: 0.8;
+}
+
+.project-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-sm {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.btn-sm {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.btn-sm.secondary {
+  background: transparent;
+  color: var(--dark-color);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.btn-sm.danger {
+  background: transparent;
+  color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.3);
+}
+
+.btn-sm:hover {
+  transform: translateY(-1px);
+}
+
+.project-likes {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+/* Empty State */
+.empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.empty-state p {
+  opacity: 0.7;
+  margin: 0 0 1.5rem;
+}
+
+.empty-btn {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.empty-btn:hover {
+  background: var(--secondary-color);
+  color: white;
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] .profile-card,
+:root[data-theme="dark"] .settings-card,
+:root[data-theme="dark"] .message-card,
+:root[data-theme="dark"] .projects-section {
+  background: #141a2b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .profile-stats,
+:root[data-theme="dark"] .settings-card .card-header,
+:root[data-theme="dark"] .message-card .card-header,
+:root[data-theme="dark"] .section-header {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .detail-item,
+:root[data-theme="dark"] .setting-item {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .stat-label,
+:root[data-theme="dark"] .project-meta,
+:root[data-theme="dark"] .project-desc {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:root[data-theme="dark"] .project-card {
+  background: #1a1f35;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .message-list {
+  background: #1a1f35;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme="dark"] .message-input textarea {
+  background: #1a1f35;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+:root[data-theme="dark"] .empty-state i {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+:root[data-theme="dark"] .empty-state p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-stats {
+    padding: 1rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .message-form {
+    flex-direction: column;
+  }
+  
+  .follow-btn {
+    position: static;
+    margin-top: 1rem;
+    align-self: center;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
 
 <script>
 (function(){
@@ -146,22 +735,29 @@
       const url = this.dataset.followUrl;
       const icon = this.querySelector('i');
       const text = this.querySelector('span');
-      const followersCountEl = document.querySelector('.followers-count');
+      const followersCountEl = document.querySelector('.stat-value');
       try {
         const resp = await fetch(url, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrftoken } });
         if (resp.redirected) { window.location.href = resp.url; return; }
         if (!resp.ok) throw new Error('Request failed');
         const data = await resp.json();
-        followersCountEl.textContent = data.followers_count;
+        if (followersCountEl) followersCountEl.textContent = data.followers_count;
         const followLabel = this.dataset.followLabel || 'Follow';
         const followingLabel = this.dataset.followingLabel || 'Following';
-        if (data.following) { this.classList.add('following'); icon.className = 'fas fa-user-check'; text.textContent = followingLabel; }
-        else { this.classList.remove('following'); icon.className = 'far fa-user'; text.textContent = followLabel; }
+        if (data.following) { 
+          this.classList.add('following'); 
+          icon.className = 'fas fa-user-check'; 
+          text.textContent = followingLabel; 
+        } else { 
+          this.classList.remove('following'); 
+          icon.className = 'far fa-user'; 
+          text.textContent = followLabel; 
+        }
       } catch(e) { console.error(e); }
     });
   }
 
-  // Messaging (only when not owner)
+  // Messaging functionality remains the same as original
   const conversationEl = document.getElementById('conversation');
   const rootEl = document.getElementById('profileRoot');
   const messageForm = document.getElementById('messageForm');
@@ -176,12 +772,20 @@
       if (!resp.ok) throw new Error('Failed to load');
       const data = await resp.json();
       conversationEl.innerHTML = '';
-      if (!data.messages.length) { conversationEl.innerHTML = `<div class="text-muted">${conversationEl.dataset.noMessages || ''}</div>`; return; }
+      if (!data.messages.length) { 
+        conversationEl.innerHTML = `<div class="text-muted">${conversationEl.dataset.noMessages || ''}</div>`; 
+        return; 
+      }
       for (const m of data.messages) {
         const item = document.createElement('div');
-        item.className = 'list-group-item';
-        item.innerHTML = `<div class="d-flex justify-content-between"><strong>${m.sender}</strong><small class="text-muted">${m.created_at}</small></div><div class="mt-2"></div>`;
-        item.querySelector('.mt-2').textContent = m.body;
+        item.className = 'message-item';
+        item.innerHTML = `
+          <div class="message-header">
+            <strong>${m.sender}</strong>
+            <small>${m.created_at}</small>
+          </div>
+          <div class="message-body">${m.body}</div>
+        `;
         conversationEl.appendChild(item);
       }
       conversationEl.scrollTop = conversationEl.scrollHeight;

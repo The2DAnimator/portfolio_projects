@@ -5,276 +5,210 @@
 {% block title %}{% trans "Multimedia Portfolio - Showcase Your Creativity" %}{% endblock %}
 
 {% block content %}
-<!-- Floating Navigation removed per request -->
-
 <!-- Hero Section -->
-<section class="hero-section text-center py-5 mb-5">
+<section class="hero-section text-center py-5 mb-4">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <h1 class="display-4 fw-bold mb-4 gradient-text">
-                    <i class="fas fa-palette me-3"></i>{% trans "Showcase Your Creative Vision" %}
+                <h1 class="hero-title fw-bold mb-3">
+                    <i class="fas fa-palette me-2"></i>{% trans "Showcase Your Creative Vision" %}
                 </h1>
-                <p class="lead mb-4 text-white">
-                    {% trans "The ultimate platform for multimedia creators. Share your images, videos, audio projects, and build a stunning portfolio that stands out." %}
+                <p class="hero-subtitle mb-4">
+                    {% trans "The ultimate platform for multimedia creators. Share your images, videos, audio projects, and build a stunning portfolio." %}
                 </p>
-                <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-5">
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-4">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'projects:dashboard' %}" class="btn btn-soft-primary btn-lg px-4 py-2">
-                            <i class="fas fa-rocket me-2"></i>{% trans "Go to Dashboard" %}
+                        <a href="{% url 'projects:dashboard' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-rocket me-1"></i>{% trans "Dashboard" %}
                         </a>
-                        <a href="{% url 'projects:project_create' %}" class="btn btn-soft-primary btn-lg px-4 py-2">
-                            <i class="fas fa-plus me-2"></i>{% trans "Create Project" %}
-                        </a>
-                        <a href="{% url 'projects:public_projects' %}" class="btn btn-soft-primary btn-lg px-4 py-2">
-                            <i class="fas fa-globe me-2"></i>{% trans "Browse All Projects" %}
+                        <a href="{% url 'projects:project_create' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus me-1"></i>{% trans "Create Project" %}
                         </a>
                     {% else %}
-                        <a href="{% url 'accounts:register' %}" class="btn btn-soft-primary btn-lg px-4 py-2">
-                            <i class="fas fa-user-plus me-2"></i>{% trans "Get Started Free" %}
+                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-user-plus me-1"></i>{% trans "Get Started" %}
                         </a>
-                        <a href="{% url 'accounts:login' %}" class="btn btn-ghost btn-lg px-4 py-2">
-                            <i class="fas fa-sign-in-alt me-2"></i>{% trans "Sign In" %}
-                        </a>
-                        <a href="{% url 'projects:public_projects' %}" class="btn btn-soft-primary btn-lg px-4 py-2">
-                            <i class="fas fa-globe me-2"></i>{% trans "Browse All Projects" %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-sign-in-alt me-1"></i>{% trans "Sign In" %}
                         </a>
                     {% endif %}
-                </div>
-                
-                <!-- Quick Navigation Buttons -->
-                <div class="quick-nav mt-4">
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-auto">
-                            <button class="btn btn-outline-light btn-sm" onclick="scrollToSection('featured-projects')">
-                                <i class="fas fa-arrow-down me-2"></i>{% trans "View Projects" %}
-                            </button>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-outline-light btn-sm" onclick="scrollToSection('platform-features')">
-                                <i class="fas fa-list me-2"></i>{% trans "See Features" %}
-                            </button>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-outline-light btn-sm" onclick="scrollToSection('community-stats')">
-                                <i class="fas fa-chart-line me-2"></i>{% trans "View Stats" %}
-                            </button>
-                        </div>
-                    </div>
+                    <a href="{% url 'projects:public_projects' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-globe me-1"></i>{% trans "Browse All" %}
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Featured Projects Showcase -->
-<section id="featured-projects" class="showcase-section py-5 bg-light">
+<!-- Featured Projects -->
+<section id="featured-projects" class="projects-section py-4">
     <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-10 text-center">
-                <h2 class="fw-bold mb-3">{% trans "Featured Creations" %}</h2>
-                <p class="text-muted">{% trans "Discover amazing projects from our creative community" %}</p>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="section-title mb-0">{% trans "Featured Projects" %}</h2>
+                    <a href="{% url 'projects:public_projects' %}" class="btn btn-outline-primary btn-sm">
+                        {% trans "View All" %} <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <p class="text-muted mb-0 mt-1">{% trans "Discover amazing projects from our creative community" %}</p>
             </div>
         </div>
         
-        <!-- Auto-Rotating Project Showcase -->
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="project-showcase-container">
-                    <div class="project-showcase-header">
-                        <h3 class="showcase-title">{% trans "Featured Projects" %}</h3>
-                        <div class="showcase-controls">
-                            <button class="control-btn" id="prevBtn">
-                                <i class="fas fa-chevron-left"></i>
+        <div class="row g-3">
+            {% for project in featured_projects %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="project-card">
+                    {% if project.cover_image %}
+                    <div class="project-image">
+                        <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="img-fluid">
+                    </div>
+                    {% else %}
+                    <div class="project-image-placeholder">
+                        <i class="fas fa-{{ project.get_project_type_display|lower }} fa-2x"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="project-content">
+                        <div class="project-header">
+                            <h5 class="project-title">{{ project.title }}</h5>
+                            <span class="project-type">{{ project.get_project_type_display }}</span>
+                        </div>
+                        
+                        <p class="project-description">{{ project.description|truncatewords:12 }}</p>
+                        
+                        <!-- Social Interactions - Always Visible -->
+                        <div class="project-interactions">
+                            <button class="interaction-btn like-btn" data-project-id="{{ project.id }}" data-like-url="{% url 'projects:toggle_like' project.id %}">
+                                <i class="far fa-heart"></i>
+                                <span class="count">{{ project.likes_count|default:0 }}</span>
                             </button>
-                            <button class="control-btn" id="nextBtn">
-                                <i class="fas fa-chevron-right"></i>
+                            
+                            <button class="interaction-btn follow-btn" data-user-id="{{ project.owner.id }}" data-follow-url="{% url 'accounts:toggle_follow' project.owner.id %}">
+                                <i class="far fa-user"></i>
+                                <span>{% trans "Follow" %}</span>
+                            </button>
+                            
+                            <button class="interaction-btn chat-btn" data-user-id="{{ project.owner.id }}" data-username="{{ project.owner.username }}">
+                                <i class="far fa-comment"></i>
+                                <span>{% trans "Chat" %}</span>
                             </button>
                         </div>
-                    </div>
-                    
-                    <div class="project-showcase">
-                        <div class="projects-track" id="projectsTrack">
-                            {% for project in featured_projects %}
-                            <div class="project-slide" data-project-id="{{ project.id }}">
-                                <div class="project-card">
-                                    <div class="project-image">
-                                        {% if project.cover_image %}
-                                        <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="img-fluid">
-                                        {% else %}
-                                        <div class="project-image-placeholder">
-                                            <i class="fas fa-{{ project.get_project_type_display|lower }} fa-3x"></i>
-                                        </div>
-                                        {% endif %}
-                                        <div class="project-overlay">
-                                            <div class="project-actions">
-                                                <a href="{% url 'projects:project_detail' project.pk %}" class="btn btn-soft-primary btn-sm">
-                                                    <i class="fas fa-eye me-1"></i>{% trans "View Project" %}
-                                                </a>
-                                                <button class="btn btn-outline-light btn-sm quick-view-btn" data-project-id="{{ project.id }}">
-                                                    <i class="fas fa-expand me-1"></i>{% trans "Quick Look" %}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="project-info">
-                                        <h5 class="project-title">{{ project.title }}</h5>
-                                        <span class="project-type">{{ project.get_project_type_display }}</span>
-                                        <p class="project-description">{{ project.description|truncatewords:15 }}</p>
-                                        
-                                        <!-- Social Interaction Buttons -->
-                                        <div class="project-social-interactions">
-                                            <button class="social-btn like-btn{% if project.id in liked_project_ids %} liked{% endif %}" data-project-id="{{ project.id }}" data-like-url="{% url 'projects:toggle_like' project.id %}">
-                                                <i class="{% if project.id in liked_project_ids %}fas fa-heart{% else %}far fa-heart{% endif %}"></i>
-                                                <span class="like-count">{{ project.likes_count|default:0 }}</span>
-                                            </button>
-                                            <button class="social-btn follow-btn{% if project.owner.id in followed_user_ids %} following{% endif %}"
-                                                    data-user-id="{{ project.owner.id }}"
-                                                    data-follow-url="{% url 'accounts:toggle_follow' project.owner.id %}">
-                                                <i class="{% if project.owner.id in followed_user_ids %}fas fa-user-check{% else %}far fa-user{% endif %}"></i>
-                                                <span>{% if project.owner.id in followed_user_ids %}{% trans "Following" %}{% else %}{% trans "Follow" %}{% endif %}</span>
-                                            </button>
-                                            <button class="social-btn chat-btn" data-user-id="{{ project.owner.id }}">
-                                                <i class="far fa-comment"></i>
-                                                <span>{% trans "Chat" %}</span>
-                                            </button>
-                                        </div>
-                                        
-                                        <div class="project-meta">
-                                            <span class="project-user">
-                                                <i class="fas fa-user"></i>
-                                                <a href="{% url 'projects:project_view' project.id %}">{{ project.owner.username }}</a>
-                                            </span>
-                                            <span class="project-date">
-                                                <i class="fas fa-calendar"></i>
-                                                {{ project.created_at|date:"M d, Y" }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                        
+                        <div class="project-footer">
+                            <div class="project-meta">
+                                <span class="user-info">
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ project.owner.username }}
+                                </span>
+                                <span class="date-info">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ project.created_at|date:"M d" }}
+                                </span>
                             </div>
-                            {% empty %}
-                            <div class="empty-showcase">
-                                <div class="empty-icon">
-                                    <i class="fas fa-folder-open fa-4x"></i>
-                                </div>
-                                <h4>{% trans "No Projects Yet" %}</h4>
-                                <p class="text-muted">{% trans "Be the first to add a project to our community!" %}</p>
-                                <a href="{% url 'accounts:register' %}" class="btn btn-soft-primary">
-                                    <i class="fas fa-plus me-2"></i>{% trans "Create First Project" %}
-                                </a>
-                            </div>
-                            {% endfor %}
+                            <a href="{% url 'projects:project_detail' project.pk %}" class="view-btn">
+                                <i class="fas fa-eye"></i>
+                            </a>
                         </div>
-                    </div>
-                    
-                    <!-- Progress Indicators -->
-                    <div class="showcase-indicators" id="showcaseIndicators">
-                        <!-- Indicators will be generated dynamically -->
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-state text-center py-5">
+                    <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                    <h4>{% trans "No Projects Yet" %}</h4>
+                    <p class="text-muted">{% trans "Be the first to add a project to our community!" %}</p>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus me-1"></i>{% trans "Create First Project" %}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Features Section -->
-<section id="platform-features" class="features-section py-5">
+<!-- Platform Features -->
+<section id="platform-features" class="features-section py-5 bg-light">
     <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-8 text-center">
-                <h2 class="fw-bold mb-3">{% trans "Everything You Need to Showcase Your Work" %}</h2>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="section-title mb-2">{% trans "Everything You Need" %}</h2>
                 <p class="text-muted">{% trans "Powerful tools for creators of all kinds" %}</p>
             </div>
         </div>
         
-        <div class="row g-4">
-            <!-- Feature 1 -->
+        <div class="row g-3">
             <div class="col-md-6 col-lg-4">
-                <div class="card feature-card h-100 border-0">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-images fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">{% trans "Image Galleries" %}</h4>
-                        <p class="text-muted mb-0">
-                            {% trans "Create stunning image galleries with cover photos, captions, and organized collections. Perfect for photographers and digital artists." %}
-                        </p>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h5>{% trans "Image Galleries" %}</h5>
+                        <p>{% trans "Create stunning image galleries with cover photos and organized collections." %}</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Feature 2 -->
             <div class="col-md-6 col-lg-4">
-                <div class="card feature-card h-100 border-0">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-video fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">{% trans "Video Projects" %}</h4>
-                        <p class="text-muted mb-0">
-                            {% trans "Embed videos from YouTube, Vimeo, and other platforms. Showcase your film projects, animations, and video content seamlessly." %}
-                        </p>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h5>{% trans "Video Projects" %}</h5>
+                        <p>{% trans "Embed videos from YouTube, Vimeo and showcase your film projects." %}</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Feature 3 -->
             <div class="col-md-6 col-lg-4">
-                <div class="card feature-card h-100 border-0">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-music fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">{% trans "Audio Showcase" %}</h4>
-                        <p class="text-muted mb-0">
-                            {% trans "Upload and share your audio creations. Built-in audio players let visitors listen to your music, podcasts, and sound designs directly." %}
-                        </p>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h5>{% trans "Audio Showcase" %}</h5>
+                        <p>{% trans "Upload and share your audio creations with built-in audio players." %}</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Feature 4 -->
             <div class="col-md-6 col-lg-4">
-                <div class="card feature-card h-100 border-0">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-folder fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">{% trans "File Management" %}</h4>
-                        <p class="text-muted mb-0">
-                            {% trans "Organize and share project files, source materials, and documents. Keep everything related to your projects in one place." %}
-                        </p>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h5>{% trans "File Management" %}</h5>
+                        <p>{% trans "Organize and share project files and source materials in one place." %}</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Feature 5 -->
             <div class="col-md-6 col-lg-4">
-                <div class="card feature-card h-100 border-0">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-tags fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">{% trans "Smart Categories" %}</h4>
-                        <p class="text-muted mb-0">
-                            {% trans "Categorize your projects by type, style, or medium. Make it easy for visitors to explore your work the way you want it seen." %}
-                        </p>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h5>{% trans "Smart Categories" %}</h5>
+                        <p>{% trans "Categorize projects by type, style, or medium for easy discovery." %}</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Feature 6 -->
             <div class="col-md-6 col-lg-4">
-                <div class="card feature-card h-100 border-0">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon mb-3">
-                            <i class="fas fa-shield-alt fa-3x text-primary"></i>
-                        </div>
-                        <h4 class="fw-bold mb-3">{% trans "Complete Control" %}</h4>
-                        <p class="text-muted mb-0">
-                            {% trans "Full ownership of your content. Publish when ready, keep drafts private, and manage everything from one dashboard." %}
-                        </p>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h5>{% trans "Complete Control" %}</h5>
+                        <p>{% trans "Full ownership of your content with privacy and publishing controls." %}</p>
                     </div>
                 </div>
             </div>
@@ -282,32 +216,32 @@
     </div>
 </section>
 
-<!-- Stats Section -->
-<section id="community-stats" class="stats-section py-5 bg-light rounded-3">
+<!-- Community Stats -->
+<section id="community-stats" class="stats-section py-4">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-md-3 col-6 mb-4">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
                 <div class="stat-item">
-                    <h3 class="fw-bold text-primary display-6">{{ total_projects }}</h3>
-                    <p class="text-muted mb-0">{% trans "Projects Created" %}</p>
+                    <div class="stat-number">{{ total_projects }}</div>
+                    <div class="stat-label">{% trans "Projects" %}</div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-4">
+            <div class="col-6 col-md-3">
                 <div class="stat-item">
-                    <h3 class="fw-bold text-primary display-6">{{ total_users }}</h3>
-                    <p class="text-muted mb-0">{% trans "Creative Users" %}</p>
+                    <div class="stat-number">{{ total_users }}</div>
+                    <div class="stat-label">{% trans "Creators" %}</div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-4">
+            <div class="col-6 col-md-3">
                 <div class="stat-item">
-                    <h3 class="fw-bold text-primary display-6">24/7</h3>
-                    <p class="text-muted mb-0">{% trans "Access Anywhere" %}</p>
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">{% trans "Access" %}</div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-4">
+            <div class="col-6 col-md-3">
                 <div class="stat-item">
-                    <h3 class="fw-bold text-primary display-6">0</h3>
-                    <p class="text-muted mb-0">{% trans "No Hidden Fees" %}</p>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">{% trans "Hidden Fees" %}</div>
                 </div>
             </div>
         </div>
@@ -319,26 +253,26 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-lg-8">
-                <h2 class="fw-bold mb-3">{% trans "Ready to Build Your Portfolio?" %}</h2>
+                <h2 class="section-title mb-3">{% trans "Ready to Build Your Portfolio?" %}</h2>
                 <p class="text-muted mb-4">
-                    {% trans "Join thousands of creators who are already showcasing their work on our platform. It takes less than a minute to get started." %}
+                    {% trans "Join thousands of creators showcasing their work. It takes less than a minute to get started." %}
                 </p>
                 {% if not user.is_authenticated %}
-                <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                    <a href="{% url 'accounts:register' %}" class="btn btn-soft-primary btn-lg px-4 py-2">
-                        <i class="fas fa-rocket me-2"></i>{% trans "Start Creating Now" %}
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary">
+                        <i class="fas fa-rocket me-1"></i>{% trans "Start Creating Now" %}
                     </a>
-                    <a href="{% url 'accounts:login' %}" class="btn btn-ghost btn-lg px-4 py-2">
-                        <i class="fas fa-sign-in-alt me-2"></i>{% trans "Existing User" %}
+                    <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-sign-in-alt me-1"></i>{% trans "Existing User" %}
                     </a>
                 </div>
                 {% else %}
-                <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                    <a href="{% url 'projects:project_create' %}" class="btn btn-soft-primary btn-lg px-4 py-2">
-                        <i class="fas fa-plus me-2"></i>{% trans "Create New Project" %}
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                    <a href="{% url 'projects:project_create' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>{% trans "Create New Project" %}
                     </a>
-                    <a href="{% url 'projects:dashboard' %}" class="btn btn-ghost btn-lg px-4 py-2">
-                        <i class="fas fa-tachometer-alt me-2"></i>{% trans "View Dashboard" %}
+                    <a href="{% url 'projects:dashboard' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-tachometer-alt me-1"></i>{% trans "View Dashboard" %}
                     </a>
                 </div>
                 {% endif %}
@@ -347,33 +281,21 @@
     </div>
 </section>
 
-<!-- Quick Look Modal -->
-<div class="quick-look-modal" id="quickLookModal">
-    <div class="quick-look-content">
-        <div class="quick-look-header">
-            <h3 id="quickLookTitle">{% trans "Project Title" %}</h3>
-            <button class="quick-look-close" id="quickLookClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="quick-look-body" id="quickLookBody">
-            <!-- Content will be loaded dynamically -->
-        </div>
-    </div>
-</div>
-
 <!-- Chat Modal -->
 <div class="chat-modal" id="chatModal">
     <div class="chat-content">
         <div class="chat-header">
-            <h4>{% trans "Chat with" %} <span id="chatUserName">{% trans "User" %}</span></h4>
+            <h6 class="mb-0">{% trans "Chat with" %} <span id="chatUserName">{% trans "User" %}</span></h6>
             <button class="chat-close" id="chatClose">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="chat-body" id="chatBody">
-            <div class="chat-messages">
-                <!-- Messages will appear here -->
+        <div class="chat-body">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>{% trans "Start a conversation with this creator" %}</span>
+                </div>
             </div>
             <div class="chat-input-container">
                 <input type="text" class="chat-input" id="chatInput" placeholder="{% trans 'Type your message...' %}">
@@ -385,1187 +307,747 @@
     </div>
 </div>
 
-<script>
-  function scrollToSection(id) {
-    try {
-      var el = document.getElementById(id);
-      if (el && el.scrollIntoView) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    } catch (e) { /* no-op */ }
-  }
-</script>
-
 <style>
-    /* Enhanced CSS with auto-rotating project showcase and social features */
-    :root {
-        --brand-500: #0ea5e9; /* sky-500 */
-        --brand-600: #0284c7; /* sky-600 */
-        --brand-700: #0369a1; /* sky-700 */
-        --surface: #ffffff;
-        --text: #1f2937;      /* gray-800 */
-        --muted: #6b7280;     /* gray-500 */
-    }
-    
-    /* Hero Section Improvements */
-    .hero-section {
-        background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-700) 100%);
-        color: white;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
-        background-size: cover;
-    }
-    
-    .hero-section .container {
-        position: relative;
-        z-index: 2;
-    }
-    
-    .gradient-text {
-        background: linear-gradient(45deg, #ffffff, #eef2ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    
-    
-    /* Project Showcase Styles */
-    .project-showcase-container {
-        background: var(--surface);
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
-    
-    .project-showcase-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 24px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-bottom: 1px solid #dee2e6;
-    }
-    
-    .showcase-title {
-        margin: 0;
-        font-weight: 600;
-        color: #495057;
-    }
-    
-    .showcase-controls {
-        display: flex;
-        gap: 8px;
-    }
-    
-    .control-btn {
-        width: 40px;
-        height: 40px;
-        border: 1px solid #dee2e6;
-        background: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #6c757d;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .control-btn:hover {
-        background: var(--brand-600);
-        color: white;
-        border-color: var(--brand-600);
-        transform: scale(1.05);
-    }
-    
-    .project-showcase {
-        position: relative;
-        overflow: hidden;
-        padding: 20px 0;
-    }
-    
-    .projects-track {
-        display: flex;
-        transition: transform 0.5s ease;
-        gap: 20px;
-        padding: 0 20px;
-    }
-    
-    .project-slide {
-        flex: 0 0 calc(25% - 15px);
-        min-width: 0;
-        opacity: 0.7;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    
-    .project-slide.active {
-        opacity: 1;
-        transform: scale(1.02);
-    }
-    
-    .project-card {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        height: 100%;
-        display: flex;
+/* Base Styles */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.section-title {
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+/* Project Cards */
+.projects-section {
+    background: var(--light-color);
+}
+
+.project-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.project-image {
+    height: 160px;
+    overflow: hidden;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-image-placeholder {
+    height: 160px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.project-content {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-header {
+    margin-bottom: 0.5rem;
+}
+
+.project-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+    color: var(--dark-color);
+}
+
+.project-type {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.project-description {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+/* Social Interactions */
+.project-interactions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.interaction-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.interaction-btn:hover {
+    background: rgba(0,0,0,0.04);
+    color: var(--primary-color);
+}
+
+.interaction-btn.liked {
+    color: #dc3545;
+}
+
+.interaction-btn.following {
+    color: #28a745;
+}
+
+.interaction-btn .count {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Project Footer */
+.project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.user-info, .date-info {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.view-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+    background: var(--secondary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Features Section */
+.feature-item {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.feature-item:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.feature-content {
+    flex: 1;
+}
+
+.feature-content h5 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.feature-content p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Stats Section */
+.stats-section {
+    background: var(--light-color);
+}
+
+.stat-item {
+    padding: 1rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.cta-section .section-title {
+    color: white;
+}
+
+.cta-section .text-muted {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+/* Chat Modal */
+.chat-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 1rem;
+}
+
+.chat-modal.active {
+    display: flex;
+}
+
+.chat-content {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    max-height: 500px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.chat-header h6 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chat-close:hover {
+    background: rgba(0,0,0,0.05);
+    color: var(--dark-color);
+}
+
+.chat-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.message-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(0,0,0,0.03);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    gap: 0.5rem;
+}
+
+.chat-input {
+    flex: 1;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.chat-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(67,97,238,0.1);
+}
+
+.chat-send-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chat-send-btn:hover {
+    background: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* Empty State */
+.empty-state {
+    padding: 3rem 1rem;
+}
+
+.empty-state h4 {
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] .project-card,
+:root[data-theme="dark"] .feature-item {
+    background: #1a1f35;
+    border-color: rgba(255,255,255,0.1);
+}
+
+:root[data-theme="dark"] .projects-section,
+:root[data-theme="dark"] .stats-section {
+    background: #141a2b;
+}
+
+:root[data-theme="dark"] .features-section {
+    background: #0f1423;
+}
+
+:root[data-theme="dark"] .project-title {
+    color: rgba(255,255,255,0.9);
+}
+
+:root[data-theme="dark"] .project-description,
+:root[data-theme="dark"] .feature-content p {
+    color: rgba(255,255,255,0.7);
+}
+
+:root[data-theme="dark"] .interaction-btn {
+    color: rgba(255,255,255,0.6);
+}
+
+:root[data-theme="dark"] .interaction-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--primary-color);
+}
+
+:root[data-theme="dark"] .project-meta {
+    color: rgba(255,255,255,0.6);
+}
+
+:root[data-theme="dark"] .interaction-btn.liked {
+    color: #ff6b6b;
+}
+
+:root[data-theme="dark"] .interaction-btn.following {
+    color: #51cf66;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .project-interactions {
         flex-direction: column;
+        gap: 0.5rem;
     }
     
-    .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    
-    .project-image {
-        position: relative;
-        overflow: hidden;
-        height: 180px;
-    }
-    
-    .project-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-    
-    .project-card:hover .project-image img {
-        transform: scale(1.05);
-    }
-    
-    .project-image-placeholder {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
+    .interaction-btn {
         justify-content: center;
-        color: white;
     }
     
-    .project-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.55);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .project-card:hover .project-overlay {
-        opacity: 1;
-    }
-    
-    .project-actions {
-        display: flex;
+    .feature-item {
         flex-direction: column;
-        gap: 10px;
-    }
-    
-    .project-info {
-        padding: 20px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .project-title {
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--text);
-        line-height: 1.3;
-    }
-    
-    .project-type {
-        display: inline-block;
-        background: var(--brand-600);
-        color: white;
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 12px;
-    }
-    
-    .project-description {
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.5;
-        margin-bottom: 15px;
-        flex-grow: 1;
-    }
-    
-    /* Social Interactions */
-    .project-social-interactions {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-        padding: 10px 0;
-        border-top: 1px solid #e9ecef;
-        border-bottom: 1px solid #e9ecef;
-    }
-    
-    .social-btn {
-        background: none;
-        border: none;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        color: #6c757d;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        padding: 5px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-    }
-    
-    .social-btn:hover {
-        background: #f8f9fa;
-        color: var(--brand-600);
-        transform: translateY(-1px);
-    }
-    
-    .social-btn.liked {
-        color: #dc3545;
-    }
-    
-    .social-btn.following {
-        color: #28a745;
-    }
-    
-    .like-count {
-        font-size: 11px;
-        font-weight: 600;
-    }
-    
-    .project-meta {
-        display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: #868e96;
-    }
-    
-    .project-user, .project-date {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-    
-    /* Showcase Indicators */
-    .showcase-indicators {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        padding: 20px;
-        background: #f8f9fa;
-        border-top: 1px solid #dee2e6;
-    }
-    
-    .indicator {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #dee2e6;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .indicator.active {
-        background: var(--brand-600);
-        transform: scale(1.2);
-    }
-    
-    /* Empty State */
-    .empty-showcase {
         text-align: center;
-        padding: 60px 20px;
-        color: #6c757d;
-        width: 100%;
-    }
-    
-    .empty-icon {
-        margin-bottom: 16px;
-        opacity: 0.5;
-    }
-    
-    .empty-showcase h4 {
-        color: #495057;
-        margin-bottom: 8px;
-    }
-    
-    /* Quick Look Modal */
-    .quick-look-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-    }
-    
-    .quick-look-modal.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    
-    .quick-look-content {
-        background: white;
-        border-radius: 12px;
-        max-width: 600px;
-        width: 90%;
-        max-height: 80vh;
-        overflow: auto;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        animation: modalSlideIn 0.3s ease;
-    }
-    
-    /* Chat Modal */
-    .chat-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
-    }
-    
-    .chat-modal.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    
-    .chat-content {
-        background: white;
-        border-radius: 12px;
-        max-width: 400px;
-        width: 90%;
-        max-height: 60vh;
-        overflow: hidden;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        animation: modalSlideIn 0.3s ease;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .chat-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-        background: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-    }
-    
-    .chat-header h4 {
-        margin: 0;
-        font-size: 1.1rem;
-    }
-    
-    .chat-close {
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-        color: #6c757d;
-        transition: color 0.2s ease;
-    }
-    
-    .chat-close:hover {
-        color: #343a40;
-    }
-    
-    .chat-body {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .chat-messages {
-        flex-grow: 1;
-        padding: 15px;
-        overflow-y: auto;
-        max-height: 300px;
-    }
-    
-    .chat-input-container {
-        display: flex;
-        padding: 15px;
-        border-top: 1px solid #dee2e6;
-        gap: 10px;
-    }
-    
-    .chat-input {
-        flex-grow: 1;
-        border: 1px solid #dee2e6;
-        border-radius: 20px;
-        padding: 8px 15px;
-        outline: none;
-        transition: border-color 0.2s ease;
-    }
-    
-    .chat-input:focus {
-        border-color: var(--brand-600);
-    }
-    
-    .chat-send-btn {
-        background: var(--brand-600);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        transition: background-color 0.2s ease;
-    }
-    .chat-send-btn:hover {
-        background: var(--brand-700);
-    }
-
-    /* Brand overrides for Bootstrap buttons */
-    .btn-primary {
-        background-color: var(--brand-600);
-        border-color: var(--brand-600);
-    }
-    .btn-primary:hover {
-        background-color: var(--brand-700);
-        border-color: var(--brand-700);
-    }
-    .btn-outline-primary {
-        color: var(--brand-600);
-        border-color: var(--brand-600);
-    }
-    .btn-outline-primary:hover {
-        background-color: var(--brand-600);
-        border-color: var(--brand-600);
-        color: #fff;
-    }
-
-    /* Soft/Ghost button variants (local to home) */
-    .btn-soft-primary {
-        color: #234;
-        background: rgba(67, 97, 238, 0.12);
-        border: 1px solid rgba(67, 97, 238, 0.35);
-    }
-    .btn-soft-primary:hover { background: rgba(67, 97, 238, 0.2); }
-    .btn-ghost {
-        color: #f1f3f5;
-        background: transparent;
-        border: 1px dashed rgba(255, 255, 255, 0.55);
-    }
-    .btn-ghost:hover { background: rgba(255, 255, 255, 0.12); }
-
-    @keyframes modalSlideIn {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .quick-look-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        border-bottom: 1px solid #e9ecef;
-    }
-    
-    .quick-look-header h3 {
-        margin: 0;
-        font-size: 1.5rem;
-    }
-    
-    .quick-look-close {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #6c757d;
-        transition: color 0.2s ease;
-    }
-    
-    .quick-look-close:hover {
-        color: #343a40;
-    }
-    
-    .quick-look-body {
-        padding: 20px;
-    }
-    
-    /* Feature Cards Enhancements */
-    .feature-card {
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-    
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
     
     .feature-icon {
-        transition: transform 0.3s ease;
+        align-self: center;
     }
     
-    .feature-card:hover .feature-icon {
-        transform: scale(1.1);
+    .hero-title {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .project-image {
+        height: 140px;
     }
     
-    /* Stats Section Improvements */
-    .stats-section {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    .project-content {
+        padding: 0.75rem;
     }
     
-    .stat-item h3 {
-        transition: transform 0.3s ease;
+    .feature-item {
+        padding: 1rem;
     }
     
-    .stat-item:hover h3 {
-        transform: scale(1.1);
+    .feature-icon {
+        width: 40px;
+        height: 40px;
     }
     
-    /* CTA Section Improvements */
-    .cta-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+    .chat-content {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
     }
-    
-    .cta-section .text-muted {
-        color: rgba(255, 255, 255, 0.8) !important;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 1200px) {
-        .project-slide {
-            flex: 0 0 calc(33.333% - 14px);
-        }
-    }
-    
-    @media (max-width: 992px) {
-        .project-slide {
-            flex: 0 0 calc(50% - 10px);
-        }
-        
-        .project-social-interactions {
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .social-btn {
-            justify-content: center;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .floating-nav {
-            bottom: 20px;
-            padding: 8px 15px;
-        }
-        
-        .floating-nav-btn span {
-            display: none;
-        }
-        
-        .floating-nav-btn {
-            padding: 10px;
-        }
-        
-        .project-slide {
-            flex: 0 0 calc(100% - 0px);
-        }
-        
-        .project-showcase-header {
-            flex-direction: column;
-            gap: 15px;
-            text-align: center;
-        }
-        
-        .hero-section .display-4 {
-            font-size: 2.5rem;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .project-image {
-            height: 160px;
-        }
-        
-        .hero-section .display-4 {
-            font-size: 2rem;
-        }
-        
-        .project-info {
-            padding: 15px;
-        }
-        
-        .chat-content {
-            max-width: 95%;
-            max-height: 70vh;
-        }
-    }
+}
 </style>
 
 <script>
-    // Enhanced JavaScript with auto-rotating project showcase and social features
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        // CSRF helper for POST requests
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
+document.addEventListener('DOMContentLoaded', function() {
+    // CSRF helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
             }
-            return cookieValue;
         }
-        const csrftoken = getCookie('csrftoken');
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
 
-        // Project Showcase Functionality
-        const track = document.getElementById('projectsTrack');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const indicatorsContainer = document.getElementById('showcaseIndicators');
-        const quickViewButtons = document.querySelectorAll('.quick-view-btn');
-        const quickLookModal = document.getElementById('quickLookModal');
-        const quickLookClose = document.getElementById('quickLookClose');
-        const likeButtons = document.querySelectorAll('.like-btn');
-        const followButtons = document.querySelectorAll('.follow-btn');
-        const chatButtons = document.querySelectorAll('.chat-btn');
-        const chatModal = document.getElementById('chatModal');
-        const chatClose = document.getElementById('chatClose');
-        const chatSend = document.getElementById('chatSend');
-        const chatInput = document.getElementById('chatInput');
-        const chatUserName = document.getElementById('chatUserName');
-        
-        let currentSlide = 0;
-        let autoSlideInterval;
-        const slidesPerView = 4;
-        const slides = document.querySelectorAll('.project-slide');
-        const totalSlides = slides.length;
-        
-        // Calculate how many slides we need to show
-        const totalGroups = Math.ceil(totalSlides / slidesPerView);
-        
-        // Create indicators
-        function createIndicators() {
-            indicatorsContainer.innerHTML = '';
-            for (let i = 0; i < totalGroups; i++) {
-                const indicator = document.createElement('div');
-                indicator.className = 'indicator';
-                if (i === 0) indicator.classList.add('active');
-                indicator.addEventListener('click', () => goToSlide(i));
-                indicatorsContainer.appendChild(indicator);
-            }
+    // Chat functionality
+    const chatModal = document.getElementById('chatModal');
+    const chatClose = document.getElementById('chatClose');
+    const chatSend = document.getElementById('chatSend');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatUserName = document.getElementById('chatUserName');
+    const chatButtons = document.querySelectorAll('.chat-btn');
+    
+    let currentChatUserId = null;
+
+    // Like functionality
+    const likeButtons = document.querySelectorAll('.like-btn');
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const projectId = this.dataset.projectId;
+            const url = this.dataset.likeUrl;
+            toggleLike(projectId, url, this);
+        });
+    });
+
+    // Follow functionality
+    const followButtons = document.querySelectorAll('.follow-btn');
+    followButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const userId = this.dataset.userId;
+            const url = this.dataset.followUrl;
+            toggleFollow(userId, url, this);
+        });
+    });
+
+    // Chat functionality
+    chatButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const userId = this.dataset.userId;
+            const username = this.dataset.username;
+            openChat(userId, username);
+        });
+    });
+
+    // Close chat modal
+    chatClose.addEventListener('click', closeChat);
+
+    // Send message
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
         }
+    });
+
+    // Close modal when clicking outside
+    chatModal.addEventListener('click', function(e) {
+        if (e.target === chatModal) {
+            closeChat();
+        }
+    });
+
+    async function toggleLike(projectId, url, button) {
+        const likeIcon = button.querySelector('i');
+        const likeCount = button.querySelector('.count');
         
-        // Update slide position and opacity
-        function updateSlidePosition() {
-            const slideWidth = slides[0].offsetWidth + 20; // 20px gap
-            track.style.transform = `translateX(-${currentSlide * slideWidth * slidesPerView}px)`;
-            
-            // Update indicators
-            document.querySelectorAll('.indicator').forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentSlide);
+        try {
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrftoken,
+                },
             });
-            
-            // Update slide opacity for visual effect
-            slides.forEach((slide, index) => {
-                const slideGroup = Math.floor(index / slidesPerView);
-                if (slideGroup === currentSlide) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                }
-            });
-        }
-        
-        // Navigate to specific slide
-        function goToSlide(slideIndex) {
-            currentSlide = slideIndex;
-            if (currentSlide < 0) currentSlide = totalGroups - 1;
-            if (currentSlide >= totalGroups) currentSlide = 0;
-            updateSlidePosition();
-            resetAutoSlide();
-        }
-        
-        // Next slide
-        function nextSlide() {
-            goToSlide(currentSlide + 1);
-        }
-        
-        // Previous slide
-        function prevSlide() {
-            goToSlide(currentSlide - 1);
-        }
-        
-        // Auto slide functionality
-        function startAutoSlide() {
-            if (totalGroups > 1) {
-                autoSlideInterval = setInterval(nextSlide, 5000); // Change every 5 seconds
+
+            if (resp.redirected) {
+                // Redirect to login if not authenticated
+                window.location.href = resp.url;
+                return;
             }
-        }
-        
-        function stopAutoSlide() {
-            clearInterval(autoSlideInterval);
-        }
-        
-        function resetAutoSlide() {
-            stopAutoSlide();
-            startAutoSlide();
-        }
-        
-        // Event listeners for navigation
-        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-        
-        // Pause auto-slide on hover
-        if (track) {
-            track.addEventListener('mouseenter', stopAutoSlide);
-            track.addEventListener('mouseleave', startAutoSlide);
-        }
-        
-        // Quick Look functionality
-        quickViewButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const projectId = this.dataset.projectId;
-                openQuickLook(projectId);
-            });
-        });
-        
-        // Close quick look modal
-        quickLookClose.addEventListener('click', function() {
-            quickLookModal.classList.remove('active');
-        });
-        
-        // Close modal when clicking outside
-        quickLookModal.addEventListener('click', function(e) {
-            if (e.target === quickLookModal) {
-                quickLookModal.classList.remove('active');
+
+            if (!resp.ok) throw new Error('Request failed');
+            
+            const data = await resp.json();
+            likeCount.textContent = data.count;
+            
+            if (data.liked) {
+                button.classList.add('liked');
+                likeIcon.className = 'fas fa-heart';
+            } else {
+                button.classList.remove('liked');
+                likeIcon.className = 'far fa-heart';
             }
-        });
+        } catch (error) {
+            console.error('Like error:', error);
+            // Show temporary message
+            const originalText = button.querySelector('span').textContent;
+            button.querySelector('span').textContent = 'Error';
+            setTimeout(() => {
+                button.querySelector('span').textContent = originalText;
+            }, 2000);
+        }
+    }
+
+    async function toggleFollow(userId, url, button) {
+        const followIcon = button.querySelector('i');
+        const followText = button.querySelector('span');
         
-        // Like functionality
-        likeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const projectId = this.dataset.projectId;
-                const url = this.dataset.likeUrl;
-                toggleLike(projectId, url, this);
+        try {
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrftoken,
+                },
             });
-        });
+
+            if (resp.redirected) {
+                window.location.href = resp.url;
+                return;
+            }
+
+            if (!resp.ok) throw new Error('Request failed');
+            
+            const data = await resp.json();
+            
+            if (data.following) {
+                button.classList.add('following');
+                followIcon.className = 'fas fa-user-check';
+                followText.textContent = '{% trans "Following" %}';
+            } else {
+                button.classList.remove('following');
+                followIcon.className = 'far fa-user';
+                followText.textContent = '{% trans "Follow" %}';
+            }
+        } catch (error) {
+            console.error('Follow error:', error);
+            const originalText = button.querySelector('span').textContent;
+            button.querySelector('span').textContent = 'Error';
+            setTimeout(() => {
+                button.querySelector('span').textContent = originalText;
+            }, 2000);
+        }
+    }
+
+    function openChat(userId, username) {
+        currentChatUserId = userId;
+        chatUserName.textContent = username;
+        chatModal.classList.add('active');
+        chatInput.value = '';
+        chatInput.focus();
         
-        // Follow functionality
-        followButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const userId = this.dataset.userId;
-                toggleFollow(userId, this);
+        // Clear previous messages and show info
+        chatMessages.innerHTML = `
+            <div class="message-info">
+                <i class="fas fa-info-circle"></i>
+                <span>{% trans "Start a conversation with this creator" %}</span>
+            </div>
+        `;
+    }
+
+    function closeChat() {
+        chatModal.classList.remove('active');
+        currentChatUserId = null;
+    }
+
+    async function sendMessage() {
+        const body = chatInput.value.trim();
+        if (!body || !currentChatUserId) return;
+
+        try {
+            const url = `{% url 'core:send_message' 0 %}`.replace('0', currentChatUserId);
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ body })
             });
-        });
-        
-        // Chat functionality
-        chatButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const userId = this.dataset.userId;
-                openChat(userId, this);
-            });
-        });
-        
-        // Close chat modal
-        chatClose.addEventListener('click', function() {
-            chatModal.classList.remove('active');
-        });
-        
-        // Close chat modal when clicking outside
-        chatModal.addEventListener('click', function(e) {
-            if (e.target === chatModal) {
-                chatModal.classList.remove('active');
+
+            if (resp.redirected) {
+                window.location.href = resp.url;
+                return;
             }
-        });
-        
-        // Send chat message
-        chatSend.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-        
-        // Function to open quick look modal
-        function openQuickLook(projectId) {
-            const projectItem = document.querySelector(`.project-slide[data-project-id="${projectId}"]`);
-            if (!projectItem) return;
+
+            if (!resp.ok) throw new Error('Failed to send');
             
-            const title = projectItem.querySelector('.project-title').textContent;
-            const description = projectItem.querySelector('.project-description').textContent;
-            const projectType = projectItem.querySelector('.project-type').textContent;
-            const user = projectItem.querySelector('.project-user').textContent.trim();
-            const date = projectItem.querySelector('.project-date').textContent.trim();
-            const image = projectItem.querySelector('.project-image img');
-            const imageSrc = image ? image.src : '';
-            const imagePlaceholder = projectItem.querySelector('.project-image-placeholder');
+            const data = await resp.json();
+            chatInput.value = '';
             
-            document.getElementById('quickLookTitle').textContent = title;
-            
-            const quickLookBody = document.getElementById('quickLookBody');
-            let imageHtml = '';
-            
-            if (imageSrc) {
-                imageHtml = `<img src="${imageSrc}" alt="${title}" class="img-fluid rounded mb-3">`;
-            } else if (imagePlaceholder) {
-                imageHtml = imagePlaceholder.outerHTML;
-            }
-            
-            quickLookBody.innerHTML = `
-                <div class="quick-look-preview">
-                    ${imageHtml}
-                    <div class="preview-details">
-                        <p><strong>Type:</strong> ${projectType}</p>
-                        <p><strong>Creator:</strong> ${user}</p>
-                        <p><strong>Date:</strong> ${date}</p>
-                        <p><strong>Description:</strong> ${description}</p>
-                    </div>
-                </div>
-                <div class="quick-look-actions mt-4">
-                    <a href="{% url 'projects:project_detail' 0 %}" class="btn btn-primary">
-                        <i class="fas fa-external-link-alt me-2"></i>View Full Project
-                    </a>
-                    <button class="btn btn-outline-secondary" onclick="document.getElementById('quickLookModal').classList.remove('active')">
-                        <i class="fas fa-times me-2"></i>Close
-                    </button>
+            // Add sent message to chat
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message sent';
+            messageElement.innerHTML = `
+                <div class="message-content">
+                    <p>${data.body}</p>
+                    <span class="message-time">${data.created_at}</span>
                 </div>
             `;
             
-            // Update the view full project link with the actual project ID
-            const viewLink = quickLookBody.querySelector('a');
-            viewLink.href = viewLink.href.replace('0', projectId);
+            // Remove info message if it's the first message
+            const infoMessage = chatMessages.querySelector('.message-info');
+            if (infoMessage) {
+                infoMessage.remove();
+            }
             
-            quickLookModal.classList.add('active');
-        }
-        
-        // Function to toggle like
-        async function toggleLike(projectId, url, button) {
-            const likeIcon = button.querySelector('i');
-            const likeCount = button.querySelector('.like-count');
-            try {
-                const resp = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': csrftoken,
-                    },
-                });
-                // If redirected (not logged in), go to login
-                if (resp.redirected) {
-                    window.location.href = resp.url;
-                    return;
-                }
-                if (!resp.ok) throw new Error('Request failed');
-                const data = await resp.json();
-                likeCount.textContent = data.count;
-                if (data.liked) {
-                    button.classList.add('liked');
-                    likeIcon.className = 'fas fa-heart';
-                } else {
-                    button.classList.remove('liked');
-                    likeIcon.className = 'far fa-heart';
-                }
-            } catch (e) {
-                // Revert UI on failure
-                console.error(e);
-            }
-        }
-        
-        // Function to toggle follow
-        async function toggleFollow(userId, button) {
-            const followIcon = button.querySelector('i');
-            const followText = button.querySelector('span');
-            const url = button.dataset.followUrl;
-            try {
-                const resp = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': csrftoken,
-                    },
-                });
-                if (resp.redirected) { window.location.href = resp.url; return; }
-                if (!resp.ok) throw new Error('Request failed');
-                const data = await resp.json();
-                if (data.following) {
-                    button.classList.add('following');
-                    followIcon.className = 'fas fa-user-check';
-                    followText.textContent = 'Following';
-                } else {
-                    button.classList.remove('following');
-                    followIcon.className = 'far fa-user';
-                    followText.textContent = 'Follow';
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        
-        let currentChatUserId = null;
-        // Function to open chat
-        async function openChat(userId, button) {
-            const userElement = button.closest('.project-card').querySelector('.project-user');
-            const username = userElement.textContent.trim().replace('@', '');
-            chatUserName.textContent = username;
-            currentChatUserId = userId;
-            const chatMessages = document.getElementById('chatBody').querySelector('.chat-messages');
-            chatMessages.innerHTML = '<div class="text-center text-muted"><p>Loading…</p></div>';
-            chatModal.classList.add('active');
-            chatInput.value = '';
-            chatInput.focus();
-            try {
-                const url = `{% url 'core:get_conversation' 0 %}`.replace('0', userId);
-                const resp = await fetch(url);
-                if (resp.redirected) { window.location.href = resp.url; return; }
-                if (!resp.ok) throw new Error('Failed to load conversation');
-                const data = await resp.json();
-                chatMessages.innerHTML = '';
-                if (!data.messages.length) {
-                    chatMessages.innerHTML = '<div class="text-center text-muted"><p>No messages yet.</p></div>';
-                } else {
-                    for (const m of data.messages) {
-                        const wrapper = document.createElement('div');
-                        wrapper.className = `message ${m.sender === '{{ user.username }}' ? 'sent' : 'received'}`;
-                        wrapper.innerHTML = `
-                            <div class="message-content">
-                                <p></p>
-                                <span class="message-time">${m.created_at}</span>
-                            </div>`;
-                        wrapper.querySelector('p').textContent = m.body;
-                        chatMessages.appendChild(wrapper);
-                    }
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        
-        // Function to send message
-        async function sendMessage() {
-            const body = chatInput.value.trim();
-            if (!body || !currentChatUserId) return;
-            const chatMessages = document.getElementById('chatBody').querySelector('.chat-messages');
-            try {
-                const url = `{% url 'core:send_message' 0 %}`.replace('0', currentChatUserId);
-                const resp = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': csrftoken,
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({ body })
-                });
-                if (resp.redirected) { window.location.href = resp.url; return; }
-                if (!resp.ok) throw new Error('Failed to send');
-                const data = await resp.json();
-                chatInput.value = '';
-                // Append sent message
-                const messageElement = document.createElement('div');
-                messageElement.className = 'message sent';
-                messageElement.innerHTML = `
-                    <div class="message-content">
-                        <p></p>
-                        <span class="message-time">${data.created_at}</span>
-                    </div>`;
-                messageElement.querySelector('p').textContent = data.body;
-                chatMessages.appendChild(messageElement);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        
-        // Enhanced scroll function with offset for navbar
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                const navbarHeight = 80;
-                const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
-                const offsetPosition = sectionPosition - navbarHeight;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }
-        
-        // Update active navigation button based on scroll position
-        function updateActiveNav() {
-            const sections = ['featured-projects', 'platform-features', 'community-stats', 'get-started'];
-            const navButtons = document.querySelectorAll('.floating-nav-btn');
-            const navbarHeight = 80;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
             
-            let currentSection = '';
-            let minDistance = Infinity;
-            
-            sections.forEach(section => {
-                const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    const distance = Math.abs(rect.top - navbarHeight);
-                    
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        currentSection = section;
-                    }
-                }
-            });
-            
-            navButtons.forEach(button => {
-                button.classList.toggle('active', button.dataset.section === currentSection);
+        } catch (error) {
+            console.error('Send message error:', error);
+            alert('{% trans "Failed to send message. Please try again." %}');
+        }
+    }
+
+    // Smooth scroll for navigation
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const navbarHeight = 70;
+            const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = sectionPosition - navbarHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
         }
-        
-        // Initialize everything
-        function init() {
-            if (totalSlides > 0) {
-                createIndicators();
-                updateSlidePosition();
-                startAutoSlide();
-            }
-            
-            // Add scroll event listener for active nav
-            window.addEventListener('scroll', updateActiveNav);
-            
-            // Initial active nav update
-            updateActiveNav();
-            
-            // Feature card animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            document.querySelectorAll('.feature-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'all 0.6s ease';
-                observer.observe(card);
-            });
-        }
-        
-        // Initialize when DOM is loaded
-        init();
-        
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            updateSlidePosition();
+    }
+
+    // Add scroll event listeners to quick nav buttons
+    document.querySelectorAll('.btn[onclick^="scrollToSection"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const sectionId = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+            scrollToSection(sectionId);
         });
     });
+});
 </script>
-<style>
-  /* Home page compact professional theme overrides */
-  .project-card {
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-  }
-  .project-card .card-body { padding: 0.75rem 0.75rem 0.75rem 0.75rem; }
-  .project-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
-  .project-type { font-size: 0.75rem; color: #6c757d; }
-  .project-description { font-size: 0.85rem; color: #6c757d; }
-  .project-meta { font-size: 0.85rem; gap: .5rem; }
-  .project-meta i { font-size: .85rem; }
-
-  /* Social buttons small size */
-  .project-social-interactions { gap: .5rem; }
-  .social-btn {
-    padding: .25rem .5rem;
-    font-size: .85rem;
-    line-height: 1.2;
-    border-radius: .25rem;
-    min-height: 30px;
-  }
-  .social-btn i { font-size: .9rem; }
-  .social-btn .like-count { font-size: .85rem; }
-
-  /* Generic btns to small look within home */
-  .project-card .btn, .hero-section .btn, .carousel .btn {
-    padding: .25rem .5rem;
-    font-size: .875rem;
-    border-radius: .25rem;
-  }
-
-  /* Cards and grids spacing */
-  .projects-grid { gap: 1rem; }
-  .card-header, .card-body { padding: .75rem 1rem; }
-
-  /* Chat modal compact */
-  .chat-footer .btn { padding: .25rem .5rem; font-size: .875rem; }
-  .chat-input { padding: .375rem .5rem; font-size: .9rem; }
-
-  /* Headings */
-  .hero-title { font-size: 1.5rem; font-weight: 700; }
-  .hero-subtitle { font-size: .95rem; color:#6c757d; }
-
-  /* Badges */
-  .badge { padding: .25rem .4rem; font-size: .7rem; border-radius: .35rem; }
-
-  /* Carousel indicators small */
-  .indicator { width: 6px; height: 6px; }
-</style>
 {% endblock %}
